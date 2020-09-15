@@ -10,7 +10,7 @@ Large-Scale Chest Computed Tomography Volumes.
 https://arxiv.org/ftp/arxiv/papers/2002/2002.04752.pdf
 Accepted for publication in Medical Image Analysis (2020).
 
-# Installation 
+# Usage
 
 The SARLE method can be run using the Singularity container defined here:
 https://github.com/rachellea/research-container
