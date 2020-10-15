@@ -13,7 +13,7 @@ The paper is also available [on arXiv](https://arxiv.org/ftp/arxiv/papers/2002/2
 
 If you find this work useful in your research, please consider citing us:
 
-Draelos et al. "Machine-Learning-Based Multiple Abnormality Prediction with Large-Scale Chest Computed Tomography Volumes." *Medical Image Analysis* 2020.
+Draelos, Rachel Lea, et al. "Machine-Learning-Based Multiple Abnormality Prediction with Large-Scale Chest Computed Tomography Volumes." *Medical Image Analysis* (2020).
 
 ## Requirements
 
