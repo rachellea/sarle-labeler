@@ -6,7 +6,8 @@
 
 This is the Python implementation of Sentence Analysis for Radiology Label Extraction (SARLE),
 a method to automatically extract structured labels from radiology
-reports.
+reports. SARLE achieves an average F-score of 0.976 (min 0.941, max 1.0)
+when evaluated on a data set of chest CT reports. 
 
 The SARLE method is described in detail in our [Medical Image Analysis paper](https://doi.org/10.1016/j.media.2020.101857).
 The paper is also available [on arXiv](https://arxiv.org/ftp/arxiv/papers/2002/2002.04752.pdf).
