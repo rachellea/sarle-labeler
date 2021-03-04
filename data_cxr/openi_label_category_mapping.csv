@@ -1,0 +1,1717 @@
+Abdomen/enlarged/mild,abdomen_enlarged
+Abdomen/enlarged/severe,abdomen_enlarged
+Adipose Tissue/lung/base/right,adipose_tissue
+Adipose Tissue/mediastinum,adipose_tissue
+Adipose Tissue/pleura/left,adipose_tissue
+Adipose Tissue/right,adipose_tissue
+Airspace Disease/lung/base/bilateral,airspace_disease
+Airspace Disease/lung/base/left,airspace_disease
+Airspace Disease/lung/base/right,airspace_disease
+"Pulmonary Disease, Chronic Obstructive",airspace_disease
+Airspace Disease/lung,airspace_disease
+Airspace Disease/lung/apex/left/patchy,airspace_disease
+Airspace Disease/lung/base,airspace_disease
+Airspace Disease/lung/base/bilateral/mild,airspace_disease
+Airspace Disease/lung/base/bilateral/patchy,airspace_disease
+Airspace Disease/lung/base/bilateral/patchy/mild,airspace_disease
+Airspace Disease/lung/base/bilateral/streaky/mild,airspace_disease
+Airspace Disease/lung/base/left/focal,airspace_disease
+Airspace Disease/lung/base/left/mild,airspace_disease
+Airspace Disease/lung/base/left/patchy,airspace_disease
+Airspace Disease/lung/base/left/severe,airspace_disease
+Airspace Disease/lung/base/left/streaky,airspace_disease
+Airspace Disease/lung/base/left/streaky/mild,airspace_disease
+Airspace Disease/lung/base/patchy,airspace_disease
+Airspace Disease/lung/base/pulmonary alveoli/right,airspace_disease
+Airspace Disease/lung/base/right/acute,airspace_disease
+Airspace Disease/lung/base/right/focal,airspace_disease
+Airspace Disease/lung/base/right/mild,airspace_disease
+Airspace Disease/lung/base/right/patchy,airspace_disease
+Airspace Disease/lung/base/right/streaky,airspace_disease
+Airspace Disease/lung/base/right/streaky/mild,airspace_disease
+Airspace Disease/lung/bilateral,airspace_disease
+Airspace Disease/lung/bilateral/patchy,airspace_disease
+Airspace Disease/lung/bilateral/patchy/severe,airspace_disease
+Airspace Disease/lung/bilateral/scattered/patchy/multiple/mild,airspace_disease
+Airspace Disease/lung/costophrenic angle/left/mild,airspace_disease
+Airspace Disease/lung/hilum/right,airspace_disease
+Airspace Disease/lung/left,airspace_disease
+Airspace Disease/lung/left/patchy,airspace_disease
+Airspace Disease/lung/left/retrocardiac,airspace_disease
+Airspace Disease/lung/lingula,airspace_disease
+Airspace Disease/lung/lingula/patchy,airspace_disease
+Airspace Disease/lung/lingula/patchy/mild,airspace_disease
+Airspace Disease/lung/lower lobe/bilateral,airspace_disease
+Airspace Disease/lung/lower lobe/left,airspace_disease
+Airspace Disease/lung/lower lobe/left/patchy,airspace_disease
+Airspace Disease/lung/lower lobe/right,airspace_disease
+Airspace Disease/lung/lower lobe/right/mild,airspace_disease
+Airspace Disease/lung/lower lobe/right/patchy,airspace_disease
+Airspace Disease/lung/lower lobe/right/patchy/mild,airspace_disease
+Airspace Disease/lung/middle lobe/right,airspace_disease
+Airspace Disease/lung/middle lobe/right/focal,airspace_disease
+Airspace Disease/lung/middle lobe/right/mild,airspace_disease
+Airspace Disease/lung/middle lobe/right/patchy,airspace_disease
+Airspace Disease/lung/mild,airspace_disease
+Airspace Disease/lung/retrocardiac/mild,airspace_disease
+Airspace Disease/lung/right,airspace_disease
+Airspace Disease/lung/right/diffuse,airspace_disease
+Airspace Disease/lung/streaky,airspace_disease
+Airspace Disease/lung/upper lobe/left,airspace_disease
+Airspace Disease/lung/upper lobe/right,airspace_disease
+Airspace Disease/lung/upper lobe/right/patchy,airspace_disease
+"Aorta, Thoracic/tortuous",aorta_shape
+"Aorta, Thoracic/tortuous/mild",aorta_shape
+Aorta/tortuous/mild,aorta_shape
+"Aorta, Thoracic/enlarged",aorta_shape
+"Aorta, Thoracic/prominent",aorta_shape
+"Aorta, Thoracic/prominent/mild",aorta_shape
+"Aorta, Thoracic/tortuous/moderate",aorta_shape
+"Aorta, Thoracic/tortuous/severe",aorta_shape
+Aorta/enlarged/tortuous,aorta_shape
+Aorta/enlarged/tortuous/mild,aorta_shape
+Aorta/obscured,aorta_shape
+Aorta/prominent,aorta_shape
+Aorta/retrocardiac/enlarged,aorta_shape
+Aorta/tortuous,aorta_shape
+Aorta/tortuous/prominent,aorta_shape
+Aortic Aneurysm,aortic_aneurysm
+"Aortic Aneurysm/aorta, thoracic",aortic_aneurysm
+Arthritis,arthritis
+Arthritis/humerus/left,arthritis
+Arthritis/severe,arthritis
+Arthritis/shoulder/bilateral/mild,arthritis
+Pulmonary Atelectasis,atelectasis
+Pulmonary Atelectasis/base/bilateral,atelectasis
+Pulmonary Atelectasis/base/bilateral/mild,atelectasis
+Pulmonary Atelectasis/base/left,atelectasis
+Pulmonary Atelectasis/base/left/mild,atelectasis
+Pulmonary Atelectasis/base/right,atelectasis
+Pulmonary Atelectasis/base/right/mild,atelectasis
+Pulmonary Atelectasis/lingula,atelectasis
+Pulmonary Atelectasis/lower lobe/left,atelectasis
+Pulmonary Atelectasis/lower lobe/right,atelectasis
+Pulmonary Atelectasis/middle lobe/right,atelectasis
+Pulmonary Atelectasis/apex/right,atelectasis
+Pulmonary Atelectasis/base,atelectasis
+Pulmonary Atelectasis/base/bilateral/focal,atelectasis
+Pulmonary Atelectasis/base/bilateral/focal/mild,atelectasis
+Pulmonary Atelectasis/base/bilateral/patchy,atelectasis
+Pulmonary Atelectasis/base/bilateral/patchy/streaky,atelectasis
+Pulmonary Atelectasis/base/bilateral/streaky/mild,atelectasis
+Pulmonary Atelectasis/base/left/chronic,atelectasis
+Pulmonary Atelectasis/base/left/focal,atelectasis
+Pulmonary Atelectasis/base/left/patchy,atelectasis
+Pulmonary Atelectasis/base/left/patchy/mild,atelectasis
+Pulmonary Atelectasis/base/left/scattered,atelectasis
+Pulmonary Atelectasis/base/left/streaky/mild,atelectasis
+Pulmonary Atelectasis/base/mild,atelectasis
+Pulmonary Atelectasis/base/patchy,atelectasis
+Pulmonary Atelectasis/base/posterior,atelectasis
+Pulmonary Atelectasis/base/right/focal,atelectasis
+Pulmonary Atelectasis/base/right/scattered,atelectasis
+Pulmonary Atelectasis/base/right/scattered/mild,atelectasis
+Pulmonary Atelectasis/bilateral,atelectasis
+Pulmonary Atelectasis/bilateral/patchy,atelectasis
+Pulmonary Atelectasis/bilateral/scattered,atelectasis
+Pulmonary Atelectasis/chronic,atelectasis
+Pulmonary Atelectasis/costophrenic angle/bilateral,atelectasis
+Pulmonary Atelectasis/costophrenic angle/right/focal,atelectasis
+Pulmonary Atelectasis/focal,atelectasis
+Pulmonary Atelectasis/hilum/right,atelectasis
+Pulmonary Atelectasis/hilum/right/mild,atelectasis
+Pulmonary Atelectasis/left,atelectasis
+Pulmonary Atelectasis/left/mild,atelectasis
+Pulmonary Atelectasis/left/patchy,atelectasis
+Pulmonary Atelectasis/left/retrocardiac/focal,atelectasis
+Pulmonary Atelectasis/left/severe,atelectasis
+Pulmonary Atelectasis/lingula/focal,atelectasis
+Pulmonary Atelectasis/lingula/mild,atelectasis
+Pulmonary Atelectasis/lingula/small,atelectasis
+Pulmonary Atelectasis/lower lobe/bilateral,atelectasis
+Pulmonary Atelectasis/lower lobe/bilateral/focal/round,atelectasis
+Pulmonary Atelectasis/lower lobe/left/focal,atelectasis
+Pulmonary Atelectasis/lower lobe/left/mild,atelectasis
+Pulmonary Atelectasis/lower lobe/right/severe,atelectasis
+Pulmonary Atelectasis/middle lobe,atelectasis
+Pulmonary Atelectasis/middle lobe/right/chronic,atelectasis
+Pulmonary Atelectasis/middle lobe/right/focal,atelectasis
+Pulmonary Atelectasis/middle lobe/right/mild,atelectasis
+Pulmonary Atelectasis/mild,atelectasis
+Pulmonary Atelectasis/posterior/mild,atelectasis
+Pulmonary Atelectasis/right,atelectasis
+Pulmonary Atelectasis/right/mild,atelectasis
+Pulmonary Atelectasis/streaky,atelectasis
+Pulmonary Atelectasis/upper lobe/left,atelectasis
+Pulmonary Atelectasis/upper lobe/left/mild,atelectasis
+Pulmonary Atelectasis/upper lobe/right,atelectasis
+Pulmonary Atelectasis/upper lobe/right/mild,atelectasis
+Atherosclerosis/aorta,atherosclerosis
+"Atherosclerosis/aorta, thoracic",atherosclerosis
+Atherosclerosis,atherosclerosis
+"Atherosclerosis/aorta, thoracic/mild",atherosclerosis
+Atherosclerosis/aorta/mild,atherosclerosis
+Atherosclerosis/aorta/severe,atherosclerosis
+Atherosclerosis/mild,atherosclerosis
+Atherosclerosis/severe,atherosclerosis
+Blister/lung/apex/bilateral,blister
+Blister/lung/upper lobe/bilateral,blister
+Blister/lung/upper lobe/bilateral/multiple,blister
+Blister/lung/upper lobe/right,blister
+Breast Implants,breast_implant
+Breast Implants/bilateral,breast_implant
+Calcinosis/breast implants,breast_implant
+Bronchiectasis,bronchiectasis
+Bronchiectasis/bilateral/severe,bronchiectasis
+Bronchiectasis/middle lobe/right,bronchiectasis
+Bronchiectasis/upper lobe/bilateral,bronchiectasis
+Bronchiolitis,bronchiolitis
+Bronchitis/lower lobe/bilateral,bronchitis
+Calcinosis/abdomen,calcinosis
+Calcinosis/abdomen/left,calcinosis
+Calcinosis/abdomen/left/large,calcinosis
+Calcinosis/abdomen/left/severe,calcinosis
+Calcinosis/abdomen/multiple,calcinosis
+Calcinosis/abdomen/right,calcinosis
+Calcinosis/abdomen/right/round,calcinosis
+Calcinosis/aorta,calcinosis
+"Calcinosis/aorta, thoracic",calcinosis
+"Calcinosis/aorta, thoracic/mild",calcinosis
+"Calcinosis/aorta, thoracic/severe",calcinosis
+Calcinosis/aorta/lymph nodes,calcinosis
+Calcinosis/aorta/mild,calcinosis
+Calcinosis/aorta/severe,calcinosis
+Calcinosis/lung/apex/right,calcinosis
+Calcinosis/lung/base/left,calcinosis
+Calcinosis/lung/base/left/multiple/small,calcinosis
+Calcinosis/lung/base/right,calcinosis
+Calcinosis/lung/base/right/small,calcinosis
+Calcinosis/lung/bilateral,calcinosis
+Calcinosis/lung/bilateral/round/multiple/small,calcinosis
+Calcinosis/lung/bilateral/round/small,calcinosis
+Calcinosis/lung/bilateral/scattered,calcinosis
+Calcinosis/lung/hilum,calcinosis
+Calcinosis/lung/hilum/bilateral/multiple/small,calcinosis
+Calcinosis/lung/hilum/left/multiple,calcinosis
+Calcinosis/lung/lingula,calcinosis
+Calcinosis/lung/lower lobe/left,calcinosis
+Calcinosis/lung/lower lobe/left/irregular,calcinosis
+Calcinosis/lung/lower lobe/left/large,calcinosis
+Calcinosis/lung/lower lobe/left/round,calcinosis
+Calcinosis/lung/lower lobe/right,calcinosis
+Calcinosis/lung/lower lobe/right/multiple/small,calcinosis
+Calcinosis/lung/middle lobe/right,calcinosis
+Calcinosis/lung/middle lobe/right/round,calcinosis
+Calcinosis/lung/right,calcinosis
+Calcinosis/lung/right/posterior,calcinosis
+Calcinosis/lung/right/round,calcinosis
+Calcinosis/lung/scattered/multiple,calcinosis
+Calcinosis/lung/upper lobe/left,calcinosis
+Calcinosis/lung/upper lobe/left/large,calcinosis
+Calcinosis/lung/upper lobe/right,calcinosis
+Calcinosis/lung/upper lobe/right/small,calcinosis
+Calcinosis/pleura/base/right,calcinosis
+Calcinosis/pleura/multiple,calcinosis
+Calcinosis/lung/hilum/lymph nodes,calcinosis
+Calcinosis/lung/hilum/lymph nodes/left,calcinosis
+Calcinosis/lung/hilum/lymph nodes/right,calcinosis
+Calcinosis/mediastinum/lymph nodes,calcinosis
+Calcinosis/lymph nodes,calcinosis
+Calcinosis/lung/hilum/lymph nodes/bilateral,calcinosis
+Calcinosis/lung/hilum/lymph nodes/bilateral/multiple/large,calcinosis
+Calcinosis/lung/hilum/lymph nodes/left/small,calcinosis
+Calcinosis/lung/hilum/lymph nodes/right/multiple,calcinosis
+Calcinosis/lung/hilum/lymph nodes/small,calcinosis
+Calcinosis/lung/lymph nodes/bilateral/multiple,calcinosis
+Calcinosis/lymph nodes/bilateral,calcinosis
+Calcinosis/lymph nodes/bilateral/multiple,calcinosis
+Calcinosis/lymph nodes/right/paratracheal,calcinosis
+Calcinosis/lymph nodes/small,calcinosis
+Calcinosis/mediastinum/lymph nodes/left,calcinosis
+Calcinosis/mediastinum/lymph nodes/right/large/chronic,calcinosis
+Calcinosis/pulmonary artery/lymph nodes,calcinosis
+"Calcinosis/trachea, carina/lymph nodes",calcinosis
+Calcinosis/blood vessels,calcinosis
+Calcinosis/lung/hilum/left,calcinosis
+Calcinosis/lung/hilum/right,calcinosis
+Calcinosis/mediastinum,calcinosis
+Calcinosis,calcinosis
+Calcinosis/bilateral/diffuse,calcinosis
+Calcinosis/bilateral/scattered,calcinosis
+Calcinosis/blood vessels/severe,calcinosis
+Calcinosis/bronchi/diffuse,calcinosis
+Calcinosis/coronary vessels/left,calcinosis
+Calcinosis/mediastinum/anterior,calcinosis
+Calcinosis/mild,calcinosis
+Calcinosis/mitral valve,calcinosis
+Calcinosis/mitral valve/prominent,calcinosis
+Calcinosis/multiple,calcinosis
+Calcinosis/ribs,calcinosis
+Calcinosis/ribs/multiple,calcinosis
+Calcinosis/ribs/right/anterior/prominent,calcinosis
+Calcinosis/right/paratracheal,calcinosis
+Calcinosis/right/paratracheal/multiple,calcinosis
+Calcinosis/right/retrocardiac,calcinosis
+Calcinosis/scattered/multiple/small,calcinosis
+Calcinosis/spine,calcinosis
+Calcinosis/thorax/scattered/multiple,calcinosis
+Calcinosis/thorax/scattered/round/multiple,calcinosis
+Cardiac Shadow/irregular,cardiac_shadow
+Cardiac Shadow/obscured/severe,cardiac_shadow
+Cardiac Shadow/enlarged,cardiomegaly
+Cardiac Shadow/enlarged/mild,cardiomegaly
+Cardiac Shadow/borderline,cardiomegaly
+Cardiac Shadow/enlarged/borderline,cardiomegaly
+Cardiac Shadow/enlarged/moderate,cardiomegaly
+Cardiac Shadow/enlarged/prominent,cardiomegaly
+Cardiac Shadow/enlarged/severe,cardiomegaly
+Cardiac Shadow/right/prominent,cardiomegaly
+Cardiomegaly/borderline,cardiomegaly
+Cardiomegaly/moderate,cardiomegaly
+Cardiomegaly/severe,cardiomegaly
+Cardiomegaly,cardiomegaly
+Cardiomegaly/mild,cardiomegaly
+Heart Atria/bilateral/enlarged,cardiomegaly
+Heart Atria/left/enlarged,cardiomegaly
+Heart Atria/right/enlarged,cardiomegaly
+Heart Atria/right/prominent,cardiomegaly
+Heart Ventricles/left/enlarged,cardiomegaly
+Heart Ventricles/left/prominent,cardiomegaly
+"Catheters, Indwelling",catheter
+"Catheters, Indwelling/left",catheter
+"Catheters, Indwelling/right",catheter
+"Catheters, Indwelling/abdomen/right",catheter
+"Catheters, Indwelling/bilateral",catheter
+"Catheters, Indwelling/thoracic vertebrae",catheter
+"Catheters, Indwelling/thorax",catheter
+"Catheters, Indwelling/thorax/left",catheter
+"Catheters, Indwelling/thorax/right",catheter
+"Catheters, Indwelling/thorax/right/anterior",catheter
+Cavitation/lung/apex/right,cavitation
+Cavitation/lung/bilateral/multiple,cavitation
+Cavitation/lung/upper lobe/left,cavitation
+Cavitation/lung/upper lobe/right,cavitation
+Cholelithiasis,cholelithiasis
+Colonic Interposition/mediastinum,colonic_interposition
+Consolidation/lung,consolidation
+Consolidation/lung/base/bilateral,consolidation
+Consolidation/lung/base/left,consolidation
+Consolidation/lung/base/left/moderate,consolidation
+Consolidation/lung/base/right,consolidation
+Consolidation/lung/base/right/mild,consolidation
+Consolidation/lung/bilateral,consolidation
+Consolidation/lung/hilum/diffuse,consolidation
+Consolidation/lung/lower lobe/bilateral,consolidation
+Consolidation/lung/lower lobe/left,consolidation
+Consolidation/lung/lower lobe/left/focal,consolidation
+Consolidation/lung/lower lobe/left/retrocardiac,consolidation
+Consolidation/lung/lower lobe/right,consolidation
+Consolidation/lung/lower lobe/right/posterior/focal,consolidation
+Consolidation/lung/middle lobe/right,consolidation
+Consolidation/lung/multilobar,consolidation
+Consolidation/lung/upper lobe/bilateral,consolidation
+Consolidation/lung/upper lobe/left,consolidation
+Consolidation/lung/upper lobe/right,consolidation
+Consolidation/lung/upper lobe/right/focal,consolidation
+Consolidation/pulmonary alveoli,consolidation
+Contrast Media/abdomen,contrast_media
+Contrast Media/abdomen/left,contrast_media
+Contrast Media/esophagus,contrast_media
+Costophrenic Angle/bilateral/blunted,costophrenic_blunting
+Costophrenic Angle/right/blunted,costophrenic_blunting
+Costophrenic Angle/bilateral/blunted/chronic,costophrenic_blunting
+Costophrenic Angle/bilateral/blunted/mild,costophrenic_blunting
+Costophrenic Angle/bilateral/obscured,costophrenic_blunting
+Costophrenic Angle/bilateral/posterior/blunted,costophrenic_blunting
+Costophrenic Angle/blunted,costophrenic_blunting
+Costophrenic Angle/blunted/chronic,costophrenic_blunting
+Costophrenic Angle/blunted/mild,costophrenic_blunting
+Costophrenic Angle/left/blunted,costophrenic_blunting
+Costophrenic Angle/left/blunted/chronic,costophrenic_blunting
+Costophrenic Angle/left/blunted/mild,costophrenic_blunting
+Costophrenic Angle/left/obscured,costophrenic_blunting
+Costophrenic Angle/lower lobe/bilateral/blunted,costophrenic_blunting
+Costophrenic Angle/obscured,costophrenic_blunting
+Costophrenic Angle/posterior/blunted,costophrenic_blunting
+Costophrenic Angle/posterior/blunted/mild,costophrenic_blunting
+Costophrenic Angle/right/blunted/chronic,costophrenic_blunting
+Costophrenic Angle/right/blunted/mild,costophrenic_blunting
+Costophrenic Angle/right/obscured,costophrenic_blunting
+Costophrenic Angle/right/posterior/blunted,costophrenic_blunting
+Costophrenic Angle/right/posterior/blunted/mild,costophrenic_blunting
+Costophrenic Angle/sulcus/bilateral/blunted,costophrenic_blunting
+Costophrenic Angle/sulcus/bilateral/blunted/mild,costophrenic_blunting
+Costophrenic Angle/sulcus/bilateral/posterior/obscured,costophrenic_blunting
+Costophrenic Angle/sulcus/left/blunted,costophrenic_blunting
+Costophrenic Angle/sulcus/left/posterior/blunted,costophrenic_blunting
+Costophrenic Angle/sulcus/posterior/obscured,costophrenic_blunting
+Costophrenic Angle/sulcus/right/blunted,costophrenic_blunting
+Cysts/humerus/left,cyst
+Cysts/humerus/right/large,cyst
+Cysts/lung/bilateral/severe,cyst
+Cysts/lung/upper lobe/left,cyst
+Cysts/lung/upper lobe/right,cyst
+Cystic Fibrosis,cystic_fibrosis
+Deformity/thoracic vertebrae,deformity
+Deformity/abdomen,deformity
+Deformity/breast,deformity
+Deformity/breast/right,deformity
+Deformity/clavicle,deformity
+Deformity/clavicle/left,deformity
+Deformity/clavicle/left/chronic,deformity
+Deformity/clavicle/right,deformity
+Deformity/clavicle/right/chronic,deformity
+Deformity/heart/right,deformity
+Deformity/humerus/left,deformity
+Deformity/humerus/right,deformity
+Deformity/humerus/right/chronic,deformity
+Deformity/lumbar vertebrae,deformity
+Deformity/lumbar vertebrae/anterior/mild,deformity
+Deformity/lumbar vertebrae/anterior/multiple/acute/mild,deformity
+Deformity/lumbar vertebrae/mild,deformity
+Deformity/lumbar vertebrae/severe,deformity
+Deformity/lung/apex/hilum,deformity
+Deformity/lung/apex/right/irregular,deformity
+Deformity/lung/base/left,deformity
+Deformity/lung/hilum,deformity
+Deformity/lung/hilum/right,deformity
+Deformity/mediastinum/left/posterior/focal,deformity
+Deformity/mediastinum/right,deformity
+Deformity/mediastinum/severe,deformity
+Deformity/pleura/apex/right,deformity
+Deformity/ribs/bilateral/chronic,deformity
+Deformity/ribs/bilateral/multiple,deformity
+Deformity/ribs/left,deformity
+Deformity/ribs/left/anterior/multiple,deformity
+Deformity/ribs/left/chronic,deformity
+Deformity/ribs/left/multiple,deformity
+Deformity/ribs/posterior,deformity
+Deformity/ribs/right,deformity
+Deformity/ribs/right/chronic,deformity
+Deformity/ribs/right/multiple,deformity
+Deformity/ribs/right/multiple/healed,deformity
+Deformity/ribs/right/posterior,deformity
+Deformity/ribs/right/posterior/multiple,deformity
+Deformity/shoulder/left,deformity
+Deformity/spine,deformity
+Deformity/sternum/anterior,deformity
+Deformity/thoracic vertebrae/anterior,deformity
+Deformity/thoracic vertebrae/anterior/mild,deformity
+Deformity/thoracic vertebrae/anterior/moderate,deformity
+Deformity/thoracic vertebrae/anterior/multiple,deformity
+Deformity/thoracic vertebrae/mild,deformity
+Deformity/thoracic vertebrae/moderate,deformity
+Deformity/thoracic vertebrae/multiple,deformity
+Deformity/thoracic vertebrae/multiple/mild,deformity
+Deformity/thoracic vertebrae/right/mild,deformity
+Deformity/thoracic vertebrae/scattered/multiple,deformity
+Deformity/thorax,deformity
+Deformity/thorax/chronic,deformity
+Deformity/thorax/left,deformity
+Deformity/trachea/right,deformity
+Bone and Bones/degenerative,degenerative_bone
+Bone and Bones/thorax/degenerative/mild,degenerative_bone
+Spine/degenerative/mild,degenerative_spine
+Thoracic Vertebrae/degenerative/mild,degenerative_spine
+Thoracic Vertebrae/degenerative/moderate,degenerative_spine
+Thoracic Vertebrae/degenerative/multiple,degenerative_spine
+Arthritis/cervical vertebrae,degenerative_spine
+Arthritis/cervical vertebrae/degenerative,degenerative_spine
+Arthritis/cervical vertebrae/multiple,degenerative_spine
+Arthritis/spine,degenerative_spine
+Arthritis/spine/mild,degenerative_spine
+Arthritis/thoracic vertebrae/mild,degenerative_spine
+Cervical Vertebrae/degenerative,degenerative_spine
+Lumbar Vertebrae/degenerative,degenerative_spine
+Lumbar Vertebrae/degenerative/mild,degenerative_spine
+Lumbar Vertebrae/degenerative/multiple,degenerative_spine
+Lumbar Vertebrae/degenerative/multiple/mild,degenerative_spine
+Lumbar Vertebrae/degenerative/severe,degenerative_spine
+Spine/degenerative,degenerative_spine
+Spine/degenerative/chronic,degenerative_spine
+Spine/degenerative/chronic/mild,degenerative_spine
+Spine/degenerative/diffuse,degenerative_spine
+Spine/degenerative/diffuse/mild,degenerative_spine
+Spine/degenerative/moderate,degenerative_spine
+Spine/degenerative/multiple,degenerative_spine
+Thoracic Vertebrae/degenerative,degenerative_spine
+Thoracic Vertebrae/degenerative/chronic,degenerative_spine
+Thoracic Vertebrae/degenerative/chronic/mild,degenerative_spine
+Thoracic Vertebrae/degenerative/diffuse,degenerative_spine
+Thoracic vertebrae/degenerative/mild,degenerative_spine
+Thoracic Vertebrae/degenerative/multiple/mild,degenerative_spine
+Thoracic Vertebrae/degenerative/severe,degenerative_spine
+Thoracic Vertebrae/right/degenerative/mild,degenerative_spine
+Thoracic Vertebrae/scattered/degenerative,degenerative_spine
+Density/adipose tissue/posterior/round/small,density
+Density/bilateral/round/small,density
+Density/breast,density
+Density/cardiophrenic angle/left,density
+Density/clavicle/right/focal,density
+Density/costophrenic angle/anterior/round,density
+Density/costophrenic angle/left,density
+Density/costophrenic angle/left/round,density
+Density/costophrenic angle/left/round/small,density
+Density/costophrenic angle/right,density
+Density/costophrenic angle/sulcus/right,density
+Density/heart,density
+Density/heart/small,density
+Density/left/retrocardiac/streaky,density
+Density/lung/apex/right,density
+Density/lung/base/bilateral,density
+Density/lung/base/left,density
+Density/lung/base/left/mild,density
+Density/lung/base/left/multiple/mild,density
+Density/lung/base/left/retrocardiac,density
+Density/lung/base/left/round,density
+Density/lung/base/right,density
+Density/lung/base/right/mild,density
+Density/lung/base/right/round,density
+Density/lung/base/right/streaky/mild,density
+Density/lung/bilateral/round/multiple/small,density
+Density/lung/bilateral/round/small,density
+Density/lung/hilum/left,density
+Density/lung/hilum/left/multiple,density
+Density/lung/hilum/left/round,density
+Density/lung/hilum/right,density
+Density/lung/hilum/right/prominent,density
+Density/lung/hilum/right/round,density
+Density/lung/interstitial/scattered,density
+Density/lung/left/multiple,density
+Density/lung/lingula,density
+Density/lung/lingula/round,density
+Density/lung/lower lobe,density
+Density/lung/lower lobe/bilateral/patchy,density
+Density/lung/lower lobe/left,density
+Density/lung/lower lobe/left/irregular,density
+Density/lung/lower lobe/left/patchy/small,density
+Density/lung/lower lobe/left/retrocardiac,density
+Density/lung/lower lobe/left/round,density
+Density/lung/lower lobe/left/round/multiple,density
+Density/lung/lower lobe/right,density
+Density/lung/lower lobe/right/patchy,density
+Density/lung/middle lobe/right,density
+Density/lung/middle lobe/right/patchy,density
+Density/lung/middle lobe/right/round,density
+Density/lung/right,density
+Density/lung/right/round,density
+Density/lung/right/round/multiple,density
+Density/lung/round/multiple,density
+Density/lung/upper lobe/left/irregular,density
+Density/lung/upper lobe/left/round,density
+Density/lung/upper lobe/right,density
+Density/lung/upper lobe/right/anterior/round,density
+Density/lung/upper lobe/right/round,density
+Density/mediastinum,density
+Density/mediastinum/prominent,density
+Density/mitral valve,density
+Density/paratracheal,density
+Density/pleura/right/severe,density
+Density/retrocardiac,density
+Density/retrocardiac/small,density
+Density/ribs/bilateral/posterior/round,density
+Density/ribs/left/anterior,density
+Density/ribs/left/posterior/irregular,density
+Density/ribs/right/anterior/round/multiple,density
+Density/ribs/right/focal,density
+Density/ribs/right/round/multiple,density
+Density/right/paratracheal,density
+Density/right/paratracheal/multiple,density
+Density/right/paratracheal/prominent/mild,density
+Density/round,density
+Density/sternum,density
+Density/thorax,density
+Density/thorax/base/left,density
+Density/thorax/left,density
+Density/thorax/multiple,density
+Density/thorax/right,density
+Density/thorax/round,density
+Density/thorax/round/multiple,density
+Density/thorax/scattered,density
+Density/thorax/scattered/round/multiple,density
+Implanted Medical Device,device
+Implanted Medical Device/left,device
+Medical Device,device
+Implanted Medical Device/abdomen/right,device
+Implanted Medical Device/aortic valve,device
+Implanted Medical Device/cervical vertebrae,device
+Implanted Medical Device/heart,device
+Implanted Medical Device/heart atria,device
+Implanted Medical Device/heart/right,device
+Implanted Medical Device/humerus/left,device
+Implanted Medical Device/humerus/right,device
+Implanted Medical Device/mitral valve,device
+Implanted Medical Device/pulmonary artery,device
+Implanted Medical Device/right,device
+Implanted Medical Device/shoulder/left,device
+Implanted Medical Device/shoulder/right,device
+Implanted Medical Device/thoracic vertebrae,device
+Implanted Medical Device/thorax/left,device
+Medical Device/breast/bilateral,device
+Medical Device/left,device
+Medical Device/right,device
+Medical Device/spine,device
+Medical Device/thorax,device
+Medical Device/thorax/left,device
+Diaphragm/bilateral/flattened,diaphragm
+Diaphragm/flattened,diaphragm
+Diaphragm/left/elevated,diaphragm
+Diaphragm/right/elevated,diaphragm
+Diaphragm/right/elevated/mild,diaphragm
+Diaphragmatic Eventration/right,diaphragm
+Diaphragm/bilateral/elevated,diaphragm
+Diaphragm/bilateral/flattened/mild,diaphragm
+Diaphragm/bilateral/obscured,diaphragm
+Diaphragm/bilateral/posterior/flattened/mild,diaphragm
+Diaphragm/elevated,diaphragm
+Diaphragm/left/elevated/chronic,diaphragm
+Diaphragm/left/elevated/mild,diaphragm
+Diaphragm/left/flattened,diaphragm
+Diaphragm/left/obscured,diaphragm
+Diaphragm/posterior/flattened,diaphragm
+Diaphragm/posterior/flattened/mild,diaphragm
+Diaphragm/right/elevated/chronic,diaphragm
+Diaphragm/right/posterior/elevated,diaphragm
+Diaphragmatic Eventration,diaphragm
+Diaphragmatic Eventration/left,diaphragm
+Diaphragmatic Eventration/left/mild,diaphragm
+Diaphragmatic Eventration/left/posterior/focal,diaphragm
+Diaphragmatic Eventration/mild,diaphragm
+Diaphragmatic Eventration/right/anterior,diaphragm
+Diaphragmatic Eventration/right/mild,diaphragm
+Pulmonary Edema,edema
+Pulmonary Edema/interstitial,edema
+Pulmonary Edema/interstitial/mild,edema
+Pulmonary Edema/base/bilateral,edema
+Pulmonary Edema/base/bilateral/interstitial,edema
+Pulmonary Edema/base/interstitial,edema
+Pulmonary Edema/bilateral/interstitial/mild,edema
+Pulmonary Edema/bilateral/interstitial/moderate,edema
+Pulmonary Edema/interstitial/diffuse,edema
+Pulmonary Edema/lower lobe/bilateral,edema
+Pulmonary Edema/lower lobe/bilateral/interstitial,edema
+Pulmonary Edema/middle lobe/bilateral,edema
+Pulmonary Edema/mild,edema
+Pulmonary Edema/pulmonary alveoli,edema
+Emphysema,emphysema
+Pulmonary Emphysema,emphysema
+Bullous Emphysema,emphysema
+Bullous Emphysema/lung/apex/bilateral,emphysema
+Bullous Emphysema/lung/upper lobe/bilateral/severe,emphysema
+Emphysema/bilateral/chronic/severe,emphysema
+Emphysema/chronic,emphysema
+Emphysema/mild,emphysema
+Emphysema/severe,emphysema
+Mediastinal Emphysema,emphysema
+Pulmonary Emphysema/base/bilateral,emphysema
+Pulmonary Emphysema/bilateral,emphysema
+Pulmonary Emphysema/bilateral/chronic,emphysema
+Pulmonary Emphysema/chronic,emphysema
+Pulmonary Emphysema/mild,emphysema
+Pulmonary Emphysema/severe,emphysema
+Subcutaneous Emphysema/abdomen/right,emphysema
+Subcutaneous Emphysema/neck/bilateral,emphysema
+Subcutaneous Emphysema/neck/severe,emphysema
+Subcutaneous Emphysema/thorax/left,emphysema
+Subcutaneous Emphysema/thorax/right/severe,emphysema
+SubcutaneousEmphysema/right,emphysema
+Epicardial Fat,epicardial_fat
+Epicardial Fat/bilateral/prominent,epicardial_fat
+Epicardial Fat/left/prominent,epicardial_fat
+Epicardial Fat/prominent,epicardial_fat
+Epicardial Fat/right/prominent,epicardial_fat
+Fibrosis/diffuse,fibrosis
+Pulmonary Fibrosis,fibrosis
+Pulmonary Fibrosis/apex/bilateral,fibrosis
+Pulmonary Fibrosis/apex/left/chronic,fibrosis
+Pulmonary Fibrosis/apex/right/mild,fibrosis
+Pulmonary Fibrosis/base,fibrosis
+Pulmonary Fibrosis/base/bilateral,fibrosis
+Pulmonary Fibrosis/base/left,fibrosis
+Pulmonary Fibrosis/bilateral/diffuse,fibrosis
+Pulmonary Fibrosis/bilateral/interstitial,fibrosis
+Pulmonary Fibrosis/chronic,fibrosis
+Pulmonary Fibrosis/interstitial,fibrosis
+Pulmonary Fibrosis/lower lobe/bilateral,fibrosis
+Pulmonary Fibrosis/lower lobe/left/interstitial,fibrosis
+Pulmonary Fibrosis/right/severe,fibrosis
+Pulmonary Fibrosis/upper lobe/left,fibrosis
+Pulmonary Fibrosis/upper lobe/right,fibrosis
+Foreign Bodies,foreign
+Foreign Bodies/abdomen,foreign
+Foreign Bodies/adipose tissue/posterior/round/small,foreign
+Foreign Bodies/breast,foreign
+Foreign Bodies/breast/bilateral,foreign
+Foreign Bodies/breast/left,foreign
+Foreign Bodies/breast/right,foreign
+Foreign Bodies/clavicle/left,foreign
+Foreign Bodies/costophrenic angle/left,foreign
+Foreign Bodies/left,foreign
+Foreign Bodies/lumbar vertebrae,foreign
+Foreign Bodies/lung/lower lobe/left,foreign
+Foreign Bodies/lung/lower lobe/right,foreign
+Foreign Bodies/lung/upper lobe/left,foreign
+Foreign Bodies/multiple/small,foreign
+Foreign Bodies/neck/right,foreign
+Foreign Bodies/posterior,foreign
+Foreign Bodies/right,foreign
+Foreign Bodies/shoulder/right,foreign
+Foreign Bodies/spine,foreign
+Foreign Bodies/thoracic vertebrae,foreign
+Foreign Bodies/thoracic vertebrae/round,foreign
+Foreign Bodies/thorax/left,foreign
+Foreign Bodies/thorax/left/posterior,foreign
+Foreign Bodies/thorax/left/small,foreign
+Foreign Bodies/thorax/right,foreign
+"Fractures, Bone",fracture
+"Fractures, Bone/clavicle/left",fracture
+"Fractures, Bone/clavicle/left/healed",fracture
+"Fractures, Bone/clavicle/right",fracture
+"Fractures, Bone/clavicle/right/healed",fracture
+"Fractures, Bone/clavicle/right/mild",fracture
+"Fractures, Bone/clavicle/right/multiple",fracture
+"Fractures, Bone/humerus",fracture
+"Fractures, Bone/humerus/left",fracture
+"Fractures, Bone/humerus/right",fracture
+"Fractures, Bone/lumbar vertebrae",fracture
+"Fractures, Bone/lumbar vertebrae/severe",fracture
+"Fractures, Bone/ribs/bilateral/multiple/healed",fracture
+"Fractures, Bone/ribs/healed",fracture
+"Fractures, Bone/ribs/left",fracture
+"Fractures, Bone/ribs/left/anterior/multiple",fracture
+"Fractures, Bone/ribs/left/chronic",fracture
+"Fractures, Bone/ribs/left/healed",fracture
+"Fractures, Bone/ribs/left/multiple",fracture
+"Fractures, Bone/ribs/left/multiple/healed",fracture
+"Fractures, Bone/ribs/left/posterior/healed",fracture
+"Fractures, Bone/ribs/left/posterior/multiple",fracture
+"Fractures, Bone/ribs/left/posterior/multiple/healed",fracture
+"Fractures, Bone/ribs/multiple/healed",fracture
+"Fractures, Bone/ribs/right",fracture
+"Fractures, Bone/ribs/right/anterior/multiple",fracture
+"Fractures, Bone/ribs/right/healed",fracture
+"Fractures, Bone/ribs/right/multiple",fracture
+"Fractures, Bone/ribs/right/multiple/healed",fracture
+"Fractures, Bone/ribs/right/posterior/healed",fracture
+"Fractures, Bone/shoulder/right",fracture
+"Fractures, Bone/sternum",fracture
+"Fractures, Bone/thoracic vertebrae",fracture
+"Fractures, Bone/Thoracic Vertebrae",fracture
+"Fractures, Bone/thoracic vertebrae/multiple",fracture
+Funnel Chest,funnel_chest
+Funnel Chest/mild,funnel_chest
+Calcified Granuloma,granuloma
+Calcified Granuloma/lung/base/left,granuloma
+Calcified Granuloma/lung/base/right,granuloma
+Calcified Granuloma/lung/lingula,granuloma
+Calcified Granuloma/lung/lower lobe/left,granuloma
+Calcified Granuloma/lung/lower lobe/right,granuloma
+Calcified Granuloma/lung/middle lobe/right,granuloma
+Calcified Granuloma/lung/upper lobe/left,granuloma
+Calcified Granuloma/lung/upper lobe/right,granuloma
+Calcified Granuloma/multiple,granuloma
+Calcified Granuloma/scattered,granuloma
+Calcified Granuloma/scattered/multiple,granuloma
+Granulomatous Disease,granuloma
+Granulomatous Disease/chronic,granuloma
+Calcified Granuloma/bilateral/multiple,granuloma
+Calcified Granuloma/bilateral/scattered/multiple,granuloma
+Calcified Granuloma/costophrenic angle/posterior,granuloma
+Calcified Granuloma/costophrenic angle/right,granuloma
+Calcified Granuloma/heart/left/small,granuloma
+Calcified Granuloma/lung/apex/right,granuloma
+Calcified Granuloma/lung/apex/right/large,granuloma
+Calcified Granuloma/lung/apex/right/small,granuloma
+Calcified Granuloma/lung/base/bilateral,granuloma
+Calcified Granuloma/lung/base/left/round,granuloma
+Calcified Granuloma/lung/base/left/small,granuloma
+Calcified Granuloma/lung/base/multiple,granuloma
+Calcified Granuloma/lung/base/right/large,granuloma
+Calcified Granuloma/lung/base/right/small,granuloma
+Calcified Granuloma/lung/bilateral/multiple,granuloma
+Calcified Granuloma/lung/bilateral/scattered,granuloma
+Calcified Granuloma/lung/bilateral/scattered/multiple,granuloma
+Calcified Granuloma/lung/hilum,granuloma
+Calcified Granuloma/lung/hilum/bilateral,granuloma
+Calcified Granuloma/lung/hilum/bilateral/multiple,granuloma
+Calcified Granuloma/lung/hilum/bilateral/multiple/large,granuloma
+Calcified Granuloma/lung/hilum/left,granuloma
+Calcified Granuloma/lung/hilum/multiple,granuloma
+Calcified Granuloma/lung/hilum/right,granuloma
+Calcified Granuloma/lung/hilum/right/large,granuloma
+Calcified Granuloma/lung/hilum/right/multiple,granuloma
+Calcified Granuloma/lung/hilum/right/multiple/large,granuloma
+Calcified Granuloma/lung/left,granuloma
+Calcified Granuloma/lung/lingula/posterior,granuloma
+Calcified Granuloma/lung/lingula/small,granuloma
+Calcified Granuloma/lung/lower lobe/left/anterior,granuloma
+Calcified Granuloma/lung/lower lobe/left/multiple,granuloma
+Calcified Granuloma/lung/lower lobe/left/small,granuloma
+Calcified Granuloma/lung/lower lobe/right/anterior,granuloma
+Calcified Granuloma/lung/lower lobe/right/large,granuloma
+Calcified Granuloma/lung/lower lobe/right/multiple,granuloma
+Calcified Granuloma/lung/lower lobe/right/posterior,granuloma
+Calcified Granuloma/lung/lower lobe/right/posterior/multiple,granuloma
+Calcified Granuloma/lung/lower lobe/right/small,granuloma
+Calcified Granuloma/lung/middle lobe,granuloma
+Calcified Granuloma/lung/middle lobe/left,granuloma
+Calcified Granuloma/lung/middle lobe/right/small,granuloma
+Calcified Granuloma/lung/multiple,granuloma
+Calcified Granuloma/lung/multiple/small,granuloma
+Calcified Granuloma/lung/right/multiple,granuloma
+Calcified Granuloma/lung/right/small,granuloma
+Calcified Granuloma/lung/scattered/multiple,granuloma
+Calcified Granuloma/lung/scattered/multiple/small,granuloma
+Calcified Granuloma/lung/upper lobe/left/small,granuloma
+Calcified Granuloma/lung/upper lobe/right/multiple,granuloma
+Calcified Granuloma/lung/upper lobe/right/small,granuloma
+Calcified Granuloma/mediastinum/large,granuloma
+Calcified Granuloma/mediastinum/multiple,granuloma
+Calcified Granuloma/paratracheal,granuloma
+Calcified Granuloma/scattered/round/multiple,granuloma
+Calcified Granuloma/small,granuloma
+Calcified Granuloma/thorax,granuloma
+Calcified Granuloma/thorax/right/small,granuloma
+Calcified Granuloma/thorax/scattered/multiple/small,granuloma
+Granuloma,granuloma
+Granuloma/left/small,granuloma
+Granuloma/lung,granuloma
+Granuloma/lung/apex/right,granuloma
+Granuloma/lung/base/left,granuloma
+Granuloma/lung/base/right,granuloma
+Granuloma/lung/bilateral/scattered,granuloma
+Granuloma/lung/bilateral/scattered/multiple,granuloma
+Granuloma/lung/hilum/left,granuloma
+Granuloma/lung/hilum/left/multiple,granuloma
+Granuloma/lung/hilum/right/scattered/multiple,granuloma
+Granuloma/lung/lingula,granuloma
+Granuloma/lung/lower lobe/left,granuloma
+Granuloma/lung/lower lobe/left/round,granuloma
+Granuloma/lung/lower lobe/right,granuloma
+Granuloma/lung/middle lobe/right,granuloma
+Granuloma/lung/multiple,granuloma
+Granuloma/lung/right,granuloma
+Granuloma/lung/upper lobe/left,granuloma
+Granuloma/lung/upper lobe/right,granuloma
+Granuloma/lung/upper lobe/right/multiple,granuloma
+Granuloma/lung/upper lobe/right/round/small,granuloma
+Granuloma/multiple,granuloma
+Granuloma/ribs/right/posterior,granuloma
+Granuloma/right,granuloma
+Granuloma/scattered,granuloma
+Granuloma/scattered/multiple,granuloma
+Granuloma/thoracic vertebrae,granuloma
+Granuloma/thorax/left,granuloma
+Granuloma/thorax/multiple,granuloma
+Granulomatous Disease/mild,granuloma
+Granulomatous Disease/right,granuloma
+Granulomatous Disease/thorax/right/healed,granuloma
+Heart Failure,heart_failure
+Heart Failure/mild,heart_failure
+Heart Failure/moderate,heart_failure
+Heart/apex/prominent,heart_misc
+Heart/left/obscured,heart_misc
+Heart/obscured,heart_misc
+Heart/right/obscured,heart_misc
+Heart/right/obscured/mild,heart_misc
+Heart/small,heart_misc
+Hemothorax/left/small,hemothorax
+"Hernia, Hiatal",hernia
+"Hernia, Hiatal/large",hernia
+"Hernia, Diaphragmatic",hernia
+"Hernia, Diaphragmatic/small",hernia
+"Hernia, Hiatal/moderate",hernia
+"Hernia, Hiatal/prominent",hernia
+"Hernia, Hiatal/retrocardiac/large",hernia
+"Hernia, Hiatal/small",hernia
+Lung/hilum/bilateral/prominent,hilum_issue
+Lung/hilum/bilateral/prominent/mild,hilum_issue
+Lung/hilum/enlarged,hilum_issue
+Lung/hilum/interstitial/prominent,hilum_issue
+Lung/hilum/left/prominent,hilum_issue
+Lung/hilum/left/prominent/mild,hilum_issue
+Lung/hilum/lymph nodes/bilateral,hilum_issue
+Lung/hilum/lymph nodes/bilateral/enlarged,hilum_issue
+Lung/hilum/lymph nodes/left/enlarged,hilum_issue
+Lung/hilum/lymph nodes/right/enlarged,hilum_issue
+Lung/hilum/lymph nodes/right/prominent,hilum_issue
+Lung/hilum/prominent,hilum_issue
+Lung/hilum/right/prominent,hilum_issue
+Lung/hyperdistention/mild,hyperdistention
+Lung/bilateral/hyperdistention,hyperdistention
+Lung/bilateral/hyperdistention/mild,hyperdistention
+Lung/hyperdistention,hyperdistention
+Lung/hyperdistention/moderate,hyperdistention
+Lung/hyperdistention/severe,hyperdistention
+Lung/left/hyperdistention,hyperdistention
+Lung/right/hyperdistention,hyperdistention
+"Lung, Hyperlucent",hyperlucent
+"Lung, Hyperlucent/apex",hyperlucent
+"Lung, Hyperlucent/apex/bilateral",hyperlucent
+"Lung, Hyperlucent/apex/right",hyperlucent
+"Lung, Hyperlucent/base/right",hyperlucent
+"Lung, Hyperlucent/bilateral",hyperlucent
+"Lung, Hyperlucent/bilateral/mild",hyperlucent
+"Lung, Hyperlucent/left",hyperlucent
+"Lung, Hyperlucent/upper lobe/bilateral",hyperlucent
+"Lung, Hyperlucent/upper lobe/right",hyperlucent
+"Hyperostosis, Diffuse Idiopathic Skeletal",hyperostosis
+"Hyperostosis, Diffuse Idiopathic Skeletal/thoracic vertebrae",hyperostosis
+"Hypertension, Pulmonary",hypertension
+Lung/hypoinflation/mild,hypoinflation
+Hypovolemia/lung/apex,hypoinflation
+Lung/base/bilateral/hypoinflation/mild,hypoinflation
+Lung/base/right/hypoinflation/mild,hypoinflation
+Lung/bilateral/hypoinflation,hypoinflation
+Lung/bilateral/hypoinflation/mild,hypoinflation
+Lung/hypoinflation,hypoinflation
+Lung/hypoinflation/chronic,hypoinflation
+Lung/hypoinflation/moderate,hypoinflation
+Lung/hypoinflation/severe,hypoinflation
+Lung/left/hypoinflation,hypoinflation
+Infiltrate/lung,infiltrate
+Infiltrate/lung/base/bilateral,infiltrate
+Infiltrate/lung/base/bilateral/interstitial,infiltrate
+Infiltrate/lung/base/bilateral/mild,infiltrate
+Infiltrate/lung/base/left,infiltrate
+Infiltrate/lung/base/left/interstitial,infiltrate
+Infiltrate/lung/base/left/mild,infiltrate
+Infiltrate/lung/base/left/patchy,infiltrate
+Infiltrate/lung/base/pulmonary alveoli/left,infiltrate
+Infiltrate/lung/base/right,infiltrate
+Infiltrate/lung/base/right/patchy/mild,infiltrate
+Infiltrate/lung/bilateral,infiltrate
+Infiltrate/lung/hilum/left,infiltrate
+Infiltrate/lung/hilum/mild,infiltrate
+Infiltrate/lung/hilum/right,infiltrate
+Infiltrate/lung/hilum/right/mild,infiltrate
+Infiltrate/lung/interstitial,infiltrate
+Infiltrate/lung/left/interstitial,infiltrate
+Infiltrate/lung/lingula,infiltrate
+Infiltrate/lung/lingula/focal/round/small,infiltrate
+Infiltrate/lung/lingula/round,infiltrate
+Infiltrate/lung/lower lobe/bilateral/interstitial/patchy,infiltrate
+Infiltrate/lung/lower lobe/left,infiltrate
+Infiltrate/lung/lower lobe/left/interstitial,infiltrate
+Infiltrate/lung/lower lobe/left/patchy,infiltrate
+Infiltrate/lung/lower lobe/left/patchy/streaky,infiltrate
+Infiltrate/lung/lower lobe/right,infiltrate
+Infiltrate/lung/lower lobe/right/interstitial/patchy,infiltrate
+Infiltrate/lung/lower lobe/right/patchy,infiltrate
+Infiltrate/lung/lower lobe/right/streaky,infiltrate
+Infiltrate/lung/middle lobe,infiltrate
+Infiltrate/lung/middle lobe/right,infiltrate
+Infiltrate/lung/middle lobe/right/patchy,infiltrate
+Infiltrate/lung/upper lobe/bilateral,infiltrate
+Infiltrate/lung/upper lobe/left,infiltrate
+Infiltrate/lung/upper lobe/pulmonary alveoli/right/patchy,infiltrate
+Infiltrate/lung/upper lobe/right,infiltrate
+Infiltrate/lung/upper lobe/right/mild,infiltrate
+Infiltrate/lung/upper lobe/right/round,infiltrate
+Surgical Instruments,instruments
+Surgical Instruments/abdomen,instruments
+Surgical Instruments/abdomen/right,instruments
+Surgical Instruments/mediastinum,instruments
+Surgical Instruments/abdomen/left,instruments
+Surgical Instruments/abdomen/multiple,instruments
+Surgical Instruments/bilateral,instruments
+Surgical Instruments/breast/left,instruments
+Surgical Instruments/breast/right,instruments
+Surgical Instruments/cervical vertebrae,instruments
+Surgical Instruments/heart,instruments
+Surgical Instruments/left,instruments
+Surgical Instruments/lung/apex/left,instruments
+Surgical Instruments/lung/hilum/left,instruments
+Surgical Instruments/lung/hilum/right,instruments
+Surgical Instruments/lung/right,instruments
+Surgical Instruments/mediastinum/left,instruments
+Surgical Instruments/multiple,instruments
+Surgical Instruments/neck,instruments
+Surgical Instruments/neck/right,instruments
+Surgical Instruments/right,instruments
+Surgical Instruments/shoulder/right,instruments
+Surgical Instruments/thorax,instruments
+Surgical Instruments/thorax/bilateral,instruments
+Surgical Instruments/thorax/right,instruments
+"Lung Diseases, Interstitial",interstitial_lung_disease
+"Lung Diseases, Interstitial/base/bilateral/patchy",interstitial_lung_disease
+"Lung Diseases, Interstitial/bilateral/diffuse",interstitial_lung_disease
+"Lung Diseases, Interstitial/bilateral/mild",interstitial_lung_disease
+"Lung Diseases, Interstitial/chronic",interstitial_lung_disease
+"Lung Diseases, Interstitial/chronic/mild",interstitial_lung_disease
+"Lung Diseases, Interstitial/diffuse",interstitial_lung_disease
+"Lung Diseases, Interstitial/mild",interstitial_lung_disease
+Lung/interstitial/abnormal,interstitial_lung_disease
+Lung/interstitial/diffuse/prominent/mild,interstitial_lung_disease
+Lung/interstitial/prominent,interstitial_lung_disease
+Lung/interstitial/prominent/mild,interstitial_lung_disease
+Kyphosis/thoracic vertebrae,kyphosis
+Kyphosis,kyphosis
+Kyphosis/lumbar vertebrae,kyphosis
+Kyphosis/lumbar vertebrae/mild,kyphosis
+Kyphosis/severe,kyphosis
+Kyphosis/thoracic vertebrae/mild,kyphosis
+Kyphosis/thoracic vertebrae/severe,kyphosis
+Kyphosis/thorax/severe,kyphosis
+Lucency/lung,lucency_lung
+Lucency/lung/apex/bilateral,lucency_lung
+Lucency/lung/apex/right/focal/round,lucency_lung
+Lucency/lung/base/right/irregular,lucency_lung
+Lucency/lung/middle lobe/right/round,lucency_lung
+Lucency/lung/upper lobe/bilateral,lucency_lung
+Lucency/lung/upper lobe/right/round/large,lucency_lung
+Lucency/lung/upper lobe/right/round/multiple/small,lucency_lung
+Lucency/clavicle/left,lucency_other
+Lucency/clavicle/left/round/small,lucency_other
+Lucency/clavicle/right,lucency_other
+Lucency/diaphragm,lucency_other
+Lucency/diaphragm/left,lucency_other
+Lucency/diaphragm/right,lucency_other
+Lucency/heart ventricles/left,lucency_other
+Lucency/humerus/right,lucency_other
+Lucency/mediastinum/mild,lucency_other
+Lucency/retrocardiac,lucency_other
+Lucency/ribs/left/posterior,lucency_other
+Lucency/ribs/posterior,lucency_other
+Lucency/ribs/right/posterior,lucency_other
+Lucency/round,lucency_other
+Lucency/thorax/left,lucency_other
+Lucency/thorax/scattered/multiple,lucency_other
+Blood Vessels/lung/prominent,lung_blood_vessels
+Lung/blood vessels/blunted,lung_blood_vessels
+Lung/blood vessels/enlarged,lung_blood_vessels
+Lung/blood vessels/left/prominent/mild,lung_blood_vessels
+Markings/bronchovascular,lung_markings
+Markings/lung/interstitial/chronic,lung_markings
+Markings/lung/interstitial/prominent,lung_markings
+Markings/bilateral/bronchovascular,lung_markings
+Markings/bilateral/bronchovascular/mild,lung_markings
+Markings/bronchovascular/left,lung_markings
+Markings/bronchovascular/mild,lung_markings
+Markings/bronchovascular/severe,lung_markings
+Markings/lung,lung_markings
+Markings/lung/apex/bilateral,lung_markings
+Markings/lung/base/bilateral,lung_markings
+Markings/lung/base/bilateral/bronchovascular,lung_markings
+Markings/lung/base/bilateral/interstitial,lung_markings
+Markings/lung/base/bilateral/interstitial/prominent,lung_markings
+Markings/lung/base/bilateral/interstitial/prominent/mild,lung_markings
+Markings/lung/base/bronchovascular/mild,lung_markings
+Markings/lung/base/interstitial,lung_markings
+Markings/lung/base/interstitial/prominent/mild,lung_markings
+Markings/lung/base/prominent/mild,lung_markings
+Markings/lung/base/right,lung_markings
+Markings/lung/base/right/bronchovascular,lung_markings
+Markings/lung/base/right/interstitial/chronic,lung_markings
+Markings/lung/bilateral/diffuse/reticular/round,lung_markings
+Markings/lung/bilateral/interstitial,lung_markings
+Markings/lung/bilateral/interstitial/diffuse,lung_markings
+Markings/lung/bilateral/interstitial/diffuse/prominent,lung_markings
+Markings/lung/bilateral/interstitial/prominent,lung_markings
+Markings/lung/bilateral/prominent,lung_markings
+Markings/lung/bilateral/prominent/chronic,lung_markings
+Markings/lung/hilum,lung_markings
+Markings/lung/hilum/bilateral/prominent/mild,lung_markings
+Markings/lung/interstitial,lung_markings
+Markings/lung/interstitial/diffuse,lung_markings
+Markings/lung/interstitial/diffuse/mild,lung_markings
+Markings/lung/interstitial/irregular,lung_markings
+Markings/lung/interstitial/irregular/chronic,lung_markings
+Markings/lung/interstitial/mild,lung_markings
+Markings/lung/interstitial/prominent/mild,lung_markings
+Markings/lung/interstitial/scattered/irregular/chronic,lung_markings
+Markings/lung/lower lobe/hilum/right/bronchovascular,lung_markings
+Markings/lung/lower lobe/interstitial/prominent,lung_markings
+Markings/lung/lower lobe/left/interstitial,lung_markings
+Markings/lung/lower lobe/right,lung_markings
+Markings/lung/middle lobe/bilateral/interstitial,lung_markings
+Markings/lung/middle lobe/bilateral/interstitial/prominent,lung_markings
+Markings/lung/mild,lung_markings
+Markings/lung/prominent/chronic,lung_markings
+Markings/lung/right/bronchovascular,lung_markings
+Markings/lung/upper lobe/right,lung_markings
+Markings/lung/upper lobe/right/interstitial/focal,lung_markings
+Markings/lung/upper lobe/right/interstitial/prominent,lung_markings
+Markings/prominent,lung_markings
+Markings/right/paratracheal/prominent,lung_markings
+Markings/sulcus/left,lung_markings
+Lung/apex/bilateral/obscured,lung_misc
+Lung/azygos lobe,lung_misc
+Lung/base/bilateral/obscured,lung_misc
+Lung/base/bilateral/prominent/mild,lung_misc
+Lung/base/right/interstitial/prominent,lung_misc
+Lung/base/right/obscured,lung_misc
+Lung/bilateral/interstitial/prominent,lung_misc
+Lung/lingula/obscured,lung_misc
+Lung/obscured,lung_misc
+Thorax/left/small,lung_misc
+Trachea/right/tortuous/mild,lung_misc
+Lymph Nodes/bilateral/enlarged,lymph_nodes_enlarged
+Lymph nodes/left/enlarged,lymph_nodes_enlarged
+Lymph Nodes/right/paratracheal/enlarged,lymph_nodes_enlarged
+"Trachea, Carina/lymph nodes/enlarged",lymph_nodes_enlarged
+Mass/breast/large,mass
+Mass/lung/apex/right,mass
+Mass/lung/base/left,mass
+Mass/lung/base/right/large,mass
+Mass/lung/bilateral/multiple,mass
+Mass/lung/hilum/right,mass
+Mass/lung/lingula,mass
+Mass/lung/lower lobe/left/round,mass
+Mass/lung/middle lobe/right,mass
+Mass/lung/middle lobe/right/round,mass
+Mass/lung/upper lobe/right/anterior,mass
+Mass/lung/upper lobe/right/large,mass
+Mass/lung/upper lobe/right/posterior,mass
+Mass/mediastinum/right,mass
+Mass/right/paratracheal,mass
+Mass/thorax/left,mass
+Mass/thorax/multiple,mass
+Mass/thorax/right,mass
+Mastectomy/left,mastectomy
+Mastectomy/right,mastectomy
+Mediastinum/prominent,mediastinum
+Mediastinum/blood vessels/prominent,mediastinum
+Mediastinum/lymph nodes/bilateral/enlarged,mediastinum
+Mediastinum/lymph nodes/enlarged,mediastinum
+Mediastinum/paratracheal/enlarged,mediastinum
+Mediastinum/prominent/mild,mediastinum
+Mediastinum/right/enlarged/mild,mediastinum
+Mediastinum/right/paratracheal/enlarged,mediastinum
+Mediastinum/right/paratracheal/prominent,mediastinum
+Mediastinum/right/paratracheal/prominent/mild,mediastinum
+"Bone Diseases, Metabolic",metabolic_bone_disease
+"Bone Diseases, Metabolic/degenerative/mild",metabolic_bone_disease
+"Bone Diseases, Metabolic/diffuse",metabolic_bone_disease
+"Bone Diseases, Metabolic/spine",metabolic_bone_disease
+"Bone Diseases, Metabolic/thoracic vertebrae",metabolic_bone_disease
+"Bone Diseases, Metabolic/thoracic vertebrae/diffuse",metabolic_bone_disease
+Osteoporosis,metabolic_bone_disease
+Nipple Shadow/bilateral,nipple_shadow
+Nipple Shadow/lung/base/bilateral,nipple_shadow
+Nipple Shadow/lung/left,nipple_shadow
+Nipple Shadow/ribs/bilateral/posterior,nipple_shadow
+Nodule/lung/lower lobe/right,nodule
+Nodule,nodule
+Nodule/heart/left/small,nodule
+Nodule/lung/apex/bilateral/round,nodule
+Nodule/lung/apex/right,nodule
+Nodule/lung/apex/right/round,nodule
+Nodule/lung/base,nodule
+Nodule/lung/base/left,nodule
+Nodule/lung/base/left/reticular,nodule
+Nodule/lung/base/right,nodule
+Nodule/lung/bilateral/diffuse/multiple/small,nodule
+Nodule/lung/bilateral/interstitial,nodule
+Nodule/lung/bilateral/multiple,nodule
+Nodule/lung/bilateral/round/multiple/small,nodule
+Nodule/lung/bilateral/scattered,nodule
+Nodule/lung/hilum,nodule
+Nodule/lung/hilum/bilateral/multiple/small,nodule
+Nodule/lung/hilum/left,nodule
+Nodule/lung/hilum/right,nodule
+Nodule/lung/hilum/right/prominent,nodule
+Nodule/lung/left,nodule
+Nodule/lung/left/multiple,nodule
+Nodule/lung/lingula,nodule
+Nodule/lung/lingula/prominent,nodule
+Nodule/lung/lingula/small,nodule
+Nodule/lung/lower lobe/bilateral/multiple,nodule
+Nodule/lung/lower lobe/bilateral/patchy,nodule
+Nodule/lung/lower lobe/left,nodule
+Nodule/lung/lower lobe/left/irregular,nodule
+Nodule/lung/lower lobe/left/multiple,nodule
+Nodule/lung/lower lobe/left/posterior,nodule
+Nodule/lung/lower lobe/right/anterior,nodule
+Nodule/lung/lower lobe/right/multiple/small,nodule
+Nodule/lung/middle lobe/right,nodule
+Nodule/lung/middle lobe/right/multiple/small,nodule
+Nodule/lung/right,nodule
+Nodule/lung/right/multiple,nodule
+Nodule/lung/scattered/multiple,nodule
+Nodule/lung/scattered/multiple/small,nodule
+Nodule/lung/upper lobe/bilateral,nodule
+Nodule/lung/upper lobe/bilateral/multiple,nodule
+Nodule/lung/upper lobe/hilum/right,nodule
+Nodule/lung/upper lobe/left,nodule
+Nodule/lung/upper lobe/left/focal,nodule
+Nodule/lung/upper lobe/left/multiple/small,nodule
+Nodule/lung/upper lobe/left/round,nodule
+Nodule/lung/upper lobe/left/small,nodule
+Nodule/lung/upper lobe/right,nodule
+Nodule/lung/upper lobe/right/multiple,nodule
+Nodule/lung/upper lobe/right/round,nodule
+Nodule/lung/upper lobe/right/small,nodule
+Nodule/multiple,nodule
+Nodule/pleura/apex/bilateral/round,nodule
+Nodule/pleura/left,nodule
+Nodule/pleura/upper lobe/bilateral,nodule
+Nodule/right/retrocardiac,nodule
+Nodule/scattered/multiple/small,nodule
+Nodule/thorax/left,nodule
+Nodule/thorax/multiple/small,nodule
+Nodule/thorax/scattered/multiple/small,nodule
+Opacity/lung/base/bilateral,opacity
+Opacity/lung/base/bilateral/streaky,opacity
+Opacity/lung/base/left,opacity
+Opacity/lung/base/left/streaky,opacity
+Opacity/lung/base/right,opacity
+Opacity/lung/lingula,opacity
+Opacity/lung/lower lobe/right,opacity
+Opacity/lung/middle lobe/right,opacity
+Opacity,opacity
+Opacity/adipose tissue/posterior/round/small,opacity
+Opacity/anterior,opacity
+Opacity/costophrenic angle/left,opacity
+Opacity/costophrenic angle/mild,opacity
+Opacity/costophrenic angle/right/multiple,opacity
+Opacity/costophrenic angle/right/round,opacity
+Opacity/costophrenic angle/sulcus/bilateral/streaky,opacity
+Opacity/costophrenic angle/sulcus/right/round/multiple/small,opacity
+Opacity/heart/left,opacity
+Opacity/left,opacity
+Opacity/left/retrocardiac,opacity
+Opacity/lung,opacity
+Opacity/lung/apex/bilateral,opacity
+Opacity/lung/apex/bilateral/patchy/mild,opacity
+Opacity/lung/apex/left,opacity
+Opacity/lung/apex/left/irregular,opacity
+Opacity/lung/apex/left/patchy,opacity
+Opacity/lung/apex/right,opacity
+Opacity/lung/apex/right/focal,opacity
+Opacity/lung/apex/right/mild,opacity
+Opacity/lung/apex/right/patchy,opacity
+Opacity/lung/base,opacity
+Opacity/lung/base/bilateral/focal/streaky,opacity
+Opacity/lung/base/bilateral/interstitial,opacity
+Opacity/lung/base/bilateral/interstitial/diffuse/mild,opacity
+Opacity/lung/base/bilateral/interstitial/mild,opacity
+Opacity/lung/base/bilateral/interstitial/multiple,opacity
+Opacity/lung/base/bilateral/interstitial/patchy,opacity
+Opacity/lung/base/bilateral/mild,opacity
+Opacity/lung/base/bilateral/multiple,opacity
+Opacity/lung/base/bilateral/patchy,opacity
+Opacity/lung/base/bilateral/patchy/mild,opacity
+Opacity/lung/base/bilateral/patchy/streaky,opacity
+Opacity/lung/base/bilateral/prominent,opacity
+Opacity/lung/base/bilateral/reticular/multiple/mild,opacity
+Opacity/lung/base/bilateral/scattered,opacity
+Opacity/lung/base/bilateral/scattered/focal/patchy/multiple,opacity
+Opacity/lung/base/bilateral/streaky/mild,opacity
+Opacity/lung/base/interstitial/patchy,opacity
+Opacity/lung/base/interstitial/reticular,opacity
+Opacity/lung/base/left/chronic,opacity
+Opacity/lung/base/left/chronic/mild,opacity
+Opacity/lung/base/left/interstitial/diffuse,opacity
+Opacity/lung/base/left/mild,opacity
+Opacity/lung/base/left/multiple,opacity
+Opacity/lung/base/left/patchy,opacity
+Opacity/lung/base/left/patchy/mild,opacity
+Opacity/lung/base/left/retrocardiac,opacity
+Opacity/lung/base/left/scattered,opacity
+Opacity/lung/base/left/streaky/mild,opacity
+Opacity/lung/base/mild,opacity
+Opacity/lung/base/patchy,opacity
+Opacity/lung/base/posterior,opacity
+Opacity/lung/base/pulmonary alveoli/bilateral,opacity
+Opacity/lung/base/pulmonary alveoli/bilateral/patchy,opacity
+Opacity/lung/base/right/focal/abnormal,opacity
+Opacity/lung/base/right/interstitial,opacity
+Opacity/lung/base/right/irregular,opacity
+Opacity/lung/base/right/large,opacity
+Opacity/lung/base/right/mild,opacity
+Opacity/lung/base/right/patchy,opacity
+Opacity/lung/base/right/reticular/multiple,opacity
+Opacity/lung/base/right/round/multiple/small,opacity
+Opacity/lung/base/right/scattered/multiple,opacity
+Opacity/lung/base/right/small,opacity
+Opacity/lung/base/right/streaky,opacity
+Opacity/lung/base/right/streaky/multiple,opacity
+Opacity/lung/bilateral,opacity
+Opacity/lung/bilateral/interstitial,opacity
+Opacity/lung/bilateral/interstitial/diffuse,opacity
+Opacity/lung/bilateral/interstitial/diffuse/mild,opacity
+Opacity/lung/bilateral/interstitial/diffuse/prominent,opacity
+Opacity/lung/bilateral/interstitial/diffuse/reticular/round/severe,opacity
+Opacity/lung/bilateral/interstitial/mild,opacity
+Opacity/lung/bilateral/interstitial/prominent/chronic,opacity
+Opacity/lung/bilateral/interstitial/prominent/mild,opacity
+Opacity/lung/bilateral/mild,opacity
+Opacity/lung/bilateral/round/multiple,opacity
+Opacity/lung/bilateral/scattered,opacity
+Opacity/lung/bilateral/scattered/round/multiple,opacity
+Opacity/lung/diffuse/patchy,opacity
+Opacity/lung/hilum/bilateral,opacity
+Opacity/lung/hilum/bilateral/interstitial,opacity
+Opacity/lung/hilum/interstitial,opacity
+Opacity/lung/hilum/interstitial/diffuse/prominent,opacity
+Opacity/lung/hilum/left,opacity
+Opacity/lung/hilum/left/interstitial,opacity
+Opacity/lung/hilum/left/round,opacity
+Opacity/lung/hilum/left/streaky,opacity
+Opacity/lung/hilum/mild,opacity
+Opacity/lung/hilum/multiple/prominent/mild,opacity
+Opacity/lung/hilum/prominent,opacity
+Opacity/lung/hilum/pulmonary alveoli/left,opacity
+Opacity/lung/hilum/right,opacity
+Opacity/lung/hilum/right/patchy,opacity
+Opacity/lung/hilum/right/round,opacity
+Opacity/lung/hilum/right/small,opacity
+Opacity/lung/hilum/streaky,opacity
+Opacity/lung/hilum/streaky/mild,opacity
+Opacity/lung/interstitial,opacity
+Opacity/lung/interstitial/diffuse,opacity
+Opacity/lung/interstitial/diffuse/patchy/mild,opacity
+Opacity/lung/interstitial/mild,opacity
+Opacity/lung/interstitial/prominent,opacity
+Opacity/lung/interstitial/prominent/mild,opacity
+Opacity/lung/interstitial/reticular/mild,opacity
+Opacity/lung/interstitial/round/prominent,opacity
+Opacity/lung/left,opacity
+Opacity/lung/left/round,opacity
+Opacity/lung/lingula/focal,opacity
+Opacity/lung/lingula/patchy/mild,opacity
+Opacity/lung/lingula/posterior,opacity
+Opacity/lung/lingula/round,opacity
+Opacity/lung/lingula/small,opacity
+Opacity/lung/lingula/streaky,opacity
+Opacity/lung/lower lobe/bilateral,opacity
+Opacity/lung/lower lobe/bilateral/interstitial,opacity
+Opacity/lung/lower lobe/bilateral/patchy,opacity
+Opacity/lung/lower lobe/bilateral/prominent,opacity
+Opacity/lung/lower lobe/interstitial/diffuse/prominent,opacity
+Opacity/lung/lower lobe/left,opacity
+Opacity/lung/lower lobe/left/large,opacity
+Opacity/lung/lower lobe/left/patchy,opacity
+Opacity/lung/lower lobe/left/patchy/small,opacity
+Opacity/lung/lower lobe/left/posterior,opacity
+Opacity/lung/lower lobe/left/scattered/multiple,opacity
+Opacity/lung/lower lobe/left/streaky,opacity
+Opacity/lung/lower lobe/right/diffuse,opacity
+Opacity/lung/lower lobe/right/large,opacity
+Opacity/lung/lower lobe/right/mild,opacity
+Opacity/lung/lower lobe/right/patchy,opacity
+Opacity/lung/lower lobe/right/posterior/round,opacity
+Opacity/lung/lower lobe/right/severe,opacity
+Opacity/lung/lower lobe/right/streaky,opacity
+Opacity/lung/middle lobe/bilateral,opacity
+Opacity/lung/middle lobe/bilateral/focal/multiple,opacity
+Opacity/lung/middle lobe/bilateral/interstitial,opacity
+Opacity/lung/middle lobe/bilateral/interstitial/multiple,opacity
+Opacity/lung/middle lobe/bilateral/interstitial/round/small/mild,opacity
+Opacity/lung/middle lobe/bilateral/streaky/mild,opacity
+Opacity/lung/middle lobe/pulmonary alveoli/bilateral,opacity
+Opacity/lung/middle lobe/right/focal,opacity
+Opacity/lung/middle lobe/right/large,opacity
+Opacity/lung/middle lobe/right/mild,opacity
+Opacity/lung/middle lobe/right/patchy,opacity
+Opacity/lung/middle lobe/right/reticular,opacity
+Opacity/lung/middle lobe/right/round,opacity
+Opacity/lung/middle lobe/right/scattered,opacity
+Opacity/lung/middle lobe/right/severe,opacity
+Opacity/lung/middle lobe/right/streaky,opacity
+Opacity/lung/multiple/abnormal,opacity
+Opacity/lung/posterior/streaky/mild,opacity
+Opacity/lung/retrocardiac/focal/small,opacity
+Opacity/lung/retrocardiac/scattered/multiple,opacity
+Opacity/lung/right,opacity
+Opacity/lung/right/round,opacity
+Opacity/lung/right/streaky/mild,opacity
+Opacity/lung/streaky,opacity
+Opacity/lung/upper lobe/bilateral/reticular/round/multiple/chronic,opacity
+Opacity/lung/upper lobe/bilateral/round,opacity
+Opacity/lung/upper lobe/hilum/left,opacity
+Opacity/lung/upper lobe/left,opacity
+Opacity/lung/upper lobe/left/focal,opacity
+Opacity/lung/upper lobe/left/focal/small,opacity
+Opacity/lung/upper lobe/left/irregular,opacity
+Opacity/lung/upper lobe/left/patchy,opacity
+Opacity/lung/upper lobe/left/prominent,opacity
+Opacity/lung/upper lobe/left/round,opacity
+Opacity/lung/upper lobe/left/round/multiple/small,opacity
+Opacity/lung/upper lobe/left/scattered,opacity
+Opacity/lung/upper lobe/left/small,opacity
+Opacity/lung/upper lobe/left/streaky/mild,opacity
+Opacity/lung/upper lobe/patchy,opacity
+Opacity/lung/upper lobe/right,opacity
+Opacity/lung/upper lobe/right/anterior,opacity
+Opacity/lung/upper lobe/right/focal,opacity
+Opacity/lung/upper lobe/right/interstitial,opacity
+Opacity/lung/upper lobe/right/patchy,opacity
+Opacity/lung/upper lobe/right/patchy/mild,opacity
+Opacity/lung/upper lobe/right/patchy/streaky,opacity
+Opacity/lung/upper lobe/right/posterior/patchy/mild,opacity
+Opacity/lung/upper lobe/right/round,opacity
+Opacity/lung/upper lobe/right/round/multiple/small,opacity
+Opacity/lung/upper lobe/right/round/small,opacity
+Opacity/lung/upper lobe/right/streaky,opacity
+Opacity/mediastinum,opacity
+Opacity/mediastinum/base,opacity
+Opacity/mediastinum/posterior/round,opacity
+Opacity/mediastinum/right,opacity
+Opacity/multiple,opacity
+Opacity/multiple/chronic,opacity
+Opacity/pleura/right,opacity
+Opacity/pleura/upper lobe/left/irregular,opacity
+Opacity/pleural sinus/bilateral,opacity
+Opacity/posterior,opacity
+Opacity/pulmonary alveoli,opacity
+Opacity/pulmonary alveoli/bilateral/diffuse,opacity
+Opacity/retrocardiac,opacity
+Opacity/retrocardiac/mild,opacity
+Opacity/retrocardiac/patchy,opacity
+Opacity/retrocardiac/round,opacity
+Opacity/retrocardiac/streaky,opacity
+Opacity/ribs/anterior,opacity
+Opacity/ribs/left,opacity
+Opacity/ribs/left/anterior/round,opacity
+Opacity/ribs/left/round/multiple/small,opacity
+Opacity/ribs/right/posterior/round,opacity
+Opacity/right,opacity
+Opacity/right/paratracheal,opacity
+Opacity/right/paratracheal/prominent,opacity
+Opacity/round,opacity
+Opacity/round/multiple,opacity
+Opacity/scattered/multiple,opacity
+Opacity/scattered/round/multiple,opacity
+Opacity/sulcus/posterior/mild,opacity
+Opacity/supracardiac,opacity
+Opacity/thoracic vertebrae,opacity
+Opacity/thorax,opacity
+Opacity/thorax/mild,opacity
+Opacity/thorax/multiple/small,opacity
+Opacity/thorax/posterior,opacity
+Opacity/thorax/right,opacity
+Opacity/thorax/scattered,opacity
+Osteophyte/thoracic vertebrae/multiple,osteophyte
+Osteophyte/cervical vertebrae/multiple/large,osteophyte
+Osteophyte/lumbar vertebrae/multiple,osteophyte
+Osteophyte/shoulder/bilateral/multiple,osteophyte
+Osteophyte/spine,osteophyte
+Osteophyte/spine/multiple,osteophyte
+Osteophyte/spine/multiple/mild,osteophyte
+Osteophyte/thoracic vertebrae,osteophyte
+Osteophyte/thoracic vertebrae/anterior/multiple,osteophyte
+Osteophyte/thoracic vertebrae/anterior/multiple/large,osteophyte
+Osteophyte/thoracic vertebrae/degenerative,osteophyte
+Osteophyte/thoracic vertebrae/degenerative/mild,osteophyte
+Osteophyte/thoracic vertebrae/degenerative/multiple,osteophyte
+Osteophyte/thoracic vertebrae/degenerative/multiple/mild,osteophyte
+Osteophyte/thoracic vertebrae/degenerative/multiple/severe,osteophyte
+Osteophyte/thoracic vertebrae/mild,osteophyte
+Osteophyte/thoracic vertebrae/multiple/mild,osteophyte
+Osteophyte/thoracic vertebrae/multiple/small,osteophyte
+Osteophyte/thoracic vertebrae/prominent/multiple,osteophyte
+Osteophyte/thoracic vertebrae/right/prominent/multiple,osteophyte
+Osteophyte/thoracic vertebrae/scattered,osteophyte
+Pectus Carinatum,pectus_carinatum
+Pericardial Effusion,pericardial_effusion
+Pericardial Effusion/large,pericardial_effusion
+Pericardial Effusion/mild,pericardial_effusion
+Pericardial Effusion/severe,pericardial_effusion
+Pleura/base/bilateral/abnormal/chronic,pleura_abnormal
+Pleura/blunted/mild,pleura_abnormal
+Pleura/right/blunted,pleura_abnormal
+Thickening/pleura,pleura_abnormal
+Thickening/pleura/apex/bilateral,pleura_abnormal
+Thickening/pleura/apex/bilateral/chronic,pleura_abnormal
+Thickening/pleura/apex/bilateral/mild,pleura_abnormal
+Thickening/pleura/apex/bilateral/round,pleura_abnormal
+Thickening/pleura/apex/left,pleura_abnormal
+Thickening/pleura/apex/left/focal,pleura_abnormal
+Thickening/pleura/apex/left/mild,pleura_abnormal
+Thickening/pleura/apex/right,pleura_abnormal
+Thickening/pleura/apex/right/round,pleura_abnormal
+Thickening/pleura/bilateral,pleura_abnormal
+Thickening/pleura/bilateral/mild,pleura_abnormal
+Thickening/pleura/left,pleura_abnormal
+Thickening/pleura/middle lobe/right/small,pleura_abnormal
+Thickening/pleura/mild,pleura_abnormal
+Thickening/pleura/right,pleura_abnormal
+Thickening/pleura/right/focal,pleura_abnormal
+Thickening/pleura/right/mild,pleura_abnormal
+Thickening/pleura/upper lobe/left,pleura_abnormal
+Thickening/pleura/upper lobe/right,pleura_abnormal
+Pleural Effusion/bilateral,pleural_effusion
+Pleural Effusion/bilateral/small,pleural_effusion
+Pleural Effusion/left/small,pleural_effusion
+Pleural Effusion/right,pleural_effusion
+Pleural Effusion/right/small,pleural_effusion
+Pleural Effusion,pleural_effusion
+Pleural Effusion/base/bilateral,pleural_effusion
+Pleural Effusion/base/left,pleural_effusion
+Pleural Effusion/base/left/small,pleural_effusion
+Pleural Effusion/base/right,pleural_effusion
+Pleural Effusion/bilateral/focal/moderate,pleural_effusion
+Pleural Effusion/bilateral/large,pleural_effusion
+Pleural Effusion/bilateral/moderate,pleural_effusion
+Pleural Effusion/bilateral/posterior,pleural_effusion
+Pleural Effusion/bilateral/posterior/mild,pleural_effusion
+Pleural Effusion/bilateral/posterior/small,pleural_effusion
+Pleural Effusion/borderline,pleural_effusion
+Pleural Effusion/costophrenic angle/left,pleural_effusion
+Pleural Effusion/costophrenic angle/left/mild,pleural_effusion
+Pleural Effusion/hilum/right,pleural_effusion
+Pleural Effusion/left,pleural_effusion
+Pleural Effusion/left/large,pleural_effusion
+Pleural Effusion/left/moderate,pleural_effusion
+Pleural Effusion/lower lobe/left,pleural_effusion
+Pleural Effusion/middle lobe/right/small,pleural_effusion
+Pleural Effusion/posterior,pleural_effusion
+Pleural Effusion/right/focal,pleural_effusion
+Pleural Effusion/right/focal/multiple,pleural_effusion
+Pleural Effusion/right/large,pleural_effusion
+Pleural Effusion/right/moderate,pleural_effusion
+Pleural Effusion/right/severe,pleural_effusion
+Pleural Effusion/small,pleural_effusion
+Pleural Effusion/upper lobe/right,pleural_effusion
+Pneumonectomy/lung/left,pneumonectomy
+Pneumonectomy/lung/lower lobe/right,pneumonectomy
+Pneumonectomy/lung/upper lobe/left,pneumonectomy
+Pneumonectomy/lung/upper lobe/right,pneumonectomy
+Pneumonia/lower lobe/right,pneumonia
+Pneumonia,pneumonia
+Pneumonia/base/bilateral,pneumonia
+Pneumonia/base/bilateral/patchy,pneumonia
+Pneumonia/base/left,pneumonia
+Pneumonia/focal/multiple,pneumonia
+Pneumonia/lower lobe/left,pneumonia
+Pneumonia/lower lobe/right/anterior,pneumonia
+Pneumonia/lower lobe/right/mild,pneumonia
+Pneumonia/middle lobe/right,pneumonia
+Pneumonia/multilobar,pneumonia
+Pneumonia/right/focal/multiple,pneumonia
+Pneumonia/upper lobe/left,pneumonia
+Pneumonia/upper lobe/left/round,pneumonia
+Pneumonia/upper lobe/right,pneumonia
+Pneumoperitoneum,pneumoperitoneum
+Pneumoperitoneum/small,pneumoperitoneum
+Hemopneumothorax/right/moderate,pneumothorax
+Hydropneumothorax/apex/right,pneumothorax
+Hydropneumothorax/left/large,pneumothorax
+Hydropneumothorax/right,pneumothorax
+Pneumothorax,pneumothorax
+Pneumothorax/apex/left/small,pneumothorax
+Pneumothorax/apex/right,pneumothorax
+Pneumothorax/apex/right/moderate,pneumothorax
+Pneumothorax/apex/right/small,pneumothorax
+Pneumothorax/left,pneumothorax
+Pneumothorax/left/large,pneumothorax
+Pneumothorax/left/moderate,pneumothorax
+Pneumothorax/right,pneumothorax
+Pneumothorax/right/large,pneumothorax
+Pneumothorax/right/moderate,pneumothorax
+Pneumothorax/right/small,pneumothorax
+Pneumothorax/upper lobe/left/small,pneumothorax
+Pulmonary Artery/bilateral/enlarged,pulmonary_artery
+Pulmonary Artery/bilateral/prominent,pulmonary_artery
+Pulmonary Artery/enlarged,pulmonary_artery
+Pulmonary Artery/enlarged/severe,pulmonary_artery
+Pulmonary Artery/hilum/prominent,pulmonary_artery
+Pulmonary Artery/left/enlarged,pulmonary_artery
+Pulmonary Artery/prominent,pulmonary_artery
+Pulmonary Artery/prominent/mild,pulmonary_artery
+Pulmonary Congestion,pulmonary_congestion
+Pulmonary Congestion/mild,pulmonary_congestion
+Pulmonary Congestion/bilateral,pulmonary_congestion
+Pulmonary Congestion/hilum/bilateral,pulmonary_congestion
+Pulmonary Congestion/prominent,pulmonary_congestion
+Pulmonary Congestion/right,pulmonary_congestion
+Pulmonary Congestion/upper lobe/mild,pulmonary_congestion
+Expansile Bone Lesions/ribs/right,rib_issue
+Ribs/bilateral/degenerative,rib_issue
+Ribs/prominent,rib_issue
+Ribs/right/anterior/prominent,rib_issue
+Ribs/right/posterior/enlarged/mild,rib_issue
+Sarcoidosis,sarcoidosis
+Cicatrix/lung/apex/bilateral,scarring
+Cicatrix/lung/base/left,scarring
+Cicatrix/lung/lingula,scarring
+Cicatrix,scarring
+Cicatrix/breast/right,scarring
+Cicatrix/cardiophrenic angle/left/small,scarring
+Cicatrix/costophrenic angle,scarring
+Cicatrix/costophrenic angle/left,scarring
+Cicatrix/costophrenic angle/sulcus/bilateral/chronic,scarring
+Cicatrix/left,scarring
+Cicatrix/lung,scarring
+Cicatrix/lung/apex/bilateral/mild,scarring
+Cicatrix/lung/apex/bilateral/round,scarring
+Cicatrix/lung/apex/left,scarring
+Cicatrix/lung/apex/mild,scarring
+Cicatrix/lung/apex/right,scarring
+Cicatrix/lung/apex/right/mild,scarring
+Cicatrix/lung/apex/right/round,scarring
+Cicatrix/lung/apex/right/streaky,scarring
+Cicatrix/lung/base,scarring
+Cicatrix/lung/base/bilateral,scarring
+Cicatrix/lung/base/bilateral/chronic,scarring
+Cicatrix/lung/base/bilateral/mild,scarring
+Cicatrix/lung/base/bilateral/patchy/streaky,scarring
+Cicatrix/lung/base/left/chronic,scarring
+Cicatrix/lung/base/left/chronic/mild,scarring
+Cicatrix/lung/base/left/mild,scarring
+Cicatrix/lung/base/left/small,scarring
+Cicatrix/lung/base/right,scarring
+Cicatrix/lung/base/right/mild,scarring
+Cicatrix/lung/bilateral/severe,scarring
+Cicatrix/lung/focal/multiple,scarring
+Cicatrix/lung/hilum/left,scarring
+Cicatrix/lung/left,scarring
+Cicatrix/lung/lingula/focal,scarring
+Cicatrix/lung/lingula/mild,scarring
+Cicatrix/lung/lingula/small,scarring
+Cicatrix/lung/lower lobe/bilateral,scarring
+Cicatrix/lung/lower lobe/bilateral/mild,scarring
+Cicatrix/lung/lower lobe/left,scarring
+Cicatrix/lung/lower lobe/left/mild,scarring
+Cicatrix/lung/lower lobe/left/patchy,scarring
+Cicatrix/lung/lower lobe/left/streaky,scarring
+Cicatrix/lung/lower lobe/right,scarring
+Cicatrix/lung/lower lobe/right/small,scarring
+Cicatrix/lung/middle lobe/right,scarring
+Cicatrix/lung/middle lobe/right/chronic,scarring
+Cicatrix/lung/middle lobe/right/mild,scarring
+Cicatrix/lung/middle lobe/right/patchy,scarring
+Cicatrix/lung/middle lobe/right/small,scarring
+Cicatrix/lung/right,scarring
+Cicatrix/lung/upper lobe/hilum/left,scarring
+Cicatrix/lung/upper lobe/left,scarring
+Cicatrix/lung/upper lobe/left/chronic,scarring
+Cicatrix/lung/upper lobe/left/mild,scarring
+Cicatrix/lung/upper lobe/right,scarring
+Cicatrix/lung/upper lobe/right/scattered,scarring
+Cicatrix/lung/upper lobe/right/streaky/mild,scarring
+Cicatrix/mild,scarring
+Cicatrix/pleura,scarring
+Cicatrix/pleura/apex/bilateral,scarring
+Cicatrix/pleura/apex/bilateral/mild,scarring
+Cicatrix/pleura/apex/bilateral/round,scarring
+Cicatrix/pleura/apex/left,scarring
+Cicatrix/pleura/apex/right/round,scarring
+Cicatrix/pleura/base/bilateral,scarring
+Cicatrix/pleura/base/bilateral/chronic,scarring
+Cicatrix/pleura/bilateral,scarring
+Cicatrix/pleura/left,scarring
+Cicatrix/pleura/right,scarring
+Cicatrix/ribs/left,scarring
+Cicatrix/right/chronic,scarring
+Cicatrix/scattered/multiple,scarring
+Cicatrix/thorax/left,scarring
+Sclerosis,sclerosis
+Sclerosis/clavicle/left,sclerosis
+Sclerosis/humerus/bilateral,sclerosis
+Sclerosis/humerus/right,sclerosis
+Sclerosis/lumbar vertebrae,sclerosis
+Sclerosis/pleura/right,sclerosis
+Sclerosis/spine,sclerosis
+Sclerosis/thoracic vertebrae,sclerosis
+Sclerosis/thoracic vertebrae/mild,sclerosis
+Sclerosis/thoracic vertebrae/posterior/mild,sclerosis
+Scoliosis,scoliosis
+Scoliosis/lumbar vertebrae,scoliosis
+Scoliosis/thoracic vertebrae,scoliosis
+Scoliosis/thoracic vertebrae/right,scoliosis
+Scoliosis/thoracic vertebrae/right/mild,scoliosis
+Scoliosis/lumbar vertebrae/left,scoliosis
+Scoliosis/lumbar vertebrae/left/mild,scoliosis
+Scoliosis/lumbar vertebrae/mild,scoliosis
+Scoliosis/lumbar vertebrae/moderate,scoliosis
+Scoliosis/lumbar vertebrae/right,scoliosis
+Scoliosis/lumbar vertebrae/right/mild,scoliosis
+Scoliosis/lumbar vertebrae/right/moderate,scoliosis
+Scoliosis/lumbar vertebrae/severe,scoliosis
+Scoliosis/mild,scoliosis
+Scoliosis/right,scoliosis
+Scoliosis/right/mild,scoliosis
+Scoliosis/severe,scoliosis
+Scoliosis/thoracic vertebrae/left,scoliosis
+Scoliosis/thoracic vertebrae/left/mild,scoliosis
+Scoliosis/thoracic vertebrae/left/moderate,scoliosis
+Scoliosis/thoracic vertebrae/mild,scoliosis
+Scoliosis/thoracic vertebrae/moderate,scoliosis
+Scoliosis/thoracic vertebrae/right/moderate,scoliosis
+Scoliosis/thoracic vertebrae/right/severe,scoliosis
+Scoliosis/thoracic vertebrae/severe,scoliosis
+Shift/heart/left,shift
+Shift/mediastinum,shift
+Shift/mediastinum/left,shift
+Shift/mediastinum/mild,shift
+Shift/mediastinum/right,shift
+Shift/trachea/right,shift
+Shift/trachea/right/mild,shift
+Dislocations/shoulder/left/chronic,shoulder_issue
+Dislocations/shoulder/right,shoulder_issue
+Humerus/bilateral/degenerative,shoulder_issue
+Humerus/degenerative/severe,shoulder_issue
+Shoulder/bilateral/degenerative,shoulder_issue
+Shoulder/bilateral/degenerative/mild,shoulder_issue
+Shoulder/bilateral/degenerative/severe,shoulder_issue
+Shoulder/degenerative,shoulder_issue
+Shoulder/left/degenerative,shoulder_issue
+Shoulder/right/degenerative,shoulder_issue
+Shoulder/right/degenerative/severe,shoulder_issue
+Shoulder/right/prominent/mild,shoulder_issue
+Spinal Fusion,spinal_fusion
+Spinal Fusion/cervical vertebrae,spinal_fusion
+Spinal Fusion/cervical vertebrae/anterior,spinal_fusion
+Spinal Fusion/cervical vertebrae/posterior/severe,spinal_fusion
+Spinal Fusion/lumbar vertebrae,spinal_fusion
+Spinal Fusion/posterior,spinal_fusion
+Spinal Fusion/thoracic vertebrae,spinal_fusion
+Spinal Fusion/thoracic vertebrae/anterior,spinal_fusion
+Dislocations/lumbar vertebrae,spine_dislocation
+Dislocations/thoracic vertebrae,spine_dislocation
+Spondylosis/thoracic vertebrae,spondylosis
+Spondylosis,spondylosis
+Spondylosis/degenerative,spondylosis
+Spondylosis/mild,spondylosis
+Spondylosis/spine,spondylosis
+Spondylosis/thoracic vertebrae/mild,spondylosis
+Spondylosis/thoracic vertebrae/multiple,spondylosis
+Stents,stent
+Stents/abdomen,stent
+Stents/abdomen/right,stent
+Stents/aorta,stent
+Stents/coronary vessels,stent
+Stents/coronary vessels/left,stent
+Sulcus/bilateral/blunted/mild,sulcus_blunting
+Sulcus/bilateral/posterior/blunted/mild,sulcus_blunting
+Sulcus/posterior/blunted/mild,sulcus_blunting
+Sulcus/posterior/obscured,sulcus_blunting
+Sulcus/right/posterior/blunted,sulcus_blunting
+Sulcus/right/posterior/obscured,sulcus_blunting
+Sutures/lung/apex/left,sutures
+Sutures/lung/apex/right,sutures
+Sutures/lung/hilum/right,sutures
+Sutures/lung/upper lobe/left,sutures
+Sutures/mediastinum,sutures
+Sutures/sternum,sutures
+Technical Quality of Image Unsatisfactory,technical_unsatisfactory
+Thickening/bronchi,thickening
+Thickening/bronchovascular,thickening
+Thickening/heart ventricles,thickening
+Thickening/lung/base/bilateral/interstitial,thickening
+Thickening/lung/interstitial,thickening
+Thickening/lung/lower lobe/bronchi/bilateral,thickening
+Thickening/lung/upper lobe/bronchi/left/scattered,thickening
+Thickening/right/paratracheal,thickening
+"Tube, Inserted",tube
+"Tube, Inserted/abdomen",tube
+"Tube, Inserted/large",tube
+"Tube, Inserted/left",tube
+"Tube, Inserted/right",tube
+"Tube, Inserted/thorax/left",tube
+"Tube, Inserted/thorax/right",tube
+"Tube, Inserted/trachea",tube
+"Tube, Inserted/trachea, carina",tube
+Tuberculosis,tuberculosis
+Tuberculosis/lung/healed,tuberculosis
+Volume Loss/lung/left,volume_loss
+Volume Loss/lung/left/mild,volume_loss
+Volume Loss/lung/right,volume_loss
+Volume Loss/lung/upper lobe/left,volume_loss
+Volume Loss/lung/upper lobe/right,volume_loss
+Volume Loss/thorax/left,volume_loss
+Volume Loss/thorax/left/mild,volume_loss
+Volume Loss/thorax/right,volume_loss
