@@ -21,7 +21,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
-from . import rule_functions as fxn
+from src.rules import rule_functions as fxn
 
 ###################################
 # Specific Rules for Chest X-Rays #---------------------------------------------

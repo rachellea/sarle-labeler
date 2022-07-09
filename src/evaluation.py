@@ -37,9 +37,9 @@ def report_sentence_level_eval(merged, setname, methodname):
         true_labels = merged['BinLabel'].values.tolist()
         print('\tPercent of '+setname+' true labels that are 1 (sick):',str( round(sum(true_labels)/len(true_labels),4) ))
         acc, auc, ap = calculate_eval_metrics(predicted_labels, predicted_probs, true_labels)
-        print('\t'+methodname+' Accuracy:',round(acc,4),
-              '\n\t'+methodname+' AUC:',round(auc,4),
-              '\n\t'+methodname+' Average Precision:',round(ap,4))
+        print('\t', setname, methodname, 'Sentence Accuracy:', round(acc,4),
+              '\n\t',setname, methodname, 'Sentence AUC:', round(auc,4),
+              '\n\t', setname, methodname, 'Sentence Average Precision:', round(ap,4))
 
 def calculate_eval_metrics(predicted_labels, predicted_probs, true_labels):
         """Report accuracy, AUC, and average precision"""

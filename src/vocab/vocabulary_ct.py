@@ -22,7 +22,7 @@
 #SOFTWARE
 
 import copy
-from . import vocabulary_locations as loc
+from src.vocab import vocabulary_locations
 
 ########################
 # Lung Pathology Terms #--------------------------------------------------------
@@ -44,11 +44,11 @@ LUNG_PATHOLOGY = {
             'tree_in_bud':{'Any':['tree-in-bud','tree in bud']},
             #Diseases and abnormalities:
             'airspace_disease':{'Any':['airspace disease','copd','chronic obstructive'],
-                'Term1':['airspace','air-space','airway']+loc.LUNG_TERMS,'Term2':['disease']}, #airways disease
+                'Term1':['airspace','air-space','airway']+vocabulary_locations.LUNG_TERMS,'Term2':['disease']}, #airways disease
             'air_trapping':{'Any':['air trapping']},
             'aspiration':{'Any':['aspirat']}, #aspiration
             'atelectasis':{'Any':['atelecta'], #atelectasis, atelectases, atelctatic
-                'Term1':loc.LUNG_TERMS,'Term2':['collapse']},
+                'Term1':vocabulary_locations.LUNG_TERMS,'Term2':['collapse']},
             'bronchial_wall_thickening':{'Any':['bronchial wall thicken'],'Term1':['bronch'],'Term2':['thicken']}, #bronchial thickening
             'bronchiectasis':{'Any':['bronchiecta']}, #iectases, iectasis, iectatic
             'bronchiolectasis':{'Any':['bronchiolecta']},
@@ -59,9 +59,9 @@ LUNG_PATHOLOGY = {
             'interstitial_lung_disease':{'Any':['interstitial lung disease','interstitial disease',
                     'interstitial pneumonia',' uip ',' ild ','fibrosis',' ipf ',' nsip ',
                     'interstitial pneumonitis','hypersensitivity pneumonitis','organizing pneumonia',
-                    'sarcoidosis'],'Exclude':loc.EXCLUDE_NONLUNG}, #Exclude non-lung terms because we don't want to pick up on liver fibrosis or heart fibrosis
+                    'sarcoidosis'],'Exclude':vocabulary_locations.EXCLUDE_NONLUNG}, #Exclude non-lung terms because we don't want to pick up on liver fibrosis or heart fibrosis
             'lung_resection':{'Any':['pneumonectomy','lobectomy','bronchial stump'],
-                'Term1':['resect'], 'Term2':loc.LUNG_TERMS},
+                'Term1':['resect'], 'Term2':vocabulary_locations.LUNG_TERMS},
                 #resection, resected (e.g. 'wedge resection of the lower lobe')
             'mucous_plugging':{'Any':['mucous plug','mucus plug']}, #mucous plug(s), plugging
             'pleural_effusion':{'Any':['effusion','pleural effusion','pleural fluid','basilar fluid','lower lobe fluid','fissural fluid'], #groundtruth #DO NOT DELETE PLEURAL EFFUSION
@@ -71,7 +71,7 @@ LUNG_PATHOLOGY = {
             'pneumonitis':{'Any':['pneumonitis']},
             'pneumothorax':{'Any':['pneumothora']}, #pneumothorax, pneumothoraces, hydropneumothorax
             'pulmonary_edema':{'Any':['edema']},
-            'septal_thickening':{'Any':['septal thickening']},
+            'septal_thickening':{'Any':['septal thickening']}, #TODO possibly later distinguish 'interlobular' from 'intralobular'
             'tuberculosis':{'Any':['tubercul']} #tuberculous, tuberculosis, tuberculoses. nontuberculous excluded with sentence rules for 'non'
     }
 
@@ -174,7 +174,7 @@ GENERIC_PATHOLOGY = {
         'postsurgical':{'Any':['surgical','status post','surgery','postoperative', 'post operative']},
             #postsurgical findings/changes, 'post surgical', prior surgery
         'scarring':{'Any':['scar']}, #scar, scarring, scarred
-        'scattered_calc':{'Any':[],'Term1':['scatter'],'Term2':['calcifi']},
+        'scattered_calc':{'Any':[],'Term1':['scatter'],'Term2':['calcifi']}, #TODO add 'scattered' to a 'modifiers' dimension
         'scattered_nod':{'Any':[],'Term1':['scatter'],'Term2':['nodul','node']}, #e.g. scattered nodules, scattered nodes
         'secretion':{'Any':['secretion','secrete']}, #esp in airways
         'soft_tissue':{'Any':['soft tissue']},#e.g. 'soft tissue nodule' in the lungs, e.g. 'soft tissue in the mediastinum'
@@ -195,10 +195,29 @@ GENERIC_PATHOLOGY = {
 # Functions #-------------------------------------------------------------------
 #############
 def return_lung_terms():
-    return loc.LUNG_LOCATION_TERMS, LUNG_PATHOLOGY
+    return vocabulary_locations.LUNG_LOCATION_TERMS, LUNG_PATHOLOGY
 
 def return_heart_terms():
-    return HEART_PATHOLOGY
+    return vocabulary_locations.HEART_LOCATION_TERMS, HEART_PATHOLOGY
+
+def return_great_vessel_terms():
+    return vocabulary_locations.GREAT_VESSEL_LOCATION_TERMS
 
 def return_generic_terms():
-    return GENERIC_PATHOLOGY
+    return vocabulary_locations.GENERIC_LOCATION_TERMS, GENERIC_PATHOLOGY
+
+def return_forbidden(system):
+    """Return the keys in GENERIC_PATHOLOGY that are forbidden for a particular
+    body system"""
+    assert system in ['great_vessel','heart','lung']
+    if system == 'great_vessel':
+        allowed_path = GREAT_VESSEL_ALLOWED_PATH
+    elif system == 'heart':
+        allowed_path = HEART_ALLOWED_PATH
+    elif system == 'lung':
+        allowed_path = LUNG_ALLOWED_PATH
+    #Determine the disallowed keys
+    forbidden = copy.deepcopy(list(GENERIC_PATHOLOGY.keys()))
+    for x in allowed_path:
+        forbidden.remove(x)
+    return forbidden

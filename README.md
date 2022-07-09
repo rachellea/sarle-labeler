@@ -1,16 +1,16 @@
-# sarle-labeler
+# SARLE
 
 ![SARLE Logo](sarle-labeler-logo.png)
 
 ## Description
 
-This is the Python implementation of Sentence Analysis for Radiology Label Extraction (SARLE),
-a method to automatically extract structured labels from radiology
-reports. SARLE achieves an average F-score of 0.976 (min 0.941, max 1.0)
-when evaluated on a data set of chest CT reports. 
+This is the Python implementation of Sentence Analysis for Radiology 
+Label Extraction (SARLE), a method to automatically extract structured 
+labels from radiology reports. SARLE achieves an average F-score of 0.976 
+(min 0.941, max 1.0) when evaluated on a data set of chest CT reports. 
 
-The SARLE method is described in detail in our [Medical Image Analysis paper](https://doi.org/10.1016/j.media.2020.101857).
-The paper is also available [on arXiv](https://arxiv.org/ftp/arxiv/papers/2002/2002.04752.pdf).
+The SARLE method is described in our [Medical Image Analysis paper](https://doi.org/10.1016/j.media.2020.101857),
+which is also available [on arXiv](https://arxiv.org/ftp/arxiv/papers/2002/2002.04752.pdf).
 
 If you find this work useful in your research, please consider citing us:
 
@@ -18,63 +18,65 @@ Draelos R.L., et al. "Machine-Learning-Based Multiple Abnormality Prediction wit
 
 ## Requirements
 
-The requirements to run SARLE are listed in requirements.txt.
+The requirements to run SARLE are listed in requirements.txt. 
 
-[This Singularity container](https://github.com/rachellea/research-container)
-also includes the dependencies.
+One of the goals of SARLE is to have minimal dependencies. Only 5 packages are 
+required for SARLE-Rules (numpy and pandas for SARLE itself, scikit-learn for
+performance metrics, and matplotlib and seaborn for visualization). 
+Newer versions of these packages will almost
+certainly work. The versions in the requirements.txt file simply represent
+one configuration that works for this codebase.
 
-For SARLE-Rules, the only requirements are numpy and pandas for data organization,
-matplotlib for visualizations, and scikit-learn for evaluation metrics.
-For SARLE-Hybrid, fasttext is additionally required. Note that fasttext is currently available for Linux but not Windows.
+The fasttext package is also needed if you'd like to try the SARLE-Hybrid method,
+but as fasttext is only available on Linux or Mac you should delete this
+package from requirements.txt if you're on a Windows machine.
 
-SARLE-Rules outperforms SARLE-Hybrid on our chest CT reports data set, and therefore
-SARLE-Rules was the final method we used for radiology report label extraction.
-The labels produced by SARLE-Rules were used to train a CNN on whole CT volumes.
+## Customization
 
-If you wish to run only SARLE-Rules and avoid the fasttext dependency then you
-can comment out the line `from sentence_classifier import ClassifySentences` at
-the top of main.py and comment out the line `run_SARLE_Hybrid_demo()` at
-the bottom of main.py, and then only the SARLE-Rules demo will run.
+To deploy SARLE on your own dataset, we recommend using SARLE-Rules rather
+than SARLE-Hybrid because:
+* you won't need the fasttext dependency;
+* you won't need to do the manual sentence labeling fasttext requires;
+* SARLE-Rules outperforms SARLE-Hybrid in our experiments.
+
+SARLE presently focuses on chest abnormalities, but does include some abdomen,
+pelvis, and general abnormalities. If you would like to customize
+SARLE's abnormalities, you can do so by editing the vocabulary files:
+* src/vocab/vocabulary_ct.py
+* src/vocab/vocabulary_cxr.py
+
+If you would like to customize SARLE's locations, you can do so in
+* src/vocab/vocabulary_locations.py
 
 ## Usage
 
-To run SARLE-Rules and SARLE-Hybrid on the public OpenI chest x-ray reports
-data, run this command:
+To run a demo of SARLE-Rules and SARLE-Hybrid on the public OpenI dataset of
+chest x-ray reports, run this command:
 
-`python main.py`
+`python demo.py`
 
-The required format of the data is demonstrated in the directory data_cxr, which contains
-the public OpenI chest x-ray data set already organized into the required format.
+The required format of the data is demonstrated in the directory data/data_cxr, 
+which contains the public OpenI chest x-ray data set in the required format.
 
-There are three variants of SARLE-Rules: "duke_ct", "cxr_amb_pos", and
-"cxr_amb_neg".
+## Locations and Abnormalities
 
-* "duke_ct" is the SARLE-Rules version developed for chest CT reports and
-described in the paper. It was developed
-on a data set of Duke chest CT reports. Due to patient privacy concerns there
-are currently no plans to release the Duke chest CT reports data set. By default in "duke_ct"
-ambiguous findings are marked positive (e.g. "possible atelectasis" results
-in a positive label for atelectasis.)
-* "cxr_amb_pos" is the SARLE-Rules version developed for chest x-ray reports, in which
-ambiguous findings are marked positive.
-* "cxr_amb_neg" is the SARLE-Rules version developed for chest x-ray reports, in which
-ambiguous findings are marked negative.
+[An earlier version of this repository](https://github.com/rachellea/sarle-labeler/tree/8cdb3d494b46df2bc820592e14c9c8e23d08fa07)
+contains the original SARLE which produces predictions of abnormalities only.
 
-By default in main.py, all three SARLE-Rules variants as well as SARLE-Hybrid
-will be run on the OpenI chest x-ray data. Results from each of the four variants
-will be automatically saved in separate directories.
+The current version of this repository is a more advanced version of SARLE
+that produces predictions for both abnormalities and their locations. As far
+as we are aware, SARLE is the only radiology label extraction software to
+produce both abnormality and location predictions. For each radiology report,
+an abnormality x location matrix is produced specifying every abnormality
+identified and its location (e.g. nodule/right upper lobe of the lung,
+mass/left lower lobe of the lung, nodule/liver). Location identification is
+done in a rule-based manner.
 
 ## Tests
 
 To run the unit tests, run this command:
 
 `python unit_tests.py`
-
-## Customization
-
-If you would like to use SARLE to make predictions on a custom set of
-abnormalities, you can specify those custom abnormalities in the vocabulary
-files. The vocabulary files are vocab/vocabulary_ct.py and vocab/vocabulary_cxr.py.
 
 ### Logo
 

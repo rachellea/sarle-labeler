@@ -61,6 +61,9 @@ LEFT_LUNG = ['bilateral']+LEFT_UPPER+LEFT_MIDDLE+LEFT_LOWER
 #GENERAL:
 LUNG_GENERAL = ['lung','lobe','pulmonary','lingula','pleura','basilar','apical',
                 'fissure','fissural'] #fissural captures fissural and perifissural
+                #I think I don't need to add 'apex' in here because 'apex' could
+                #be referring to a different organ. 'right apex' is already in RUL
+                #and 'apex of the right lung' would be caught by 'lung'
 
 #EITHER LUNG:
 LUNG_TERMS = RIGHT_LUNG+LEFT_LUNG+LUNG_GENERAL
@@ -85,3 +88,82 @@ LUNG_LOCATION_TERMS = {'left_upper':{'Any':LEFT_UPPER,'Term1':['left'],'Term2':[
         'airways':{'Any':['trache','bronchi','mainstem','bronchus','central airway',' carina'],'Exclude':EXCLUDE_NONLUNG}
         #trache = trachea, tracheostomy. 'bronchi' = bronchi, bronchioles
     }
+
+########################
+# Heart Location Terms #--------------------------------------------------------
+########################
+HEART_LOCATION_TERMS = {'heart':{'Any':['heart','cardiac','cardio','atrium',
+                'atria','ventric','coronary','pericardi','epicardi',' lad ',
+                'mitral','bicuspid','aortic valv','aortic annul',
+                'aortic_prosthe','tricuspid','pulmonary valv',
+                ' cabg ','sternotomy','bypass']}, #ventric = ventricle, ventricular. ' lad ' is for the left anterior descending artery
+            'mitral_valve':{'Any':['mitral','bicuspid']}, #mitral valve, valvular, annulus, annular, prosthe
+            'aortic_valve':{'Any':['aortic valv','aortic annul','aortic prosthe']}, #valve, valvular. annulus, annular. don't want confusion with the aorta (vessel)
+            'tricuspid_valve':{'Any':['tricuspid']},
+            'pulmonary_valve':{'Any':['pulmonary valv']}
+    }
+
+###############################
+# Great Vessel Location Terms #-------------------------------------------------
+###############################
+GREAT_VESSEL_LOCATION_TERMS = {
+        'aorta':{'Any':['aorta','aortic',' arch ']},
+                #sometimes aortic arch is just called 'the arch'.
+                #Unfortunately this will overlap with aortic valve since
+                #both are often mentioned in the same sentence with the same pathology, e.g. calcification.
+        'svc':{'Any':['superior vena cava','svc']},
+        'ivc':{'Any':['inferior vena cava','ivc']},
+        'pulmonary_artery':{'Any':['pulmonary arter']},
+        'pulmonary_vein':{'Any':['pulmonary vein']}
+    }
+
+########################
+# Other Location Terms #--------------------------------------------------------
+########################
+GENERIC_LOCATION_TERMS = {
+    #Generic relative locations
+        'right':{'Any':['right','bilateral']},
+        'left':{'Any':['left','bilateral']},
+        'anterior':{'Any':['anterior']},
+        'posterior':{'Any':['posterior']},
+        'superior':{'Any':['superior']},
+        'inferior':{'Any':['inferior']},
+        'medial':{'Any':['medial']},
+        'lateral':{'Any':['lateral']},
+        'interstitial':{'Any':['interstitial']},
+        'subpleural':{'Any':['subpleural']},
+        'centrilobular':{'Any':['centrilobular']},
+    #Structures
+        'thyroid':{'Any':['thyroid']},
+        'breast':{'Any':['breast','mastect']},
+        'axilla':{'Any':['axilla']}, #axilla, axillary
+        'chest_wall':{'Any':['chest wall']},
+        'rib':{'Any':['rib']}, #rib, ribs
+        'spine':{'Any':['spine','spinal','vertebr',
+                        'c1','c2','c3','c4','c5','c6','c7',
+                        't1','t2','t3','t4','t5','t6','t7','t8','t9','t10','t11','t12',
+                        'l1','l2','l3','l4','l5',
+                        's1','s2','s3','s4','s5']}, #e.g. vertebral compression fracture
+        'bone':{'Any':['bone','osseous']},
+        'mediastinum':{'Any':['mediastin','precarinal','subcarinal']}, #mediastinum, mediastinal
+        'diaphragm':{'Any':['hiatus','hiatal','bochdalek','morgagni']}, #mainly for diaphragmatic hernias
+        'hilum':{'Any':['hilum','hila']}, #hilar, hila (plural of hilum)
+        'abdomen':{'Any':['abdomen','abdominal']},
+        'esophagus':{'Any':['esophag']}, #esophageal, esophagus, paraesophageal
+        'stomach':{'Any':['stomach','gastro','gastric']},
+        'intestine':{'Any':['colon','intestin','duoden','jejun','ileum']}, #colon, colonic, intestine, intestinal
+        'liver':{'Any':['liver','hepatic','caudate','quadrate','hepatis']}, #porta hepatis
+        'gallbladder':{'Any':['gallbladder','gallstone',' chole']}, #cholecystic, cholelithiasis
+        'kidney':{'Any':['kidney',' renal','nephr']}, #space in front of renal to avoid confusion with 'adrenal'. nephrolithiasis
+        'adrenal_gland':{'Any':['adrenal','suprarenal']},
+        'spleen':{'Any':['spleen','splenic']},
+        'pancreas':{'Any':['pancrea']} #pancreas, pancreatic
+    }
+
+#TODO in the future, specify exactly which pathology is allowed with exactly
+#which locations, for the GENERIC_LOCATION_TERMS (e.g. you cannot have a
+#breast_implant located in the thyroid)
+
+#TODO perhaps include a "generic vascular" location (vascular, venous, arterial, etc.)
+
+#TODO perhaps group abdominal organs into 'abdomen' category

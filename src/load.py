@@ -28,7 +28,11 @@ import string
 import numpy as np
 import pandas as pd
 
-from rules import rule_functions
+from src.rules import rule_functions
+
+#Note that os.getcwd() yields the directory containing main.py, assuming that
+#main.py was used to call this script. Example:
+#C:\Users\Rachel\Documents\CarinLab\Project_CT\Code\hiermodel2
 
 """Format of files that are loaded and then merged:
     <count_label_sent>: path to a CSV with columns Count, Label, and
@@ -40,18 +44,43 @@ from rules import rule_functions
         Section, Sentence. Filename is a unique identifier for a report,
         e.g. the name of a file, or a custom ID. Section is 'Findings'
         or 'Impression' and indicates which section of the report the
-        sentence came from. Sentence is the report sentence.
-"""
+        sentence came from. Sentence is the report sentence."""
 
 #####################
 # Primary Functions #-----------------------------------------------------------
 # ###################
 def load_merged_with_style(dataset, style):
     """Load the merged dataframe for all the splits and then filter them
-    based on style."""
-    assert dataset in ['duke_ct','openi_cxr']
-    if dataset == 'duke_ct':
-        train_merged, test_merged, predict_merged = load_data_duke_ct()
+    based on style.
+    
+    <dataset> can be one of the following strings:
+        'duke_ct_2019_09_25': Duke CT reports, parsed into sentences on
+            2019-09-25. The indications and report header are excluded. Some
+            actual report sentences were also (rarely) excluded due to
+            challenges in parsing heterogeneous reports.
+            This version of the Duke CT reports was used for the paper
+            'Machine-Learning-Based Multiple Abnormality Prediction with
+            Large-Scale Chest Computed Tomography Volumes' by Draelos et al.
+            Report-level ground truth was also prepared for this dataset.
+        'duke_ct_2020_03_17': Duke CT reports, parsed into sentences on
+            2020-03-17. All sentences were preserved, including the
+            indications and report header. This led to challenges in dealing
+            with indications, which sometimes have a disease concept in them
+            without indicating that the patient actually has this disease.
+            The function split_indication_sentence() below includes logic
+            to try to exclude potentially misleading indication sentence
+            fragments.
+            Report-level ground truth is NOT currently available for this
+            dataset, although someday it could be derived relatively easily
+            from the ground truth for 'duke_ct_2019_09_25' by updating
+            this old ground truth to take into account the newly-included
+            sentences.
+        'openi_cxr': the publicly available OpenI chest x-ray report data set,
+            put into the required format for SARLE.
+            Report-level ground truth is available for this dataset."""
+    assert dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
+    if dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+        train_merged, test_merged, predict_merged = load_data_duke_ct(dataset)
     elif dataset == 'openi_cxr':
         train_merged, test_merged, predict_merged = load_data_openi_cxr()
      
@@ -77,26 +106,40 @@ def load_merged_with_style(dataset, style):
     return train_merged, test_merged, predict_merged
 
 def load_ground_truth(dataset):
-    assert dataset in ['duke_ct','openi_cxr']
-    if dataset == 'duke_ct':
-        return load_groundtruth_duke_ct()
+    assert dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
+    if dataset == 'duke_ct_2019_09_25':
+        return load_groundtruth_duke_ct_2019_09_25()
+    elif dataset == 'duke_ct_2020_03_17':
+        #No ground truth is available for 2020-03-17 data
+        #(more sentences are included in 2020-03-17 relative to 2019-09-25 due
+        #to including the indications/report header)
+        return None
     elif dataset == 'openi_cxr':
         return load_groundtruth_openi_cxr()
 
 #########################
 # Load Duke CT Data Set #-------------------------------------------------------
 #########################
-def load_data_duke_ct():
-    data_dir = './data_ct/split_2020-03-17/'
+def load_data_duke_ct(dataset):
+    if dataset == 'duke_ct_2019_09_25':
+        data_dir = os.path.join(*[os.getcwd(),'data','data_ct','split_2019-09-25'])
+    elif dataset == 'duke_ct_2020_03_17':
+        data_dir = os.path.join(*[os.getcwd(),'data','data_ct','split_2020-03-17'])
     train_merged = load_one_duke_ct('train', ['imgtrain_notetrain'], data_dir)
     test_merged = load_one_duke_ct('test', ['imgtrain_notetest'], data_dir)
     predict_merged = load_one_duke_ct('predict', ['imgtrain_extra','imgvalid', 'imgtest'], data_dir)
     return train_merged, test_merged, predict_merged
 
-def load_all_ids_and_accs():
+def load_all_ids_and_accs(dataset):
     #used in term_search.py function save_complex_output_files()
-    all_ids = pd.read_csv('./data_ct/split_2020-03-17/all_identifiers.csv',header=0,index_col=False)
-    available_accs = (pd.read_csv('./data_ct/Available_Volumes.csv',header=0))['Accession'].values.tolist()
+    if dataset == 'duke_ct_2019_09_25':
+        all_ids_path = os.path.join(*[os.getcwd(),'data','data_ct','split_2019-09-25','all_identifiers.csv'])
+    elif dataset == 'duke_ct_2020_03_17':
+        all_ids_path = os.path.join(*[os.getcwd(),'data','data_ct','split_2020-03-17','all_identifiers.csv'])
+    all_ids = pd.read_csv(all_ids_path,header=0,index_col=False)
+    
+    available_accs = (pd.read_csv(os.path.join(*['data','data_ct','Available_Volumes.csv']),header=0))['Accession'].values.tolist()
+    
     return all_ids, available_accs
 
 def load_one_duke_ct(setname, files, data_dir):
@@ -134,16 +177,17 @@ def load_one_duke_ct(setname, files, data_dir):
 def filter_merged_by_available_ct(merged):
     """Return the <merged> dataframe including only the rows where Filename
     (accession number) is included in Available_Volumes.csv"""
-    available_volumes = pd.read_csv('./data_ct/Available_Volumes.csv',header=0)
+    available_volumes = pd.read_csv(os.path.join(*['data','data_ct','Available_Volumes.csv']),header=0)
     merged = merged[merged['Filename'].isin(available_volumes['Accession'].values.tolist())]
     return merged
 
-def load_groundtruth_duke_ct():
+def load_groundtruth_duke_ct_2019_09_25():
     """Return the loaded ground truth file"""
-    true_set_labels = pd.read_csv('./groundtruth_ct/split_2019-09-25/ground_truth_filled.csv',
-                                           header=0, index_col=0)
+    true_set_labels_path = os.path.join(*['data','groundtruth_ct','split_2019-09-25','ground_truth_filled.csv'])
+    true_set_labels = pd.read_csv(true_set_labels_path, header=0, index_col=0)
     print('ground truth total reports raw',true_set_labels.shape[0])
-    available_accs = (pd.read_csv('./data_ct/Available_Volumes.csv',header=0))['Accession'].values.tolist()
+    available_accs_path = os.path.join(*['data','data_ct','Available_Volumes.csv'])
+    available_accs = (pd.read_csv(available_accs_path,header=0))['Accession'].values.tolist()
     true_set_labels = true_set_labels[true_set_labels.index.isin(available_accs)]
     print('ground truth total reports (available volumes only)',true_set_labels.shape[0])   
     true_set_labels = true_set_labels.sort_index() 
@@ -240,7 +284,7 @@ def split_indication_sentence(sentence):
 #######################
 def load_data_openi_cxr():
     print('Loading OpenI CXR data set')
-    data_dir = './data_cxr/'
+    data_dir = os.path.join(*[os.getcwd(),'data','data_cxr'])
     all_fss = pd.read_csv(os.path.join(data_dir,'openi_filename_section_sent.csv'),header=0)
     all_cls = pd.read_csv(os.path.join(data_dir,'openi_count_label_sent.csv'),header=0)
     all_merged = all_cls.merge(all_fss, on = 'Sentence')
@@ -265,7 +309,8 @@ def load_data_openi_cxr():
     return train_merged, test_merged, predict_merged
     
 def load_groundtruth_openi_cxr():
-    true_set_labels = pd.read_csv('./data_cxr/openi_test_set_ground_truth.csv',header=0,index_col=0)
+    true_set_labels_path = os.path.join(*['data','data_cxr','openi_test_set_ground_truth.csv'])
+    true_set_labels = pd.read_csv(true_set_labels_path,header=0,index_col=0)
     true_set_labels.columns = true_set_labels.columns.str.replace('_Label','')
     return true_set_labels
 

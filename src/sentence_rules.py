@@ -21,13 +21,8 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
-import os
-import pandas as pd
-
-import load
-import evaluation
-from rules import rules_ct
-from rules import rules_cxr
+from src import load, evaluation
+from src.rules import rules_ct, rules_cxr
 
 ##############################
 # Class to Run Rules on Data #--------------------------------------------------
@@ -38,19 +33,18 @@ class ApplyRules(object):
     def __init__(self, dataset, rules_to_use):
         """Variables:
         <dataset>: either 'duke_ct' or 'openi_cxr'
-        <rules_to_use>: either 'duke_ct', 'cxr_amb_pos', or
-            'cxr_amb_neg'
+        <rules_to_use>: either 'duke_ct_rules', 'cxr_amb_pos_rules', or
+            'cxr_amb_neg_rules'  
         """
         self.dataset = dataset
-        print('rules_to_use = ',rules_to_use)
         
-        if rules_to_use == 'duke_ct':
+        if rules_to_use=='duke_ct_rules':
             self.rules_order = rules_ct.RULES_ORDER_CT
             self.rules_def = rules_ct.RULES_DEF_CT
-        elif rules_to_use == 'cxr_amb_pos':
+        elif rules_to_use=='cxr_amb_pos_rules':
             self.rules_order = rules_cxr.RULES_ORDER_CXR_AMBPOS
             self.rules_def = rules_cxr.RULES_DEF_CXR_AMBPOS
-        elif rules_to_use == 'cxr_amb_neg':
+        elif rules_to_use=='cxr_amb_neg_rules':
             self.rules_order = rules_cxr.RULES_ORDER_CXR_AMBNEG
             self.rules_def = rules_cxr.RULES_DEF_CXR_AMBNEG
         
@@ -66,38 +60,19 @@ class ApplyRules(object):
     # Rules #-------------------------------------------------------------------
     def _run_rules(self):
         """Run the rules to separate healthy and sick parts of sentences"""
-        self.train_merged = ApplyRules.apply_all_rules(self.train_merged, self.rules_order, self.rules_def)
-        self.test_merged = ApplyRules.apply_all_rules(self.test_merged, self.rules_order, self.rules_def)
+        self.train_merged = apply_all_rules(self.train_merged, self.rules_order, self.rules_def)
+        self.test_merged = apply_all_rules(self.test_merged, self.rules_order, self.rules_def)
         if self.dataset == 'duke_ct':
-            self.predict_merged = ApplyRules.apply_all_rules(self.predict_merged, self.rules_order, self.rules_def)
+            self.predict_merged = apply_all_rules(self.predict_merged, self.rules_order, self.rules_def)
         
-        self.train_merged = self._extract_predictions(self.train_merged)
-        self.test_merged = self._extract_predictions(self.test_merged)
+        self.train_merged = self._extract_predictions(self.train_merged, 'train')
+        self.test_merged = self._extract_predictions(self.test_merged, 'test')
         if self.dataset == 'duke_ct':
-            self.predict_merged = self._extract_predictions(self.predict_merged)
+            self.predict_merged = self._extract_predictions(self.predict_merged, 'predict')
     
-    @staticmethod
-    def apply_all_rules(merged, rules_order, rules_def):
-        merged = merged.rename(columns={'Sentence':'OriginalSentence'})
-        #pad with spaces. important to ensure terms at beginning of words work
-        merged['OriginalSentence'] = [' '+x+' ' for x in merged['OriginalSentence'].values.tolist()]
-        merged['Sentence']=merged['OriginalSentence'].values.tolist() #will contain modified version of sentence acceptable for term search
-        merged['PredLabelConservative']=1 #assume sick unless marked healthy
-        for idx in merged.index.values.tolist():
-            sent = merged.at[idx,'OriginalSentence']
-            for mainword in rules_order:
-                func = rules_def[mainword]['function']
-                kwargs = rules_def[mainword]
-                modified, sent = func(sentence=sent,mainword=mainword,**kwargs)
-                if modified:
-                    merged.at[idx,'PredLabelConservative']=0
-                    merged.at[idx,'Sentence'] = sent
-        return merged
-    
-    def _extract_predictions(self, merged):
-        """Report overall performance and save binary labels, predicted
-        labels, and predicted probabilities in <merged>"""
-        
+    def _extract_predictions(self, merged, setname):
+        """Report overall performance and put binary labels, predicted
+        labels, and predicted probabilities into <merged>"""
         #Note that some outputs of some rules will produce empty sentences that
         #are not the empty string, e.g. ' ' or '   '. We need to turn these into
         #the empty string so that we can produce our labels based on assuming
@@ -117,5 +92,27 @@ class ApplyRules(object):
         #Rules are not probabilistic so the PredProb column is equal to the
         #PredLabel column. PredProb column is accessed in the eval functions.
         merged['PredProb'] = merged['PredLabel'].values.tolist()
-        return merged
         
+        #Report performance
+        if self.dataset=='openi_cxr':
+            evaluation.report_sentence_level_eval(merged, setname, 'Rules')
+        
+        return merged
+
+#Generic function to apply rules
+def apply_all_rules(merged, rules_order, rules_def):
+    merged = merged.rename(columns={'Sentence':'OriginalSentence'})
+    #pad with spaces. important to ensure terms at beginning of words work
+    merged['OriginalSentence'] = [' '+x+' ' for x in merged['OriginalSentence'].values.tolist()]
+    merged['Sentence']=merged['OriginalSentence'].values.tolist() #will contain modified version of sentence acceptable for term search
+    merged['PredLabelConservative']=1 #assume sick unless marked healthy
+    for idx in merged.index.values.tolist():
+        sent = merged.at[idx,'OriginalSentence']
+        for mainword in rules_order:
+            func = rules_def[mainword]['function']
+            kwargs = rules_def[mainword]
+            modified, sent = func(sentence=sent,mainword=mainword,**kwargs)
+            if modified:
+                merged.at[idx,'PredLabelConservative']=0
+                merged.at[idx,'Sentence'] = sent
+    return merged

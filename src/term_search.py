@@ -27,21 +27,15 @@ import pickle
 import pandas as pd
 import numpy as np
 
-import load
-from evaluation import Perf, add_mean_and_stdev
-from vocab import vocabulary_ct, vocabulary_cxr, gr1cm
-
-import matplotlib
-matplotlib.use('agg') #so that it does not attempt to display via SSH
-import matplotlib.pyplot as plt
-plt.ioff() #turn interactive plotting off
-matplotlib.rcParams.update({'font.size': 18})
+from src import load, evaluation
+from src.vocab import vocabulary_ct, vocabulary_cxr, gr1cm
 
 ###################################
 # Determine the note-level labels #---------------------------------------------
 ###################################
 class RadLabel(object):
-    def __init__(self, dataset, results_dir, setname, merged, testing=False):
+    def __init__(self, dataset, results_dir, setname, merged, run_locdis_checks,
+                 save_output_files=True):
         """Output for all methods: performance metrics files
         reporting label frequency, and performance of the different methods.
         
@@ -53,16 +47,20 @@ class RadLabel(object):
         Saved as files with prefix "Test_Set_Labels"
         
         Variables:
+        <dataset>: string specify dataset
         <results_dir>: path to directory in which results will be saved
         <setname> is a string that will be prepended to any saved files,
             e.g. 'train' or 'test' or 'predict'
-        <merged> is a pandas dataframe produced by sentence_classifier.py
-            which contains the following columns:
+        <merged> is a pandas dataframe produced by sentence_rules.py or
+            sentence_classifier.py which contains the following columns:
             ['Count','Sentence','Filename','Section','PredLabel','PredProb']
             For the test and train sets it also contains these columns:
-            ['Label', 'BinLabel'] which are the ground truth sentence labels"""
+            ['Label', 'BinLabel'] which are the ground truth sentence labels
+        <save_output_files> is True by default to ensure all output files
+            are saved. It is only set to False within unit tests to avoid
+            saving output files during unit testing."""
         self.dataset = dataset
-        if self.dataset == 'duke_ct':
+        if self.dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
             self.vocabmodule = vocabulary_ct
         elif self.dataset == 'openi_cxr':
             self.vocabmodule = vocabulary_cxr
@@ -73,24 +71,31 @@ class RadLabel(object):
         self.merged = merged
         self.merged['Sentence'] = [' '+x+' ' for x in self.merged['Sentence'].values.tolist()] #pad with spaces to facilitate term search of words at the beginning
         print('merged shape',merged.shape)
+        self.run_locdis_checks = run_locdis_checks
+        
+        #Counts for tracking known mistakes
+        if not self.run_locdis_checks:
+            print('***WARNING: self.clean_up_forbidden_values() will be skipped to enable disease-ONLY prediction***')
+        self.wrong_lung_values = 0
+        self.wrong_heart_values = 0
+        self.wrong_vessel_values = 0
         
         #More initializations:
-        if self.setname == 'test':
-            self.load_ground_truth_and_perf_dfs()#Load ground truth for disease-level labels
         self.uniq_set_files = [x for x in set(self.merged['Filename'].values.tolist())]
         self.uniq_set_files.sort()
         self.sickdf, self.healthydf = self.pick_out_sick_sentences() #Pick out sick sentences
         self.initialize_vocabulary_dicts() #Initialize term dictionaries and keyterms
         
         #Run and save output:
-        self.obtain_safra_complex_labels() #predict with Safra
-        self.obtain_safra_lung_missingness() #missingness
-        self.disease_out = self.binarize_complex_labels(chosen_labels=list(self.mega_path_dict.keys()), label_type='disease')
-        if not testing: self.save_complex_output_files()
+        self.obtain_sarle_complex_labels() #predict with sarle
+        self.obtain_sarle_lung_missingness() #missingness
+        self.disease_out = self.binarize_complex_labels(chosen_labels=list(self.mega_disease_dict.keys()), label_type='disease')
+        if save_output_files: self.save_complex_output_files()
         
-        #Evaluate and save output if indicated:
-        if self.setname == 'test':
-            print('***Comparing Safra to True***') #evaluate on disease-level ground truth
+        #Evaluate on report-level ground truth if available
+        if ((self.setname == 'test') and (self.dataset in ['duke_ct_2019_09_25','openi_cxr'])):
+            self.load_ground_truth_and_perf_dfs()#Load ground truth for disease-level labels
+            print('***Comparing SARLE Predictions to Ground Truth***') #evaluate on disease-level ground truth
             self.disease_out_gt = self.binarize_complex_labels(chosen_labels=self.true_set_labels.columns.values, label_type='disease')
             self.disease_out_gt = self.disease_out_gt.sort_index()
             self.allperf.update(out = self.disease_out_gt)
@@ -104,7 +109,7 @@ class RadLabel(object):
         self.true_set_labels = load.load_ground_truth(self.dataset)
         self.frequency_df = pd.DataFrame((self.true_set_labels.sum(axis = 0)), columns = ['Freq_'+self.setname]).sort_index()
         #Initialize evaluation dfs
-        self.allperf = Perf(true_labels = self.true_set_labels,
+        self.allperf = evaluation.Perf(true_labels = self.true_set_labels,
                 frequency_df = self.frequency_df, setname = self.setname,
                 results_dir = self.results_dir)
         
@@ -130,67 +135,128 @@ class RadLabel(object):
     #############################
     # Predict Note-Level Labels #-----------------------------------------------
     #############################
-    def obtain_safra_complex_labels(self): #Done with testing
-        """Generate location and path labels
+    def obtain_sarle_complex_labels(self): #Done with testing
+        """Generate location and disease labels
         Produces self.out_bin which is a dictionary where the keys are filenames
         (report IDs), and the values are binary pandas dataframes (since I don't
         think counts make sense in this context.) A single pandas dataframe is
-        organized with path as rows and locations as columns."""
+        organized with disease as rows and locations as columns."""
         self.out_bin = {}
         if self.setname == 'train':            
-            other_path = open(os.path.join(self.results_dir,'train_other_path_sentences.txt'),'a')
+            other_disease = open(os.path.join(self.results_dir,'train_other_disease_sentences.txt'),'a')
             other_location = open(os.path.join(self.results_dir,'train_other_location_sentences.txt'),'a')
 
         #Fill self.out with dataframes of predicted labels:
         for filename in self.uniq_set_files:
             #selected_out is for this filename only:
-            selected_out = pd.DataFrame(np.zeros((len(list(self.mega_path_dict.keys()))+1,
+            selected_out = pd.DataFrame(np.zeros((len(list(self.mega_disease_dict.keys()))+1,
                                               len(list(self.mega_loc_dict.keys()))+1)),
                            columns = list(self.mega_loc_dict.keys())+['other_location'],
-                           index = list(self.mega_path_dict.keys())+['other_path'])     
+                           index = list(self.mega_disease_dict.keys())+['other_disease'])     
             selected_sickdf = self.sickdf[self.sickdf['Filename']==filename]
             for sentence in selected_sickdf['Sentence'].values.tolist():
                 #the temp dfs, index is keyterms and column is 'SentenceValue'
                 temp_location = self.return_temp_for_location_search(sentence)
-                temp_path = self.return_temp_for_path_search(sentence)
+                temp_disease = self.return_temp_for_disease_search(sentence)
                 
                 #iterate through locations first
                 for location in temp_location.index.values.tolist():
                     if temp_location.at[location,'SentenceValue'] > 0:
-                        #once you know the location, figure out the path
+                        #once you know the location, figure out the disease
                         location_recorded = False
-                        for path in temp_path.index.values.tolist():
-                            if temp_path.at[path,'SentenceValue'] > 0 :
-                                selected_out.at[path, location] = 1
+                        for disease in temp_disease.index.values.tolist():
+                            if temp_disease.at[disease,'SentenceValue'] > 0 :
+                                selected_out.at[disease, location] = 1
                                 location_recorded = True
                         if not location_recorded:
                             #makes sure every location gets recorded
-                            selected_out.at['other_path', location] = 1
+                            selected_out.at['other_disease', location] = 1
                             if self.setname == 'train':
-                                other_path.write(location+'\t'+sentence+'\n')
+                                other_disease.write(location+'\t'+sentence+'\n')
                 
-                #iterate through path second and make sure none were missed
-                for path in temp_path.index.values.tolist():
-                    if temp_path.at[path,'SentenceValue'] > 0:
-                        if np.sum(selected_out.loc[path,:].values) == 0:
-                            #i.e. if we haven't recorded that path yet,
-                            selected_out.at[path,'other_location'] = 1
+                #iterate through disease second and make sure none were missed
+                for disease in temp_disease.index.values.tolist():
+                    if temp_disease.at[disease,'SentenceValue'] > 0:
+                        if np.sum(selected_out.loc[disease,:].values) == 0:
+                            #i.e. if we haven't recorded that disease yet,
+                            selected_out.at[disease,'other_location'] = 1
                             if self.setname == 'train':
-                                other_location.write(path+'\t'+sentence+'\n')
+                                other_location.write(disease+'\t'+sentence+'\n')
+            #Clean up
+            if self.run_locdis_checks:
+                selected_out = self.clean_up_forbidden_values(selected_out)
             #Save the labels for this patient (filename):
             self.out_bin[filename] = selected_out
+        #The end
+        self.report_corrected_forbidden_values()
     
+    # Clean up based on forbidden values #--------------------------------------
+    def clean_up_forbidden_values(self, selected_out):
+        """Delete 'impossible' location-disease combinations ('impossible'
+        according to medical knowledge, e.g. you cannot have an enlarged heart
+        'in the lungs.')"""
+        #Iterate throuh 
+        for lung_disease in list(self.lung_disease_dict.keys()):
+            for non_lung_loc in (list(self.heart_loc_dict.keys())+list(self.generic_loc_dict.keys())):
+                if selected_out.at[lung_disease, non_lung_loc] == 1:
+                    self.wrong_lung_values+=1
+                    selected_out.at[lung_disease, non_lung_loc] = 0
+        for heart_disease in list(self.heart_disease_dict.keys()):
+            for non_heart_loc in (list(self.lung_loc_dict.keys())+list(self.generic_loc_dict.keys())):
+                if selected_out.at[heart_disease, non_heart_loc] == 1:
+                    self.wrong_heart_values+=1
+                    selected_out.at[heart_disease, non_heart_loc] = 0
+        
+        #Now iterate through locations for prespecified 'forbidden diseases':
+        selected_out, vessel_count = RadLabel.clean_forbidden_helper(self.vessel_loc_dict, self.vocabmodule.return_forbidden('great_vessel'), selected_out)
+        self.wrong_vessel_values+=vessel_count
+        
+        selected_out, heart_count = RadLabel.clean_forbidden_helper(self.heart_loc_dict, self.vocabmodule.return_forbidden('heart'), selected_out)
+        self.wrong_heart_values+=heart_count
+        
+        selected_out, lung_count = RadLabel.clean_forbidden_helper(self.lung_loc_dict, self.vocabmodule.return_forbidden('lung'), selected_out)
+        self.wrong_lung_values+=lung_count
+        return selected_out
+    
+    @staticmethod
+    def clean_forbidden_helper(loc_dict, forbidden_disease, selected_out):
+        """Return <selected_out> modified so that diseases in <forbidden_disease>
+        is removed from locations in <loc_dict>. Also return a count of the
+        number of mistakes fixed."""
+        count = 0 
+        for loc in list(loc_dict.keys()):
+            for disease in forbidden_disease:
+                if selected_out.at[disease, loc] == 1:
+                    count+=1
+                    selected_out.at[disease, loc] = 0
+        return selected_out, count
+    
+    # Report total values for this set #----------------------------------------
+    def report_corrected_forbidden_values(self):
+        """Calculate how many individual labels are being produced for this set"""
+        total_values = len(self.mega_disease_dict.keys())*len(self.mega_loc_dict.keys())*len(self.uniq_set_files)
+        print(self.setname,'total values:',total_values)
+        print('\tmega_disease_dict.keys():',len(self.mega_disease_dict.keys()))
+        print('\tmega_loc_dict.keys():',len(self.mega_loc_dict.keys()))
+        print('\tlen(uniq_set_files):',len(self.uniq_set_files))
+        print('\ttotal:',total_values)
+        print('wrong_lung_values (corrected):',self.wrong_lung_values,',',round(100*self.wrong_lung_values/total_values,2),'%')
+        print('wrong_heart_values (corrected):',self.wrong_heart_values,',',round(100*self.wrong_heart_values/total_values,2),'%')
+        print('wrong_vessel_values (corrected):',self.wrong_vessel_values,',',round(100*self.wrong_vessel_values/total_values,2),'%')
+        
     # Initialize term dictionaries #--------------------------------------------
     def initialize_vocabulary_dicts(self):
         #Load dictionaries from self.vocabmodule.py
-        self.lung_loc_dict, self.lung_path_dict = self.vocabmodule.return_lung_terms()
-        self.heart_path_dict = self.vocabmodule.return_heart_terms()
-        self.generic_path_dict = self.vocabmodule.return_generic_terms()
+        self.lung_loc_dict, self.lung_disease_dict = self.vocabmodule.return_lung_terms()
+        self.heart_loc_dict, self.heart_disease_dict = self.vocabmodule.return_heart_terms()
+        self.vessel_loc_dict = self.vocabmodule.return_great_vessel_terms()
+        self.generic_loc_dict, self.generic_disease_dict = self.vocabmodule.return_generic_terms()
         
         #Make super dicts:
-        self.mega_loc_dict = self.lung_loc_dict
-        self.mega_path_dict = self.aggregate_dicts([self.lung_path_dict,
-                        self.heart_path_dict, self.generic_path_dict])
+        self.mega_loc_dict = self.aggregate_dicts([self.lung_loc_dict,
+                        self.heart_loc_dict, self.vessel_loc_dict,self.generic_loc_dict])
+        self.mega_disease_dict = self.aggregate_dicts([self.lung_disease_dict,
+                        self.heart_disease_dict, self.generic_disease_dict])
         
     def aggregate_dicts(self, dicts):
         super_dict = {}
@@ -206,7 +272,9 @@ class RadLabel(object):
     def return_temp_for_location_search(self, sentence):
         """Return a dataframe called <temp> which reports the results of
         the location term search using rules defined by <loc_dict> and
-        <path_dict>, for the string <sentence>"""
+        <disease_dict>, for the string <sentence>
+        <body_region> is 'lung' or 'heart' or 'other.' Determines how/whether
+            the disease_dict will be used here"""
         #temp is a dataframe for this particular sentence ONLY
         temp = pd.DataFrame(np.zeros((len(list(self.mega_loc_dict.keys())),1)),
                                         index = list(self.mega_loc_dict.keys()),
@@ -218,9 +286,9 @@ class RadLabel(object):
             if locterm_present: #update out dataframe for specific lung location
                 temp.at[locterm,'SentenceValue'] = 1
         
-        #use location-specific pathology
-        #Look for lung-specific pathology with right vs left
-        right, left, lung = RadLabel.label_for_right_and_left_from_pathology(sentence, self.lung_path_dict)
+        #use location-specific diseases
+        #Look for lung-specific diseases with right vs left
+        right, left, lung = RadLabel.label_for_right_and_left_from_diseases(sentence, self.lung_disease_dict)
         if lung:
             temp.at['lung','SentenceValue'] = 1
         if right:
@@ -231,8 +299,8 @@ class RadLabel(object):
         #Lung detailed--> general. If you have already decided something is in
         #the right_mid lobe, then right_lung and lung should be positive too.
         #(We need this step because the previous step using 'lung-specific
-        #pathology with right vs left' applies ONLY to lung-specific pathology
-        #and here we need to address generic pathology e.g. nodules.
+        #diseases with right vs left' applies ONLY to lung-specific diseases
+        #and here we need to address generic diseases e.g. nodules.
         for right_lobe in ['right_upper','right_mid','right_lower']:
             if temp.at[right_lobe,'SentenceValue'] == 1:
                 temp.at['right_lung','SentenceValue'] = 1
@@ -242,24 +310,29 @@ class RadLabel(object):
                 temp.at['left_lung','SentenceValue'] = 1
                 temp.at['lung','SentenceValue'] = 1
         
+        #Look for heart-specific diseases
+        for diseaseterm in self.heart_disease_dict.keys():
+            diseaseterm_present = RadLabel.label_for_keyterm_and_sentence(diseaseterm, sentence, self.heart_disease_dict)
+            if diseaseterm_present:
+                temp.at['heart','SentenceValue'] = 1
         return temp
     
-    # Path Helper Functions #------------------------------------------------
-    def return_temp_for_path_search(self, sentence):
+    # Disease Helper Functions #------------------------------------------------
+    def return_temp_for_disease_search(self, sentence):
         """Return a dataframe called <temp> which reports the results of
-        the path term search defined by <path_dict> for the string <sentence>"""
+        the disease term search defined by <disease_dict> for the string <sentence>"""
         #temp is a dataframe for this particular sentence ONLY
-        temp = pd.DataFrame(np.zeros((len(list(self.mega_path_dict.keys())),1)),
-                                        index = list(self.mega_path_dict.keys()),
+        temp = pd.DataFrame(np.zeros((len(list(self.mega_disease_dict.keys())),1)),
+                                        index = list(self.mega_disease_dict.keys()),
                                         columns = ['SentenceValue'])
-        #Look for path phrases
-        for pathterm in self.mega_path_dict.keys():
-            pathterm_present = RadLabel.label_for_keyterm_and_sentence(pathterm, sentence, self.mega_path_dict)
-            if pathterm_present: #update out dataframe for specific lung location
-                temp.at[pathterm,'SentenceValue'] = 1
+        #Look for disease phrases
+        for diseaseterm in self.mega_disease_dict.keys():
+            diseaseterm_present = RadLabel.label_for_keyterm_and_sentence(diseaseterm, sentence, self.mega_disease_dict)
+            if diseaseterm_present: #update out dataframe for specific lung location
+                temp.at[diseaseterm,'SentenceValue'] = 1
         
         #Special lymphadenopathy and nodulegr1cm handling that uses measurements
-        if self.dataset == 'duke_ct':
+        if self.dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
             if gr1cm.lymphadenopathy_handling(sentence) == 1:
                 temp.at['lymphadenopathy','SentenceValue'] = 1
             if gr1cm.nodulegr1cm_handling(sentence) == 1:
@@ -268,7 +341,7 @@ class RadLabel(object):
         return temp
     
     # Lung Missingness #--------------------------------------------------------
-    def obtain_safra_lung_missingness(self):
+    def obtain_sarle_lung_missingness(self):
         """Obtain a missingness indicator for each lobe of the lung as well
         as each lung, based on the previously created labels.
         e.g. if lung = 1 but both right_lung and left_lung are 0, we know
@@ -308,20 +381,23 @@ class RadLabel(object):
         as separate dataframes"""
         sickdf = copy.deepcopy(self.merged)
         healthydf = copy.deepcopy(self.merged)
-        if self.dataset == 'duke_ct':
-            sets_use_grtruth = []
-            sets_use_pred = ['train','test','predict']
+        if self.dataset == 'duke_ct_2019_09_25':
+            sets_use_sentence_level_grtruth = ['train']
+            sets_use_pred_sentence_labels = ['test','predict']
+        if self.dataset == 'duke_ct_2020_03_17':
+            sets_use_sentence_level_grtruth = [] #no ground truth available 
+            sets_use_pred_sentence_labels = ['train','test','predict']
         elif self.dataset == 'openi_cxr':
             #you have the sentence-level ground truth for the training set
             #so you might as well use it
-            sets_use_grtruth = ['train']
-            sets_use_pred = ['test','predict']
-        if self.setname in sets_use_grtruth:
+            sets_use_sentence_level_grtruth = ['train']
+            sets_use_pred_sentence_labels = ['test','predict']
+        if self.setname in sets_use_sentence_level_grtruth:
             print('Using ground truth sentence-level labels for',self.setname)
             #BinLabel is 1 or 0 based off of Label which is 's' or 'h'
             sickdf = sickdf[sickdf['BinLabel'] == 1]
             healthydf = healthydf[healthydf['BinLabel'] == 0]
-        elif self.setname in sets_use_pred:
+        elif self.setname in sets_use_pred_sentence_labels:
             print('Using predicted sentence-level labels for',self.setname)
             sickdf = sickdf[sickdf['PredLabel'] == 1]
             healthydf = healthydf[healthydf['PredLabel'] == 0]
@@ -333,21 +409,23 @@ class RadLabel(object):
         return sickdf, healthydf
     
     def save_complex_output_files(self):
-        """Save output files for location_and_path
+        """Save output files for location_and_disease
         out_bin is a dictionary of pandas dataframes and gets pickled"""
         if self.setname == 'train' or self.setname == 'test':
+            pickle.dump(self.out_bin, open(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_BinaryLabels.pkl'), 'wb'))
             self.disease_out.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_DiseaseBinaryLabels.csv'))
             self.merged.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Merged.csv'))
             self.missing.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Missingness.csv'))
         elif self.setname == 'predict':
             def save_set(description, out_bin, disease_out, merged, missing):
-                all_ids, available_accs = load.load_all_ids_and_accs()
+                all_ids, available_accs = load.load_all_ids_and_accs(self.dataset)
                 ids = all_ids[all_ids['Set_Assigned']==description]['Accession'].values.tolist()
                 ids = [x for x in ids if x in available_accs]
                 #Select out_bin filenames and save
                 out_bin = {}
                 for key in ids:
                     out_bin[key] = self.out_bin[key]
+                pickle.dump(out_bin, open(os.path.join(self.results_dir, description+'_BinaryLabels.pkl'), 'wb'))
                 #Select disease_out filenames and save
                 disease_out = disease_out.loc[ids,:]
                 disease_out.to_csv(os.path.join(self.results_dir, description+'_DiseaseBinaryLabels.csv'))
@@ -371,18 +449,18 @@ class RadLabel(object):
     def report_test_set_mistakes(self):
         """Report all note-level mistakes of all methods and save to a CSV"""
         summary_df = pd.DataFrame(np.empty((5,4),dtype='str'),
-                                  columns=['Filename','Safra_Healthy_Sentences',
-                                    'Safra_Sick_Sentences','Safra_Mistakes'])
+                                  columns=['Filename','sarle_Healthy_Sentences',
+                                    'sarle_Sick_Sentences','sarle_Mistakes'])
         #Fill in the summary_df
         idx=0
         for fname in self.uniq_set_files:
             summary_df.at[idx,'Filename']=fname
             #Get the full text, which is contained in self.merged
-            summary_df.at[idx,'Safra_Healthy_Sentences'] = self.stringify(self.healthydf,fname)
+            summary_df.at[idx,'sarle_Healthy_Sentences'] = self.stringify(self.healthydf,fname)
             #Get the sick sentences, which is contained in self.sickdf
-            summary_df.at[idx,'Safra_Sick_Sentences'] = self.stringify(self.sickdf,fname)
+            summary_df.at[idx,'sarle_Sick_Sentences'] = self.stringify(self.sickdf,fname)
             #Get the mistakes
-            summary_df.at[idx,'Safra_Mistakes'] = self.mistakes_as_string('Safra',fname,self.results_dir)
+            summary_df.at[idx,'sarle_Mistakes'] = self.mistakes_as_string('sarle',fname,self.results_dir)
             idx+=1
         summary_df.to_csv(os.path.join(self.results_dir,'Test_Set_Mistakes_All_Methods.csv'))
     
@@ -430,17 +508,17 @@ class RadLabel(object):
         if 'Exclude' in termdict[keyterm].keys():
             for banned_term in termdict[keyterm]['Exclude']:
                 if banned_term in sentence:
-                    return 0
+                    label = 0 #cannot write return 0 because that means the function doesn't return any value
         return label
     
     @staticmethod
-    def label_for_right_and_left_from_pathology(sentence, lung_path_dict):
+    def label_for_right_and_left_from_diseases(sentence, lung_disease_dict):
         """Produce labels for right lung, left lung, and lungs overall based on
-        lung-specific pathology terms"""
+        lung-specific diseases terms"""
         right = 0; left = 0; lung = 0
-        for pathterm in lung_path_dict.keys():
-            pathterm_present = RadLabel.label_for_keyterm_and_sentence(pathterm, sentence, lung_path_dict)
-            if pathterm_present == 1: #if you find any lung-specific pathology in the sentence
+        for diseaseterm in lung_disease_dict.keys():
+            diseaseterm_present = RadLabel.label_for_keyterm_and_sentence(diseaseterm, sentence, lung_disease_dict)
+            if diseaseterm_present == 1: #if you find any lung-specific diseases in the sentence
                 lung = 1
                 if 'right' in sentence: #e.g. "right pneumonia"
                     right = 1
@@ -448,3 +526,45 @@ class RadLabel(object):
                     left = 1
                 break
         return right, left, lung
+
+########################################
+# Create imgtrain Overall Output Files #----------------------------------------
+########################################
+def combine_imgtrain_files(term_search_dir):
+    """Combine imgtrain_notetrain, imgtrain_notetest, and imgtrain_extra output
+    files"""
+    #Aggregate all training labels (location x disease) and save
+    imgtrain_notetrain = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetrain_BinaryLabels.pkl'), 'rb'))
+    imgtrain_notetest = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetest_BinaryLabels.pkl'), 'rb'))
+    imgtrain_extra = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_extra_BinaryLabels.pkl'), 'rb'))
+    out_bin = {}
+    out_bin.update(imgtrain_notetrain)
+    out_bin.update(imgtrain_notetest)
+    out_bin.update(imgtrain_extra)
+    pickle.dump(out_bin, open(os.path.join(term_search_dir, 'imgtrain_BinaryLabels.pkl'),'wb'))
+    
+    #Aggregate disease_out (disease binary labels) and save
+    train_disease_out = (pd.concat([pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetrain_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetest_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_extra_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0)],axis=0))
+    train_disease_out.to_csv(os.path.join(term_search_dir, 'imgtrain_DiseaseBinaryLabels.csv'))
+    
+    #Missingness
+    train_missing = (pd.concat([pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetrain_Missingness.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetest_Missingness.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_extra_Missingness.csv'),
+                                       header = 0, index_col = 0)],axis=0))
+    train_missing.to_csv(os.path.join(term_search_dir, 'imgtrain_Missingness.csv'))
+    
+    #Sanity checks
+    #columns ['MRN', 'Accession', 'Set_Assigned', 'Set_Should_Be','Subset_Assigned']
+    all_ids, available_accs = load.load_all_ids_and_accs()
+    train_ids = all_ids[all_ids['Set_Assigned'].isin(['imgtrain_extra','imgtrain_notetrain','imgtrain_notetest'])]['Accession'].values.tolist()
+    train_ids = [x for x in train_ids if x in available_accs]
+    assert set(train_ids)==set(list(out_bin.keys()))
+

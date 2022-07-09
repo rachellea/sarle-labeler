@@ -22,18 +22,26 @@
 #SOFTWARE
 
 import os
-import fasttext
-import numpy as np
-import pandas as pd
 
-import load
-import evaluation
+import numpy as np
+
+try:
+    import fasttext
+except:
+    #fasttext not available on Windows
+    print('Notification: fasttext not imported')
+
+from src import load, evaluation, sentence_rules
+from src.rules import rules_cxr
 
 class ClassifySentences(object):
     """Train (training set), evaluate (test set), and use (predict set)
     a Fasttext model that classifies individual radiology report sentences as
-    'sick' or 'healthy'"""
-    def __init__(self, dataset, results_dir, style):
+    'sick' or 'healthy'.
+    
+    The final results are stored in the dataframes train_merged, test_merged,
+    and predict_merged."""
+    def __init__(self, dataset, results_dir, style, run_predict, ambiguities):
         """Variables:
         <dataset>: either 'duke_ct' or 'openi_cxr'
         <results_dir>: path to directory in which results will be saved
@@ -48,16 +56,25 @@ class ClassifySentences(object):
                 training set.
             'trainall_testfilt': train on all training sentences, and test on
                 only unique sentences in the test set. Sentences that would
-                overlap are assigned to the training set."""
+                overlap are assigned to the training set.
+        <run_predict>: if True then classify sentences in the predict set
+        <ambiguities>: if 'neg' then apply a rule-based ambiguity filter."""
         self.dataset = dataset
         self.results_dir = results_dir
         self.style = style #affects function _save_fasttext_splits(), and what files get saved
         assert self.style in ['trainall_testall','trainfilt_testfilt','trainall_testfilt']
+        self.run_predict = run_predict
+        self.ambiguities = ambiguities
         print('Running sentence_classifier with style',self.style)
         
     def run_all(self):
         self._prepare_data()
         self._run_fasttext_model()
+        
+        #ambiguity filter:
+        if ((self.dataset == 'openi_cxr') and (self.ambiguities == 'neg')):
+            self.train_merged = sentence_rules.apply_all_rules(self.train_merged, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
+            self.test_merged = sentence_rules.apply_all_rules(self.test_merged, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
     
     # Data Handling #-----------------------------------------------------------
     def _prepare_data(self):
@@ -97,7 +114,7 @@ class ClassifySentences(object):
         print('(N, P@1, R@1)=',result)
         self.train_merged = self._get_preds_and_perf('train',self.train_merged)
         self.test_merged = self._get_preds_and_perf('test',self.test_merged)
-        if self.dataset == 'duke_ct':
+        if self.run_predict and self.dataset == 'duke_ct':
             self.predict_merged = self._get_preds_and_perf('predict',self.predict_merged)
         self._clean_up()
     

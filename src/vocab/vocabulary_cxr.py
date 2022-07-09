@@ -21,14 +21,16 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
-from . import vocabulary_locations as loc
+import copy
+
+from src.vocab import vocabulary_locations
 
 ########################
 # Lung Pathology Terms #--------------------------------------------------------
 ########################
 LUNG_PATHOLOGY = {
-         'airspace_disease':{'Any':['airspace disease','copd'], 'Term1':['airspace','air-space']+loc.LUNG_TERMS, 'Term2':['disease']},
-         'atelectasis':{'Any':['atelectasis', 'atelectases', 'atelectatic'], 'Term1':loc.LUNG_TERMS,'Term2':['collapse']},
+         'airspace_disease':{'Any':['airspace disease','copd'], 'Term1':['airspace','air-space']+vocabulary_locations.LUNG_TERMS, 'Term2':['disease']},
+         'atelectasis':{'Any':['atelectasis', 'atelectases', 'atelectatic'], 'Term1':vocabulary_locations.LUNG_TERMS,'Term2':['collapse']},
          'blister':{'Any':['blister','bullae','bullous']},
          'bronchiectasis':{'Any':['bronchiectas']}, #bronchiectases, bronchiectasis
          'bronchiolitis':{'Any':['bronchiolitis']},
@@ -41,18 +43,18 @@ LUNG_PATHOLOGY = {
          'hyperlucent':{'Any':['hyperluc']}, #hyperlucent, hyperlucency
          'hypoinflation':{'Any':['hypoinflat','hypovol','hypoventila','low lung volume','low volume'], 'Term1':['low'], 'Term2':['volume']}, #hypoinflation, hypoinflated, hypovolemia, hypovolemic
          'infiltrate':{'Any':['infiltrat']}, #infiltrate, infiltrates, infiltration
-         'interstitial_lung_disease':{'Any':['interstitial disease','interstitial lung disease'], 'Term1':['interstit'], 'Term2':['disease']+loc.LUNG_TERMS}, #interstitial, interstitium
-         'lucency_lung':{'Any':[], 'Term1':[' lucency '], 'Term2':loc.LUNG_TERMS},
+         'interstitial_lung_disease':{'Any':['interstitial disease','interstitial lung disease'], 'Term1':['interstit'], 'Term2':['disease']+vocabulary_locations.LUNG_TERMS}, #interstitial, interstitium
+         'lucency_lung':{'Any':[], 'Term1':[' lucency '], 'Term2':vocabulary_locations.LUNG_TERMS},
          'lung_blood_vessels':{'Any':[], 'Term1':['blood','vessel'], 'Term2':['prominent']},
-         'lung_markings':{'Any':['bronchovascular crowd'], 'Term1':['mark ','marks','marking'], 'Term2':loc.LUNG_TERMS},
-         'lung_misc':{'Any':[], 'Term1':['obscured','azygous','prominent','small','tortuous'],'Term2':['thorax','trachea']+loc.LUNG_TERMS},
+         'lung_markings':{'Any':['bronchovascular crowd'], 'Term1':['mark ','marks','marking'], 'Term2':vocabulary_locations.LUNG_TERMS},
+         'lung_misc':{'Any':[], 'Term1':['obscured','azygous','prominent','small','tortuous'],'Term2':['thorax','trachea']+vocabulary_locations.LUNG_TERMS},
          'pleural_effusion':{'Any':['effusion','pleural fluid'], 'Term1':['pleura'], 'Term2':['fluid'], 'Exclude':['pericardial']},
          'pleura_abnormal':{'Any':[], 'Term1':['thick','blunted','abnormal'], 'Term2':['pleura']},
          'pneumonectomy':{'Any':['pneumonectomy','lobectomy']},
          'pneumoperitoneum':{'Any':['pneumoperitoneum']},
          'pneumonia':{'Any':['pneumonia','pneumoniae']},
          'pneumothorax':{'Any':['pneumothorax','hydropneumothorax','hemopneumothorax']},
-         'pulmonary_congestion':{'Any':['pulmonary congestion'], 'Term1':['congestion','prominen'], 'Term2':loc.LUNG_TERMS+['vascular','vasculature']},
+         'pulmonary_congestion':{'Any':['pulmonary congestion'], 'Term1':['congestion','prominen'], 'Term2':vocabulary_locations.LUNG_TERMS+['vascular','vasculature']},
          'sulcus_blunting':{'Any':[], 'Term1':['sulcus'], 'Term2':['blunt', 'obscured']},
          'tuberculosis':{'Any':['tubercul']}, #tuberculous, tuberculosis, tuberculoses
          'volume_loss':{'Any':[], 'Term1':['volume'], 'Term2':['loss']}
@@ -166,10 +168,33 @@ GENERIC_PATHOLOGY = {'abdomen_enlarged':{'Any':[],'Term1':['abdomen','abdominal'
 # Functions #-------------------------------------------------------------------
 #############
 def return_lung_terms():
-    return loc.LUNG_LOCATION_TERMS, LUNG_PATHOLOGY
+    return vocabulary_locations.LUNG_LOCATION_TERMS, LUNG_PATHOLOGY
 
 def return_heart_terms():
-    return HEART_PATHOLOGY
+    return vocabulary_locations.HEART_LOCATION_TERMS, HEART_PATHOLOGY
+
+def return_great_vessel_terms():
+    return vocabulary_locations.GREAT_VESSEL_LOCATION_TERMS
 
 def return_generic_terms():
-    return GENERIC_PATHOLOGY
+    return vocabulary_locations.GENERIC_LOCATION_TERMS, GENERIC_PATHOLOGY
+
+def return_forbidden(system):
+    """Return the keys in GENERIC_PATHOLOGY that are forbidden for a particular
+    body system"""
+    assert system in ['great_vessel','heart','lung']
+    if system == 'great_vessel':
+        allowed_path = GREAT_VESSEL_ALLOWED_PATH
+    elif system == 'heart':
+        allowed_path = HEART_ALLOWED_PATH
+    elif system == 'lung':
+        allowed_path = LUNG_ALLOWED_PATH
+    #Determine the disallowed keys
+    forbidden = copy.deepcopy(list(GENERIC_PATHOLOGY.keys()))
+    for x in allowed_path:
+        try:
+            forbidden.remove(x)
+        except:
+            pass
+    return forbidden
+
