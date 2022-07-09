@@ -76,7 +76,7 @@ done in a rule-based manner.
 
 To run the unit tests, run this command:
 
-`python unit_tests.py`
+`python -m unittest discover`
 
 ### Logo
 
