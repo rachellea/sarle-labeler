@@ -21,10 +21,12 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
-from src import run_sarle
+from src import run_sarle, load
 
 def run_rules_demo():
     """Apply the SARLE-Rules method to the OpenI CXR report dataset."""
+    train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
+    
     #Mark ambiguous findings positive:
     run_sarle.generate_labels('rules','openi_cxr',False,'pos',True)
 
@@ -34,6 +36,8 @@ def run_rules_demo():
 
 def run_hybrid_demo():
     """Apply the SARLE-Hybrid method to the OpenI CXR report dataset"""
+    train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
+    
     #Mark ambiguous findings positive:
     run_sarle.generate_labels('hybrid','openi_cxr',False,'pos',True)
 
@@ -41,6 +45,22 @@ def run_hybrid_demo():
     run_sarle.generate_labels('hybrid','openi_cxr',False,'neg',True)
 
 
+def run_mini_fake_data_demos():
+    #TODO manually create dataframes here with minimal information
+
+    train_data = pd.DataFrame()
+
+
+    test_data = pd.DataFrame()
+    
+
+    predict_data = pd.DataFrame()
+
+
 if __name__=='__main__':
+    #Demos on a real dataset, the OpenI CXR reports dataset
     run_rules_demo()
     run_hybrid_demo()
+
+    #Demos on fake data
+    run_mini_fake_data_demos()
