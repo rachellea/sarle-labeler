@@ -126,14 +126,14 @@ class RadLabel(object):
 
         #Evaluate performance
         if self.setname == 'test':
-            evaluation.eval_on_report_level_ground_truth()
+            self.eval_on_report_level_ground_truth()
     
     ######################
     # Evaluation-Related #------------------------------------------------------
     ######################
     def eval_on_report_level_ground_truth(self):
         """Evaluate on report-level ground truth if available"""
-        if dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
+        if self.dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
             print('Comparison to ground truth NOT run because ground truth was NOT '\
                   'available.')
         else:
@@ -148,7 +148,7 @@ class RadLabel(object):
     def load_ground_truth_and_perf_dfs(self):
         """Load the ground truth labels, calculate the frequency df, and
         initialize the performance tracking dataframes"""
-        self.true_set_labels = load.load_ground_truth(self.dataset)
+        self.true_set_labels = load.load_ground_truth(self.dataset_descriptor)
         self.frequency_df = pd.DataFrame((self.true_set_labels.sum(axis = 0)), columns = ['Freq_'+self.setname]).sort_index()
         #Initialize evaluation dfs
         self.allperf = evaluation.Perf(true_labels = self.true_set_labels,

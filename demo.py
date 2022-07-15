@@ -93,8 +93,18 @@ if __name__=='__main__':
     #multiple times in a row without reloading the data.
     train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
     #Rules demo on real dataset (OpenI CXR reports)
-    run_rules_demo(train_data, test_data, predict_data, 'openi_cxr')
+#    run_rules_demo(train_data, test_data, predict_data, 'openi_cxr')
     # #Hybrid demo on real dataset (OpenI CXR reports)
     # run_hybrid_demo(train_data, test_data, predict_data, 'openi_cxr')
+
+#TODO rewrite this file so it doesn't have these weird tiny functions and instead you just call everything in main.py
+
+
+
+    #TEMP
+
+    run_sarle.generate_labels(train_data, test_data, predict_data,
+                            dataset_descriptor, sarle_variant='rules', 
+                            ambiguities='neg', run_locdis_checks=True)
     
     
