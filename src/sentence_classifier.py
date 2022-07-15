@@ -58,7 +58,7 @@ class ClassifySentences(object):
         self.results_dir = results_dir
         self.ambiguities = ambiguities
         self.save_model_files = save_model_files
-        print('Running sentence_classifier with style',self.style)
+        print('Running sentence_classifier')
         
     def run_all(self):
         self._prepare_data()

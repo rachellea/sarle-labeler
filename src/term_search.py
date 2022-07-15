@@ -55,11 +55,9 @@ class RadLabel(object):
         <setname> is train' or 'test' or 'predict', a string that will be 
             prepended to any saved files,
         <dataset_descriptor>: string specifying the dataset. Used to determine
-            handling of predict_set output files and if there is ground truth
-            available 
-
-
-            if there is ground truth available
+            handling of predict_set output files, and to determine
+            if there is ground truth available in which case SARLE's performance
+            will be calculated.
         <results_dir>: path to directory in which results will be saved
         <run_locdis_checks>: bool. If True, run location x abnormality
             sanity checks to correct the output.
@@ -87,17 +85,19 @@ class RadLabel(object):
         self.wrong_heart_values = 0
         self.wrong_vessel_values = 0
         
+        self.save_output_files = save_output_files
+
         #Run
         if not self.data.empty:
             self.run_all()
     
     def run_all(self):
-        print('\nTerm search for',setname)
+        print('\nTerm search for', self.setname)
 
         #pad sentences with spaces to facilitate term search of words at 
         #the beginning and end of sentences
         self.data['Sentence'] = [' '+x+' ' for x in self.data['Sentence'].values.tolist()] 
-        print('data shape',data.shape)
+        print('data shape',self.data.shape)
         if not self.run_locdis_checks:
             print('***WARNING: self.clean_up_forbidden_values() will be skipped to enable disease-ONLY prediction***')
         
@@ -121,10 +121,10 @@ class RadLabel(object):
         self.disease_out = self.binarize_complex_labels(chosen_labels=list(self.mega_disease_dict.keys()), label_type='disease')
         
        #Evaluate performance
-        evaluation.eval_on_report_level_ground_truth(dataset_descriptor, self.disease_out, self.results_dir)
+        evaluation.eval_on_report_level_ground_truth(self.dataset_descriptor, self.disease_out, self.results_dir)
 
         #Save output
-        if save_output_files: 
+        if self.save_output_files: 
             self.save_complex_output_files()
     
         

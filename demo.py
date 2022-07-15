@@ -21,37 +21,22 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
+import pandas as pd
+
 from src import run_sarle, load
 
 def run_rules_demo(train_data, test_data, predict_data, dataset_descriptor):
-    """Apply the SARLE-Rules method."""
-    #Demo both options for the ambiguity filter:
-    
-
-    #FROM HERE HERE you actually need to reload the dataset before you deploy 
-    #the ambiguity filter different setting because the dataset has been modified
-    #All this reloading is actually SO ANNOYING!!!!! FIX IT
-    #do a deep copy operation in SARLE. update it so SARLE will not modify
-    #the original dataframes. they are deep copied. you can do an assert in this
-    #demo file to show they have not changed.
-    #also finish updating the arguments to run_sarle.generate_labels
-
-    #Mark ambiguous findings positive:
+    """Demo the SARLE-Rules method with ambiguities=='pos'."""
     run_sarle.generate_labels(train_data, test_data, predict_data, 
-                              dataset_descriptor, sarle_variant='rules', 
-                              ambiguities='pos',run_locdis_checks=True)
-
-    #Mark ambiguous findings negative:
-    run_sarle.generate_labels('rules','openi_cxr',False,'neg',True)
+                            dataset_descriptor, sarle_variant='rules', 
+                            ambiguities='pos', run_locdis_checks=True)
 
 
-def run_hybrid_demo(train_data, test_data, predict_data):
-    """Apply the SARLE-Hybrid method to the OpenI CXR report dataset"""
-    #Mark ambiguous findings positive:
-    run_sarle.generate_labels('hybrid','openi_cxr',False,'pos',True)
-
-    #Mark ambiguous findings negative:
-    run_sarle.generate_labels('hybrid','openi_cxr',False,'neg',True)
+def run_hybrid_demo(train_data, test_data, predict_data, dataset_descriptor):
+    """Demo the SARLE-Hybrid method with ambiguities=='pos'."""
+    run_sarle.generate_labels(train_data, test_data, predict_data,
+                            dataset_descriptor, sarle_variant='hybrid', 
+                            ambiguities='pos', run_locdis_checks=True)
 
 
 def load_fake_data():
@@ -86,22 +71,28 @@ def load_fake_data():
     return train_data, test_data, predict_data
 
 
-
 if __name__=='__main__':
+    # #Load OpenI data. Note that there is a deep copy operation at the beginning
+    # #of run_sarle.generate_labels() that enables doing this demo without
+    # #reloading the data multiple times. SARLE modifies the provided dataframes
+    # #so if we didn't do the deep copy at the beginning we couldn't run SARLE
+    # #multiple times in a row without reloading the data.
+    # train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
     # #Rules demo on real dataset (OpenI CXR reports)
-    # train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
-    # run_rules_demo(train_data, test_data, predict_data)
-    
+    # run_rules_demo(train_data, test_data, predict_data, 'openi_cxr')
     # #Hybrid demo on real dataset (OpenI CXR reports)
-    # #Reload the data because running SARLE modifies the data, so the data
-    # #previously loaded is no longer fresh
-    # train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
-    # run_hybrid_demo(train_data, test_data, predict_data)
-
-    #Rules demo on fake dataset
-    train_data, test_data, predict_data = load_fake_data()
-    run_rules_demo(train_data, test_data, predict_data)
+    # run_hybrid_demo(train_data, test_data, predict_data, 'openi_cxr')
     
-    #NHybrid demo on fake dataset
+    #Load fake data
     train_data, test_data, predict_data = load_fake_data()
-    run_hybrid_demo(train_data, test_data, predict_data)
+    #Rules demo on fake dataset
+    #Note that we do need to provide a data descriptor. Above where the
+    #data descriptor was 'openi_cxr', SARLE's output was compared to
+    #a report-level ground truth to calculate performance. Here, there is no
+    #report-level ground truth for fakedata, but you can see that SARLE still
+    #runs on the fake data. You can pick any dataset_descriptor you want although
+    #be aware it will be used in output file names so pick something
+    #without spaces.
+    run_rules_demo(train_data, test_data, predict_data, 'fakedata')
+    #NHybrid demo on fake dataset
+    run_hybrid_demo(train_data, test_data, predict_data, 'fakedata')

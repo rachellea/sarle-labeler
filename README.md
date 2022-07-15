@@ -69,10 +69,11 @@ train_data
   must be labeled with 1 (abnormal) or 0 (normal) if they describe abnormal
   or normal radiologic findings, respectively. If you do not want to spend
   time manually labeling sentences, just use SARLE-Rules.
-* In SARLE-Rules, the train_data was used by a human to create the rules.
-  When running SARLE, the rules that were created will get applied to the 
-  train_data, because if we have the end goal of computer vision classifier 
-  training, we still need to have labels for our note train_data set. For 
+* In SARLE-Rules, the train_data may be used by a human to create custom rules.
+  When running SARLE-Rules as-is, the rules that were already created will 
+  get applied to the train_data, because if we have the end goal of training
+  a computer vision classifier 
+  we still need to have labels for examples in our train_data set. For 
   SARLE-Rules, train_data does not need any manual sentence labels.
 * If you just want to quickly try out SARLE-Rules on a sample of your own 
   data and look at the output, you can put your sample data in as the 
@@ -81,14 +82,17 @@ train_data
 test_data
 * The test_data is used to calculate SARLE's performance predicting abnormality
   labels.
-* To calculate SARLE's performance on your own dataset, the reports in the 
-  test_data set must be manually labeled with report-level abnormality
-  ground truth. 
+* To calculate SARLE's performance on your own dataset, in addition to providing
+  a train_data dataframe, you must also separately provide a manually
+  generated report-level abnormality ground truth for the reports in the 
+  test_data set.
 * To see an example of the required abnormality ground truth format, you can
   look at the output of load.load_ground_truth('openi_cxr').
-* You can see an example of ground truth being used in performance
+* You can see an example of abnormality ground truth being used in performance
   calculations in the function eval_on_report_level_ground_truth() in 
   evaluation.py.
+* If you provide a test_data dataframe but don't provide an abnormality ground
+  truth, then SARLE will simply skip the performance calculation step.
 
 predict_data
 * The predict_data is optional. It consists of additional radiology reports
@@ -106,6 +110,8 @@ of SARLE-Rules, you can edit the rules in:
 * src/rules/rules_ct.py
 * src/rules/rules_cxr.py
 
+You should only use the training set when generating rules.
+
 ### Customization of the abnormalities and locations
 SARLE presently focuses on chest abnormalities, but does include some abdomen,
 pelvis, and general abnormalities. If you would like to customize
@@ -115,6 +121,8 @@ SARLE's abnormalities, you can do so by editing the vocabulary files:
 
 If you would like to customize SARLE's locations, you can do so in
 * src/vocab/vocabulary_locations.py
+
+Similarly, you should use the training set to generate vocabulary rules.
 
 ## Locations and Abnormalities
 

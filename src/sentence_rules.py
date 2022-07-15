@@ -103,4 +103,6 @@ class ApplyRules(object):
         #be the case for all datasets.
         try:
             evaluation.report_sentence_level_eval(self.data, self.setname, 'Rules')
+        except:
+            pass
                 

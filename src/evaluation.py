@@ -141,9 +141,9 @@ def eval_on_report_level_ground_truth(dataset_descriptor, disease_out, results_d
     """Run disease-level evaluation on report-level ground truth if available.
     This function is called from term_search.py"""
     if dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
-        print('''Comparison to ground truth NOT run because no ground truth was 
-                 available. See evaluation.py function 
-                 eval_on_report_level_ground_truth() to define a ground truth.''')
+        print('Comparison to ground truth NOT run because ground truth was NOT '\
+              'available. See evaluation.py function '\
+              'eval_on_report_level_ground_truth() to define a ground truth.')
     else:
         #Load the ground truth
         true_set_labels = load.load_ground_truth(dataset_descriptor)

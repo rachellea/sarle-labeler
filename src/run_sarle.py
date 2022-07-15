@@ -22,13 +22,14 @@
 #SOFTWARE
 
 import os
+import copy
 import pickle
 import datetime
 import pandas as pd
 
 from . import load, sentence_rules, sentence_classifier, term_search, visualizations
 
-def generate_labels(train_data, test_data, predict_data,
+def generate_labels(train_data_raw, test_data_raw, predict_data_raw,
                     dataset_descriptor, sarle_variant, ambiguities,
                     run_locdis_checks):
     """Generate a matrix of abnormality x location labels for each
@@ -54,6 +55,13 @@ def generate_labels(train_data, test_data, predict_data,
     sanity_check_configuration(*setup)
     results_dir, sent_class_dir, term_search_dir = configure_results_dirs(*setup)
     
+    #Deep copy of data to enable loading data once in demo.py and then using
+    #it repeatedly. The data gets modified by SARLE so this deep copy is
+    #necessary if running SARLE multiple times on the same data.
+    train_data = copy.deepcopy(train_data_raw)
+    test_data = copy.deepcopy(test_data_raw)
+    predict_data = copy.deepcopy(predict_data_raw)
+
     #Step 1: Sentence/Phrase Classification
     if sarle_variant == 'hybrid': #Sentence Classifier, Fasttext approach
         m = sentence_classifier.ClassifySentences(train_data, test_data, predict_data, sent_class_dir, ambiguities)
@@ -113,21 +121,32 @@ def sanity_check_configuration(sarle_variant, dataset_descriptor, ambiguities,
                                run_locdis_checks):
     """Sanity check the requested configuration"""
     assert sarle_variant in ['hybrid','rules']
-    assert dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
+    
+    if dataset_descriptor in ['duke_ct_2019_09_25','openi_cxr']:
+        print(dataset_descriptor,'report-level ground truth is available, '\
+                                  'so SARLE\'s performance will be calculated')
+    elif dataset_descriptor=='duke_ct_2020_03_17':
+        print(dataset_descriptor,'does not have report-level ground truth '\
+                         'available, so SARLE\'s performance will not be '\
+                         'calculated')
+    else:
+        print(dataset_descriptor,'Note that if you would like SARLE\'s test '\
+                        'set performance to be calculated on this data set '\
+                        'you must provide report-level abnormality ground '\
+                        'truth on the test set') 
+    
     assert ambiguities in ['pos','neg']
-    if ambiguities == 'neg':
-        #currently, setting ambiguous findings negative is only supported for
-        #SARLE-Rules on the OpenI dataset (see run_sarle.decide_rules_to_use())
-        #or for SARLE-Hybrid (see sentence_classifier._run_fasttext_model())
-        #with the caveat that the ambiguity detection rules were developed
-        #for chest x-ray reports.
-        assert dataset_descriptor=='openi_cxr'
-    assert isinstance(run_locdis_checks,bool)
+    if ambiguities=='neg':
+        assert dataset_descriptor=='openi_cxr','Error: Currently ambiguities=neg '\
+                         'is only supported for the openi_cxr dataset: see '\
+                         'run_sarle.decide_rules_to_use() to change this.'
+
+    assert isinstance(run_locdis_checks, bool)
+    
     if dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
-        assert ambiguities == 'pos', '''ambiguities=negative with Duke data is 
-                                        not allowed. Duke CT ground truth 
-                                        assumes all ambiguous findings 
-                                        are positive.'''
+        assert ambiguities == 'pos', 'ambiguities=negative with Duke data is '\
+                        'not allowed. Duke CT ground truth assumes all '\
+                        'ambiguous findings are positive.'
 
 
 def configure_results_dirs(sarle_variant, dataset_descriptor, ambiguities,
@@ -168,3 +187,7 @@ def decide_rules_to_use(dataset_descriptor, ambiguities):
             return 'cxr_amb_neg_rules'
     elif dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
         return 'duke_ct_rules'
+    else:
+        print('For',dataset_descriptor,'defaulting to duke_ct_rules')
+        return 'duke_ct_rules'
+
