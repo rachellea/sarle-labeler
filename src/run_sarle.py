@@ -82,7 +82,7 @@ def generate_labels(train_data_raw, test_data_raw, predict_data_raw,
     term_search.RadLabel(predict_data, 'predict', dataset_descriptor, term_search_dir, run_locdis_checks)
     
     if ((dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']) and (not predict_data.empty)):
-        load.combine_imgtrain_files(term_search_dir)
+        term_search.combine_imgtrain_files(term_search_dir)
     print('Done')
 
 

@@ -26,6 +26,8 @@ import numpy as np
 import pandas as pd
 import sklearn.metrics
 
+from src import load
+
 ##############################
 # Sentence-Level Performance #--------------------------------------------------
 ##############################
@@ -136,36 +138,6 @@ class Perf(object):
         final.to_csv(os.path.join(self.results_dir,self.setname+'_Final_Performance.csv'), header=True, index=True)
 
 
-# Using the Perf class #--------------------------------------------------------
-def eval_on_report_level_ground_truth(dataset_descriptor, disease_out, results_dir):
-    """Run disease-level evaluation on report-level ground truth if available.
-    This function is called from term_search.py"""
-    if dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
-        print('Comparison to ground truth NOT run because ground truth was NOT '\
-              'available. See evaluation.py function '\
-              'eval_on_report_level_ground_truth() to define a ground truth.')
-    else:
-        #Load the ground truth
-        true_set_labels = load.load_ground_truth(dataset_descriptor)
-
-        #Calculate the frequency_df
-        frequency_df = pd.DataFrame((true_set_labels.sum(axis = 0)), columns = ['Freq_test']).sort_index()
-
-        #Initialize performance tracking dfs
-        allperf = evaluation.Perf(true_labels = true_set_labels,
-                frequency_df = frequency_df, setname = 'test',
-                results_dir = results_dir)
-        
-        #Compare predictions to ground truth
-        print('***Comparing SARLE Predictions to Ground Truth***')
-        #ensure index and columns are in a particular order
-        disease_out_ordered = disease_out[true_set_labels.columns.values.tolist()]
-        self.disease_out_ordered = self.disease_out_ordered.sort_index()
-        self.allperf.update(out = self.disease_out_ordered)
-        self.allperf.save_all_performance_metrics() #Save accuracy, precision, recall, and fscore
-        self.report_test_set_mistakes() #Report all of the note-level model mistakes on the test set
-
-
 # Additional Functions #--------------------------------------------------------
 def add_mean_and_stdev(df, setname):
     """Return modified <df>:
@@ -208,52 +180,4 @@ def calculate_weighted_mean_and_stdev(df, freq_setname):
         mean[0,val], stdev[0,val] = column_mean_stdev(colsetname = df.columns.values.tolist()[val],
                                 df = df, weights = weights)
     return mean, stdev
-
-
-##################
-# Model Mistakes #--------------------------------------------------------------
-##################
-
-#FROM HERE HERE need to update these so they're not "self" (not methods of termsearch)
-
-
-    def report_test_set_mistakes(self):
-        """Report all note-level mistakes of all methods and save to a CSV"""
-        summary_df = pd.DataFrame(np.empty((5,4),dtype='str'),
-                                  columns=['Filename','sarle_Healthy_Sentences',
-                                    'sarle_Sick_Sentences','sarle_Mistakes'])
-        #Fill in the summary_df
-        idx=0
-        for fname in self.uniq_set_files:
-            summary_df.at[idx,'Filename']=fname
-            #Get the full text, which is contained in self.data
-            summary_df.at[idx,'sarle_Healthy_Sentences'] = self.stringify(self.healthydf,fname)
-            #Get the sick sentences, which is contained in self.sickdf
-            summary_df.at[idx,'sarle_Sick_Sentences'] = self.stringify(self.sickdf,fname)
-            #Get the mistakes
-            summary_df.at[idx,'sarle_Mistakes'] = self.mistakes_as_string('sarle',fname,self.results_dir)
-            idx+=1
-        summary_df.to_csv(os.path.join(self.results_dir,'Test_Set_Mistakes_All_Methods.csv'))
-    
-    # Helper functions for report_test_set_mistakes() #----------------------------
-    def stringify(self, df,filename):
-        """Collapse all the entries of <df> corresponding to <filename>
-        into a single string"""
-        return '. '.join(((df[df['Filename']==filename])['Sentence']).values.tolist())
-    
-    def mistakes_as_string(self, method_name,filename,results_dir):
-        """Format the model's mistakes on report specified by
-        <filename> as a string, e.g.
-        'pneumonia(true0,pred1),cardiomegaly(true1,pred0)'
-        All of the dfs that this function uses have labels as columns and
-        filenames as the index."""
-        true = self.true_set_labels
-        pred = self.disease_out_gt
-        final_string = ''
-        for label in true.columns.values:
-            true_label = int(true.at[filename,label])
-            pred_label = int(pred.at[filename,label])
-            if true_label!=pred_label:
-                final_string+=label+'(true'+str(true_label)+',pred'+str(pred_label)+'),'
-        return final_string
 

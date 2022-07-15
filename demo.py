@@ -72,27 +72,29 @@ def load_fake_data():
 
 
 if __name__=='__main__':
-    # #Load OpenI data. Note that there is a deep copy operation at the beginning
-    # #of run_sarle.generate_labels() that enables doing this demo without
-    # #reloading the data multiple times. SARLE modifies the provided dataframes
-    # #so if we didn't do the deep copy at the beginning we couldn't run SARLE
-    # #multiple times in a row without reloading the data.
-    # train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
-    # #Rules demo on real dataset (OpenI CXR reports)
-    # run_rules_demo(train_data, test_data, predict_data, 'openi_cxr')
+    # #Load fake data
+    # train_data, test_data, predict_data = load_fake_data()
+    # #Rules demo on fake dataset
+    # #Note that we do need to provide a data descriptor. Above where the
+    # #data descriptor was 'openi_cxr', SARLE's output was compared to
+    # #a report-level ground truth to calculate performance. Here, there is no
+    # #report-level ground truth for fakedata, but you can see that SARLE still
+    # #runs on the fake data. You can pick any dataset_descriptor you want although
+    # #be aware it will be used in output file names so pick something
+    # #without spaces.
+    # run_rules_demo(train_data, test_data, predict_data, 'fakedata')
+    # #NHybrid demo on fake dataset
+    # run_hybrid_demo(train_data, test_data, predict_data, 'fakedata')
+
+    #Load OpenI data. Note that there is a deep copy operation at the beginning
+    #of run_sarle.generate_labels() that enables doing this demo without
+    #reloading the data multiple times. SARLE modifies the provided dataframes
+    #so if we didn't do the deep copy at the beginning we couldn't run SARLE
+    #multiple times in a row without reloading the data.
+    train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
+    #Rules demo on real dataset (OpenI CXR reports)
+    run_rules_demo(train_data, test_data, predict_data, 'openi_cxr')
     # #Hybrid demo on real dataset (OpenI CXR reports)
     # run_hybrid_demo(train_data, test_data, predict_data, 'openi_cxr')
     
-    #Load fake data
-    train_data, test_data, predict_data = load_fake_data()
-    #Rules demo on fake dataset
-    #Note that we do need to provide a data descriptor. Above where the
-    #data descriptor was 'openi_cxr', SARLE's output was compared to
-    #a report-level ground truth to calculate performance. Here, there is no
-    #report-level ground truth for fakedata, but you can see that SARLE still
-    #runs on the fake data. You can pick any dataset_descriptor you want although
-    #be aware it will be used in output file names so pick something
-    #without spaces.
-    run_rules_demo(train_data, test_data, predict_data, 'fakedata')
-    #NHybrid demo on fake dataset
-    run_hybrid_demo(train_data, test_data, predict_data, 'fakedata')
+    

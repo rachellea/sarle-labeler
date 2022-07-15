@@ -119,15 +119,42 @@ class RadLabel(object):
 
         #Obtain disease-only labels
         self.disease_out = self.binarize_complex_labels(chosen_labels=list(self.mega_disease_dict.keys()), label_type='disease')
-        
-       #Evaluate performance
-        evaluation.eval_on_report_level_ground_truth(self.dataset_descriptor, self.disease_out, self.results_dir)
-
+    
         #Save output
         if self.save_output_files: 
             self.save_complex_output_files()
+
+        #Evaluate performance
+        if self.setname == 'test':
+            evaluation.eval_on_report_level_ground_truth()
     
-        
+    ######################
+    # Evaluation-Related #------------------------------------------------------
+    ######################
+    def eval_on_report_level_ground_truth(self):
+        """Evaluate on report-level ground truth if available"""
+        if dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
+            print('Comparison to ground truth NOT run because ground truth was NOT '\
+                  'available.')
+        else:
+            self.load_ground_truth_and_perf_dfs()#Load ground truth for disease-level labels
+            print('***Comparing SARLE Predictions to Ground Truth***') #evaluate on disease-level ground truth
+            self.disease_out_ordered = self.binarize_complex_labels(chosen_labels=self.true_set_labels.columns.values, label_type='disease')
+            self.disease_out_ordered = self.disease_out_ordered.sort_index()
+            self.allperf.update(out = self.disease_out_ordered)
+            self.allperf.save_all_performance_metrics() #Save accuracy, precision, recall, and fscore
+            self.report_test_set_mistakes() #Report all of the note-level model mistakes on the test set
+    
+    def load_ground_truth_and_perf_dfs(self):
+        """Load the ground truth labels, calculate the frequency df, and
+        initialize the performance tracking dataframes"""
+        self.true_set_labels = load.load_ground_truth(self.dataset)
+        self.frequency_df = pd.DataFrame((self.true_set_labels.sum(axis = 0)), columns = ['Freq_'+self.setname]).sort_index()
+        #Initialize evaluation dfs
+        self.allperf = evaluation.Perf(true_labels = self.true_set_labels,
+                frequency_df = self.frequency_df, setname = self.setname,
+                results_dir = self.results_dir)
+    
     def binarize_complex_labels(self, chosen_labels, label_type):
         """Return a dataframe with index of filenames (from self.uniq_set_files)
         and columns of <chosen_labels>. This is the old-fashioned output format.
@@ -474,6 +501,49 @@ class RadLabel(object):
         self.missing.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Missingness.csv'))
     
     ##################
+    # Model Mistakes #----------------------------------------------------------
+    ##################
+    def report_test_set_mistakes(self):
+        """Report all note-level mistakes of all methods and save to a CSV"""
+        summary_df = pd.DataFrame(np.empty((5,4),dtype='str'),
+                                  columns=['Filename','sarle_Healthy_Sentences',
+                                    'sarle_Sick_Sentences','sarle_Mistakes'])
+        #Fill in the summary_df
+        idx=0
+        for fname in self.uniq_set_files:
+            summary_df.at[idx,'Filename']=fname
+            #Get the full text, which is contained in self.merged
+            summary_df.at[idx,'sarle_Healthy_Sentences'] = self.stringify(self.healthydf,fname)
+            #Get the sick sentences, which is contained in self.sickdf
+            summary_df.at[idx,'sarle_Sick_Sentences'] = self.stringify(self.sickdf,fname)
+            #Get the mistakes
+            summary_df.at[idx,'sarle_Mistakes'] = self.mistakes_as_string('sarle',fname,self.results_dir)
+            idx+=1
+        summary_df.to_csv(os.path.join(self.results_dir,'Test_Set_Mistakes_All_Methods.csv'))
+    
+    # Helper functions for report_test_set_mistakes() #----------------------------
+    def stringify(self, df,filename):
+        """Collapse all the entries of <df> corresponding to <filename>
+        into a single string"""
+        return '. '.join(((df[df['Filename']==filename])['Sentence']).values.tolist())
+    
+    def mistakes_as_string(self, method_name,filename,results_dir):
+        """Format the model's mistakes on report specified by
+        <filename> as a string, e.g.
+        'pneumonia(true0,pred1),cardiomegaly(true1,pred0)'
+        All of the dfs that this function uses have labels as columns and
+        filenames as the index."""
+        true = self.true_set_labels
+        pred = self.disease_out_ordered
+        final_string = ''
+        for label in true.columns.values:
+            true_label = int(true.at[filename,label])
+            pred_label = int(pred.at[filename,label])
+            if true_label!=pred_label:
+                final_string+=label+'(true'+str(true_label)+',pred'+str(pred_label)+'),'
+        return final_string
+    
+    ##################
     # Static Methods #----------------------------------------------------------
     ##################
     @staticmethod
@@ -513,3 +583,48 @@ class RadLabel(object):
                     left = 1
                 break
         return right, left, lung
+
+
+########################################
+# Create imgtrain Overall Output Files #----------------------------------------
+########################################
+def combine_imgtrain_files(term_search_dir):
+    """Combine imgtrain_notetrain, imgtrain_notetest, and imgtrain_extra output
+    files.
+    This function is not for initial data loading. This function is called
+    in certain circumstances after SARLE has totally finished running
+    in order to aggregate certain output files."""
+    #Aggregate all training labels (location x disease) and save
+    imgtrain_notetrain = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetrain_BinaryLabels.pkl'), 'rb'))
+    imgtrain_notetest = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetest_BinaryLabels.pkl'), 'rb'))
+    imgtrain_extra = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_extra_BinaryLabels.pkl'), 'rb'))
+    out_bin = {}
+    out_bin.update(imgtrain_notetrain)
+    out_bin.update(imgtrain_notetest)
+    out_bin.update(imgtrain_extra)
+    pickle.dump(out_bin, open(os.path.join(term_search_dir, 'imgtrain_BinaryLabels.pkl'),'wb'))
+    
+    #Aggregate disease_out (disease binary labels) and save
+    train_disease_out = (pd.concat([pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetrain_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetest_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_extra_DiseaseBinaryLabels.csv'),
+                                       header = 0, index_col = 0)],axis=0))
+    train_disease_out.to_csv(os.path.join(term_search_dir, 'imgtrain_DiseaseBinaryLabels.csv'))
+    
+    #Missingness
+    train_missing = (pd.concat([pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetrain_Missingness.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_notetest_Missingness.csv'),
+                                       header = 0, index_col = 0),
+                           pd.read_csv(os.path.join(term_search_dir, 'imgtrain_extra_Missingness.csv'),
+                                       header = 0, index_col = 0)],axis=0))
+    train_missing.to_csv(os.path.join(term_search_dir, 'imgtrain_Missingness.csv'))
+    
+    #Sanity checks
+    #columns ['MRN', 'Accession', 'Set_Assigned', 'Set_Should_Be','Subset_Assigned']
+    all_ids, available_accs = load_all_ids_and_accs()
+    train_ids = all_ids[all_ids['Set_Assigned'].isin(['imgtrain_extra','imgtrain_notetrain','imgtrain_notetest'])]['Accession'].values.tolist()
+    train_ids = [x for x in train_ids if x in available_accs]
+    assert set(train_ids)==set(list(out_bin.keys()))
