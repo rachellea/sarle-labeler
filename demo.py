@@ -69,19 +69,10 @@ def load_fake_data():
 
 
 if __name__=='__main__':
-    # #OpenI demo
-    # train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
-    # sarle_demo(train_data, test_data, predict_data, 'openi_cxr')
+    #OpenI demo
+    train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
+    sarle_demo(train_data, test_data, predict_data, 'openi_cxr')
 
-    # #Fake data demo
-    # train_data, test_data, predict_data = load_fake_data()
-    # sarle_demo(train_data, test_data, predict_data, 'fakedata')
-
-
-    #TEMP DUKE
-    train_data, test_data, predict_data = load.load_merged_with_style('duke_ct_2019_09_25', 'trainall_testall')
-    run_sarle.generate_labels(train_data, test_data, predict_data,
-                            dataset_descriptor='duke_ct_2019_09_25', sarle_variant='rules', 
-                            ambiguities='pos', run_locdis_checks=True)
-    
-    
+    #Fake data demo
+    train_data, test_data, predict_data = load_fake_data()
+    sarle_demo(train_data, test_data, predict_data, 'fakedata')
