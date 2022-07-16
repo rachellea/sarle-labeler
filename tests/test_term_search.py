@@ -35,8 +35,8 @@ from tests import equality_checks as eqc
 ####################################
 # Global Variables Used in Testing #--------------------------------------------
 ####################################
-#for testing obtain_safra_labels and obtain_safra_complex_labels
-safra_x = [['000013_CTAAEJ','Findings','findings visualized thyroid within normal limitsleft anterior chest wall pacer with the leads terminating along the left lateral ventricle and right ventricle'],
+#for testing obtain_sarle_labels and obtain_sarle_complex_labels
+sarle_x = [['000013_CTAAEJ','Findings','findings visualized thyroid within normal limitsleft anterior chest wall pacer with the leads terminating along the left lateral ventricle and right ventricle'],
         ['000013_CTAAEJ','Findings','there is a metallic density likely related to intra aortic balloon pump seen in the descending thoracic aorta'],
         ['000013_CTAAEJ','Findings','the heart is borderline enlarged heart with a prosthetic aortic valve and mitral valve seen as well as aortic calcifications'],
         ['000013_CTAAEJ','Findings','there are multiple scattered adjacent lymph nodes with the largest on the right paratracheal region measuring 2.0 cm series 4 image 25'],
@@ -147,8 +147,10 @@ class TestTermSearch(unittest.TestCase):
              columns=['Count','Sentence','Filename','Section','PredLabel','PredProb','BinLabel'])
         
         #Check term search with setname train
-        m = term_search.RadLabel(results_dir=results_dir, setname='train', merged=fake_merged,
-                                 dataset='duke_ct_2019_09_25',run_locdis_checks=True,
+        m = term_search.RadLabel(data=fake_merged, setname='train',
+                                 dataset_descriptor='duke_ct_2019_09_25',
+                                 results_dir=results_dir,
+                                 run_locdis_checks=True,
                                  save_output_files=False)
         output = m.out_bin
         AAFF_df = ground_truth_helper(output, key='AAFF',include_list = [['pneumonia','lung']])
@@ -157,8 +159,10 @@ class TestTermSearch(unittest.TestCase):
         #Check term search with setname predict
         #need to set testing=True so that it doesn't try to sort the output by
         #accession numbers (since AAFF is a fake accession number)
-        m = term_search.RadLabel(results_dir=results_dir, setname='predict', merged=fake_merged,
-                                 dataset='duke_ct_2019_09_25',run_locdis_checks=True,
+        m = term_search.RadLabel(data=fake_merged, setname='predict', 
+                                 dataset_descriptor='duke_ct_2019_09_25',
+                                 results_dir=results_dir, 
+                                 run_locdis_checks=True,
                                  save_output_files=False)
         output = m.out_bin
         AAFF_df = ground_truth_helper(output, key='AAFF',include_list = [['cardiomegaly','heart']])
@@ -270,8 +274,10 @@ class TestTermSearch(unittest.TestCase):
             os.mkdir(results_dir)
             
         #Run term search
-        m = term_search.RadLabel(results_dir=results_dir, setname='train', merged=fake_merged,
-                                 dataset='duke_ct_2019_09_25',run_locdis_checks=True,
+        m = term_search.RadLabel(data=fake_merged, setname='train',
+                                 dataset_descriptor='duke_ct_2019_09_25',
+                                 results_dir=results_dir, 
+                                 run_locdis_checks=True,
                                  save_output_files=False)
         output = m.out_bin #dictionary. keys are filenames, values are pandas dataframes with pathology as index and location as columns
         
@@ -515,15 +521,16 @@ class TestTermSearch(unittest.TestCase):
             assert answer == [x for x in term_search.RadLabel.label_for_right_and_left_from_diseases(sentence, lung_path_dict)]
         print('Passed test_label_for_right_and_left_from_diseases')
     
-    def test_obtain_safra_labels_and_missingness(self):
-        global safra_x
-        merged = pd.DataFrame(safra_x,columns=['Filename','Section','Sentence'])
+    def test_obtain_sarle_labels_and_missingness(self):
+        global sarle_x
+        merged = pd.DataFrame(sarle_x,columns=['Filename','Section','Sentence'])
         merged['Label'] = 's'
         merged['BinLabel'] = 1
-        x = term_search.RadLabel(results_dir='', setname='train',
-                             merged = merged, dataset='duke_ct_2019_09_25',
-                             run_locdis_checks=True,
-                             save_output_files=True) #in this case we do want to save the output files so we can check them
+        x = term_search.RadLabel(data = merged, setname='train',
+                                 dataset_descriptor='duke_ct_2019_09_25',
+                                 results_dir='', 
+                                 run_locdis_checks=True,
+                                 save_output_files=True) #in this case we do want to save the output files so we can check them
         
         #Check correctness of everything
         used_files = ['000013_CTAAEJ', '000022_CTAAES','000038_CTAAFI','008266_CTAKMI',
@@ -578,7 +585,7 @@ class TestTermSearch(unittest.TestCase):
         os.remove('imgtrain_notetrain_Merged.csv')
         os.remove('train_other_location_sentences.txt')
         os.remove('train_other_disease_sentences.txt')
-        print('Passed test_obtain_safra_labels_and_missingness()')
+        print('Passed test_obtain_sarle_labels_and_missingness()')
 
 ###########
 # Helpers #---------------------------------------------------------------------

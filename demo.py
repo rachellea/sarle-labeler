@@ -21,26 +21,58 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE
 
-from src import run_sarle
+import pandas as pd
 
-def run_rules_demo():
-    """Apply the SARLE-Rules method to the OpenI CXR report dataset."""
-    #Mark ambiguous findings positive:
-    run_sarle.generate_labels('rules','openi_cxr',False,'pos',True)
+from src import run_sarle, load
 
-    #Mark ambiguous findings negative:
-    run_sarle.generate_labels('rules','openi_cxr',False,'neg',True)
+def sarle_demo(train_data, test_data, predict_data, dataset_descriptor):
+    """Demo the SARLE-Rules and SARLE-Hybrid methods with ambiguities=='pos'."""
+    run_sarle.generate_labels(train_data, test_data, predict_data, 
+                            dataset_descriptor, sarle_variant='rules', 
+                            ambiguities='pos', run_locdis_checks=True)
+    
+    run_sarle.generate_labels(train_data, test_data, predict_data,
+                            dataset_descriptor, sarle_variant='hybrid', 
+                            ambiguities='pos', run_locdis_checks=True)
 
 
-def run_hybrid_demo():
-    """Apply the SARLE-Hybrid method to the OpenI CXR report dataset"""
-    #Mark ambiguous findings positive:
-    run_sarle.generate_labels('hybrid','openi_cxr',False,'pos',True)
+def load_fake_data():
+    #For legacy reasons, the 'Label' and 'BinLabel' columns are redundant 
+    #with 'h'=0 and 's'=1. They contain the same information but are 
+    #unfortunately both used in the code.
+    #You can easily generate one column from the other programatically.
+    #TODO: eliminate use of the 'Label' column in the future.
+    #The 'Section' column is also there for legacy reasons. You can populate this
+    #entirely with the string 'Findings' or entirely with the string 
+    #'Impression' if you don't want to use this column.
+    train_data = pd.DataFrame(
+        [['s','There is a nodule in the right upper lobe.','report1.txt','Findings','1'],
+        ['s','There is cardiomegaly without pericardial effusion.','report1.txt','Findings','1'],
+        ['h','The lungs are clear.','report2.txt','Findings','0'],
+        ['h','The heart is normal in size.','report2.txt','Findings','0'],
+        ['s','An opacity in the left lower lobe is favored to represent atelectasis vs consolidation.','report3.txt','Findings','1']],
+        columns = ['Label', 'Sentence', 'Filename', 'Section', 'BinLabel'])
+    train_data['BinLabel'] = train_data['BinLabel'].astype(int)
 
-    #Mark ambiguous findings negative:
-    run_sarle.generate_labels('hybrid','openi_cxr',False,'neg',True)
+    test_data = pd.DataFrame(
+        [['s','Scattered nodules bilaterally.','report4.txt','Findings','1'],
+        ['s','There is a right pleural effusion.','report4.txt','Findings','1'],
+        ['h','There are no lung abnormalities.','report5.txt','Findings','0']],
+        columns = ['Label', 'Sentence', 'Filename', 'Section', 'BinLabel'])
+    test_data['BinLabel'] = test_data['BinLabel'].astype(int)
+    
+    #As mentioned in the README, it's okay not to have any predict data. We'll
+    #demo that case here, with an empty df for the predict set.
+    predict_data = pd.DataFrame()
+
+    return train_data, test_data, predict_data
 
 
 if __name__=='__main__':
-    run_rules_demo()
-    run_hybrid_demo()
+    #OpenI demo
+    train_data, test_data, predict_data = load.load_merged_with_style('openi_cxr', 'trainall_testall')
+    sarle_demo(train_data, test_data, predict_data, 'openi_cxr')
+
+    #Fake data demo
+    train_data, test_data, predict_data = load_fake_data()
+    sarle_demo(train_data, test_data, predict_data, 'fakedata')

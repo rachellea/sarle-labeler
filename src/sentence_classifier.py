@@ -31,7 +31,7 @@ except:
     #fasttext not available on Windows
     print('Notification: fasttext not imported')
 
-from src import load, evaluation, sentence_rules
+from src import evaluation, sentence_rules
 from src.rules import rules_cxr
 
 class ClassifySentences(object):
@@ -39,66 +39,49 @@ class ClassifySentences(object):
     a Fasttext model that classifies individual radiology report sentences as
     'sick' or 'healthy'.
     
-    The final results are stored in the dataframes train_merged, test_merged,
-    and predict_merged."""
-    def __init__(self, dataset, results_dir, style, run_predict, ambiguities):
+    The final results are stored in the dataframes train_data, test_data,
+    and predict_data."""
+    def __init__(self, train_data, test_data, predict_data,
+                 results_dir, ambiguities, save_model_files=False):
         """Variables:
-        <dataset>: either 'duke_ct' or 'openi_cxr'
         <results_dir>: path to directory in which results will be saved
-        <style>:
-            'trainall_testall': train on all training sentences and test on
-                all test sentences. This is the variant needed for the overall
-                task of predicting note-level labels.
-            'trainfilt_testfilt': train on only unique sentences in the training
-                set, and train on only unique sentences in the test set.
-                There is no overlap between training set and test set
-                sentences. Sentences that would overlap are assigned to the
-                training set.
-            'trainall_testfilt': train on all training sentences, and test on
-                only unique sentences in the test set. Sentences that would
-                overlap are assigned to the training set.
-        <run_predict>: if True then classify sentences in the predict set
-        <ambiguities>: if 'neg' then apply a rule-based ambiguity filter."""
-        self.dataset = dataset
+        <ambiguities>: if 'neg' then apply a rule-based ambiguity filter.
+        <save_model_files>: bool. If True, save the model files."""
+        self.train_data = train_data
+        self.test_data = test_data
+        self.predict_data = predict_data
+        
+        #For the classifier, train and test data are required
+        assert not self.train_data.empty
+        assert not self.test_data.empty
+        
         self.results_dir = results_dir
-        self.style = style #affects function _save_fasttext_splits(), and what files get saved
-        assert self.style in ['trainall_testall','trainfilt_testfilt','trainall_testfilt']
-        self.run_predict = run_predict
         self.ambiguities = ambiguities
-        print('Running sentence_classifier with style',self.style)
+        self.save_model_files = save_model_files
+        print('Running sentence_classifier')
         
     def run_all(self):
         self._prepare_data()
         self._run_fasttext_model()
-        
-        #ambiguity filter:
-        if ((self.dataset == 'openi_cxr') and (self.ambiguities == 'neg')):
-            self.train_merged = sentence_rules.apply_all_rules(self.train_merged, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
-            self.test_merged = sentence_rules.apply_all_rules(self.test_merged, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
     
     # Data Handling #-----------------------------------------------------------
     def _prepare_data(self):
         """Save the fasttext input files to disk and save the corresponding
         filename order as self.data_set_filename_order"""
-        #create self.train_merged, self.test_merged, self.predict_merged
-        #and clean them up based on the style
-        self.train_merged, self.test_merged, self.predict_merged = load.load_merged_with_style(self.dataset, self.style)
-        
-        #Save the fasttext files:
-        self._save_fasttext_split('train',self.train_merged)
-        self._save_fasttext_split('test',self.test_merged)
+        self._save_fasttext_split('train',self.train_data)
+        self._save_fasttext_split('test',self.test_data)
     
-    def _save_fasttext_split(self, setname, merged):
+    def _save_fasttext_split(self, setname, data):
         """Create the file fasttext_<name>_set.txt in <self.results_dir>
         for the data set specified by <setname>, containing the sentence and
         label data formatted for fasttext: the file has no header, and each line
         contains a label (either '__label__s' or '__label__h') followed by a
         sentence."""
-        assert setname=='train' or setname=='test' or setname=='predict'
+        assert setname in ['train','test','predict']
         data_set = []
-        for index in merged.index.values.tolist():
-            sentence = merged.at[index,'Sentence']
-            label = '__label__'+merged.at[index,'Label']
+        for index in data.index.values.tolist():
+            sentence = data.at[index,'Sentence']
+            label = '__label__'+data.at[index,'Label']
             data_set.append([label,sentence])
         np.savetxt(os.path.join(self.results_dir,'fasttext_'+setname+'_set.txt'), np.array(data_set), fmt='%s')
     
@@ -112,26 +95,31 @@ class ClassifySentences(object):
         result = self.classifier.test(os.path.join(self.results_dir, 'fasttext_test_set.txt'))
         #result is a tuple (N, precision, recall)
         print('(N, P@1, R@1)=',result)
-        self.train_merged = self._get_preds_and_perf('train',self.train_merged)
-        self.test_merged = self._get_preds_and_perf('test',self.test_merged)
-        if self.run_predict and self.dataset == 'duke_ct':
-            self.predict_merged = self._get_preds_and_perf('predict',self.predict_merged)
+        self.train_data = self._get_preds_and_perf('train',self.train_data)
+        self.test_data = self._get_preds_and_perf('test',self.test_data)
+        if not self.predict_data.empty:
+            self.predict_data = self._get_preds_and_perf('predict',self.predict_data)
         self._clean_up()
+        
+        #ambiguity filter:
+        if self.ambiguities == 'neg':
+            self.train_data = sentence_rules.apply_all_rules(self.train_data, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
+            self.test_data = sentence_rules.apply_all_rules(self.test_data, rules_cxr.AMB_ORDER, rules_cxr.AMB_DEF)
     
-    def _get_preds_and_perf(self, setname, merged):
+    def _get_preds_and_perf(self, setname, data):
         """Report overall performance and save binary labels, predicted
-        labels, and predicted probabilities in <merged>"""
+        labels, and predicted probabilities in <data>"""
         #Make predictions
         print('*** '+setname+' ***')
-        merged = self._extract_predictions(merged)
+        data = self._extract_predictions(data)
         
         #Report performance
-        evaluation.report_sentence_level_eval(merged, setname, 'Fasttext')
-        return merged
+        evaluation.report_sentence_level_eval(data, setname, 'Fasttext')
+        return data
         
-    def _extract_predictions(self, merged):
-        """Return <merged> with the predicted labels and probabilities added"""
-        sentences = merged['Sentence'].values.tolist()
+    def _extract_predictions(self, data):
+        """Return <data> with the predicted labels and probabilities added"""
+        sentences = data['Sentence'].values.tolist()
         preds_h_or_s = self.classifier.predict(sentences)
         predicted_labels = [x[0].replace('__label__','') for x in preds_h_or_s[0]]
         predicted_probs = [x[0] for x in preds_h_or_s[1]]
@@ -152,12 +140,12 @@ class ClassifySentences(object):
                 predicted_probs_final.append(1 - predicted_probs[index])
             else:
                 assert False
-        merged['PredLabel'] = predicted_labels_final
-        merged['PredProb'] = predicted_probs_final
-        return merged
+        data['PredLabel'] = predicted_labels_final
+        data['PredProb'] = predicted_probs_final
+        return data
     
     def _clean_up(self):
-        if self.style in ['trainfilt_testfilt','trainall_testfilt']:
+        if not self.save_model_files:
             os.remove(os.path.join(self.results_dir,'skipgram_model.bin'))
             os.remove(os.path.join(self.results_dir,'classifier.bin'))
             os.remove(os.path.join(self.results_dir,'fasttext_train_set.txt'))

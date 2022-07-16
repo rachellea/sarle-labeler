@@ -49,11 +49,11 @@ from src.rules import rule_functions
 #####################
 # Primary Functions #-----------------------------------------------------------
 # ###################
-def load_merged_with_style(dataset, style):
+def load_merged_with_style(dataset_descriptor, style):
     """Load the merged dataframe for all the splits and then filter them
     based on style.
     
-    <dataset> can be one of the following strings:
+    <dataset_descriptor> can be one of the following strings:
         'duke_ct_2019_09_25': Duke CT reports, parsed into sentences on
             2019-09-25. The indications and report header are excluded. Some
             actual report sentences were also (rarely) excluded due to
@@ -78,10 +78,10 @@ def load_merged_with_style(dataset, style):
         'openi_cxr': the publicly available OpenI chest x-ray report data set,
             put into the required format for SARLE.
             Report-level ground truth is available for this dataset."""
-    assert dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
-    if dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
-        train_merged, test_merged, predict_merged = load_data_duke_ct(dataset)
-    elif dataset == 'openi_cxr':
+    assert dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
+    if dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+        train_merged, test_merged, predict_merged = load_data_duke_ct(dataset_descriptor)
+    elif dataset_descriptor == 'openi_cxr':
         train_merged, test_merged, predict_merged = load_data_openi_cxr()
      
     if style == 'trainall_testall':
@@ -105,36 +105,36 @@ def load_merged_with_style(dataset, style):
         print('\t\ttest shape after removing overlap with train set:',test_merged.shape)
     return train_merged, test_merged, predict_merged
 
-def load_ground_truth(dataset):
-    assert dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
-    if dataset == 'duke_ct_2019_09_25':
+def load_ground_truth(dataset_descriptor):
+    assert dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
+    if dataset_descriptor == 'duke_ct_2019_09_25':
         return load_groundtruth_duke_ct_2019_09_25()
-    elif dataset == 'duke_ct_2020_03_17':
+    elif dataset_descriptor == 'duke_ct_2020_03_17':
         #No ground truth is available for 2020-03-17 data
         #(more sentences are included in 2020-03-17 relative to 2019-09-25 due
         #to including the indications/report header)
         return None
-    elif dataset == 'openi_cxr':
+    elif dataset_descriptor == 'openi_cxr':
         return load_groundtruth_openi_cxr()
 
 #########################
 # Load Duke CT Data Set #-------------------------------------------------------
 #########################
-def load_data_duke_ct(dataset):
-    if dataset == 'duke_ct_2019_09_25':
+def load_data_duke_ct(dataset_descriptor):
+    if dataset_descriptor == 'duke_ct_2019_09_25':
         data_dir = os.path.join(*[os.getcwd(),'data','data_ct','split_2019-09-25'])
-    elif dataset == 'duke_ct_2020_03_17':
+    elif dataset_descriptor == 'duke_ct_2020_03_17':
         data_dir = os.path.join(*[os.getcwd(),'data','data_ct','split_2020-03-17'])
     train_merged = load_one_duke_ct('train', ['imgtrain_notetrain'], data_dir)
     test_merged = load_one_duke_ct('test', ['imgtrain_notetest'], data_dir)
     predict_merged = load_one_duke_ct('predict', ['imgtrain_extra','imgvalid', 'imgtest'], data_dir)
     return train_merged, test_merged, predict_merged
 
-def load_all_ids_and_accs(dataset):
+def load_all_ids_and_accs(dataset_descriptor):
     #used in term_search.py function save_complex_output_files()
-    if dataset == 'duke_ct_2019_09_25':
+    if dataset_descriptor == 'duke_ct_2019_09_25':
         all_ids_path = os.path.join(*[os.getcwd(),'data','data_ct','split_2019-09-25','all_identifiers.csv'])
-    elif dataset == 'duke_ct_2020_03_17':
+    elif dataset_descriptor == 'duke_ct_2020_03_17':
         all_ids_path = os.path.join(*[os.getcwd(),'data','data_ct','split_2020-03-17','all_identifiers.csv'])
     all_ids = pd.read_csv(all_ids_path,header=0,index_col=False)
     
@@ -352,4 +352,4 @@ def clean_merged(merged,setname):
     #we have merged the FSS and CLS files so each sentence is represented
     #explicitly each time it occurs in the dataset (because of the FSS)
     return merged.drop(labels='Count',axis='columns')
-    
+

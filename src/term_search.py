@@ -34,85 +34,127 @@ from src.vocab import vocabulary_ct, vocabulary_cxr, gr1cm
 # Determine the note-level labels #---------------------------------------------
 ###################################
 class RadLabel(object):
-    def __init__(self, dataset, results_dir, setname, merged, run_locdis_checks,
-                 save_output_files=True):
+    def __init__(self, data, setname, dataset_descriptor, results_dir, 
+                 run_locdis_checks, save_output_files=True):
         """Output for all methods: performance metrics files
         reporting label frequency, and performance of the different methods.
         
         Output for each method:
         pandas dataframe with note-level labels on the test set.
-        Filname is the index and columns are different findings of interest.
+        Filename is the index and columns are different findings of interest.
         e.g. out.loc['12345.txt','atelectasis'] = 1 if note 12345.txt is
         positive for atelectasis (0 if negative for atelectasis.)
         Saved as files with prefix "Test_Set_Labels"
         
         Variables:
-        <dataset>: string specify dataset
-        <results_dir>: path to directory in which results will be saved
-        <setname> is a string that will be prepended to any saved files,
-            e.g. 'train' or 'test' or 'predict'
-        <merged> is a pandas dataframe produced by sentence_rules.py or
+        <data> is a pandas dataframe produced by sentence_rules.py or
             sentence_classifier.py which contains the following columns:
             ['Count','Sentence','Filename','Section','PredLabel','PredProb']
             For the test and train sets it also contains these columns:
             ['Label', 'BinLabel'] which are the ground truth sentence labels
+        <setname> is train' or 'test' or 'predict', a string that will be 
+            prepended to any saved files,
+        <dataset_descriptor>: string specifying the dataset. Used to determine
+            handling of predict_set output files, and to determine
+            if there is ground truth available in which case SARLE's performance
+            will be calculated.
+        <results_dir>: path to directory in which results will be saved
+        <run_locdis_checks>: bool. If True, run location x abnormality
+            sanity checks to correct the output.
         <save_output_files> is True by default to ensure all output files
             are saved. It is only set to False within unit tests to avoid
             saving output files during unit testing."""
-        self.dataset = dataset
-        if self.dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
-            self.vocabmodule = vocabulary_ct
-        elif self.dataset == 'openi_cxr':
+        self.dataset_descriptor = dataset_descriptor
+        
+        if self.dataset_descriptor == 'openi_cxr':
             self.vocabmodule = vocabulary_cxr
+        elif self.dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+            self.vocabmodule = vocabulary_ct
+        else:
+            #for all other datasets, default to CT vocabulary
+            self.vocabmodule = vocabulary_ct
+        
         assert setname in ['train','test','predict']
         self.setname = setname
-        print('\nTerm search for',setname)
         self.results_dir = results_dir
-        self.merged = merged
-        self.merged['Sentence'] = [' '+x+' ' for x in self.merged['Sentence'].values.tolist()] #pad with spaces to facilitate term search of words at the beginning
-        print('merged shape',merged.shape)
+        self.data = data
+
         self.run_locdis_checks = run_locdis_checks
-        
-        #Counts for tracking known mistakes
-        if not self.run_locdis_checks:
-            print('***WARNING: self.clean_up_forbidden_values() will be skipped to enable disease-ONLY prediction***')
+        #Counts for tracking known mistakes in the locdis_checks
         self.wrong_lung_values = 0
         self.wrong_heart_values = 0
         self.wrong_vessel_values = 0
         
-        #More initializations:
-        self.uniq_set_files = [x for x in set(self.merged['Filename'].values.tolist())]
+        self.save_output_files = save_output_files
+
+        #Run
+        if not self.data.empty:
+            self.run_all()
+    
+    def run_all(self):
+        print('\nTerm search for', self.setname)
+
+        #pad sentences with spaces to facilitate term search of words at 
+        #the beginning and end of sentences
+        self.data['Sentence'] = [' '+x+' ' for x in self.data['Sentence'].values.tolist()] 
+        print('data shape',self.data.shape)
+        if not self.run_locdis_checks:
+            print('***WARNING: self.clean_up_forbidden_values() will be skipped to enable disease-ONLY prediction***')
+        
+        #Get unique list of filenames (used in multiple methods)
+        self.uniq_set_files = [x for x in set(self.data['Filename'].values.tolist())]
         self.uniq_set_files.sort()
-        self.sickdf, self.healthydf = self.pick_out_sick_sentences() #Pick out sick sentences
-        self.initialize_vocabulary_dicts() #Initialize term dictionaries and keyterms
+
+        #Separate out sick and healthy sentences
+        self.sickdf, self.healthydf = self.pick_out_sick_sentences()
+
+        #Initialize term dictionaries and keyterms
+        self.initialize_vocabulary_dicts() 
         
-        #Run and save output:
-        self.obtain_sarle_complex_labels() #predict with sarle
-        self.obtain_sarle_lung_missingness() #missingness
+        #Run SARLE term search step
+        self.obtain_sarle_complex_labels()
+
+        #Lung missingness calculation
+        self.obtain_sarle_lung_missingness()
+
+        #Obtain disease-only labels
         self.disease_out = self.binarize_complex_labels(chosen_labels=list(self.mega_disease_dict.keys()), label_type='disease')
-        if save_output_files: self.save_complex_output_files()
-        
-        #Evaluate on report-level ground truth if available
-        if ((self.setname == 'test') and (self.dataset in ['duke_ct_2019_09_25','openi_cxr'])):
+    
+        #Save output
+        if self.save_output_files: 
+            self.save_complex_output_files()
+
+        #Evaluate performance
+        if self.setname == 'test':
+            self.eval_on_report_level_ground_truth()
+    
+    ######################
+    # Evaluation-Related #------------------------------------------------------
+    ######################
+    def eval_on_report_level_ground_truth(self):
+        """Evaluate on report-level ground truth if available"""
+        if self.dataset_descriptor not in ['duke_ct_2019_09_25','openi_cxr']:
+            print('Comparison to ground truth NOT run because ground truth was NOT '\
+                  'available.')
+        else:
             self.load_ground_truth_and_perf_dfs()#Load ground truth for disease-level labels
             print('***Comparing SARLE Predictions to Ground Truth***') #evaluate on disease-level ground truth
-            self.disease_out_gt = self.binarize_complex_labels(chosen_labels=self.true_set_labels.columns.values, label_type='disease')
-            self.disease_out_gt = self.disease_out_gt.sort_index()
-            self.allperf.update(out = self.disease_out_gt)
+            self.disease_out_ordered = self.binarize_complex_labels(chosen_labels=self.true_set_labels.columns.values, label_type='disease')
+            self.disease_out_ordered = self.disease_out_ordered.sort_index()
+            self.allperf.update(out = self.disease_out_ordered)
             self.allperf.save_all_performance_metrics() #Save accuracy, precision, recall, and fscore
             self.report_test_set_mistakes() #Report all of the note-level model mistakes on the test set
     
-    #Load ground truth and dataframes for tracking performance #----------------
     def load_ground_truth_and_perf_dfs(self):
         """Load the ground truth labels, calculate the frequency df, and
         initialize the performance tracking dataframes"""
-        self.true_set_labels = load.load_ground_truth(self.dataset)
+        self.true_set_labels = load.load_ground_truth(self.dataset_descriptor)
         self.frequency_df = pd.DataFrame((self.true_set_labels.sum(axis = 0)), columns = ['Freq_'+self.setname]).sort_index()
         #Initialize evaluation dfs
         self.allperf = evaluation.Perf(true_labels = self.true_set_labels,
                 frequency_df = self.frequency_df, setname = self.setname,
                 results_dir = self.results_dir)
-        
+    
     def binarize_complex_labels(self, chosen_labels, label_type):
         """Return a dataframe with index of filenames (from self.uniq_set_files)
         and columns of <chosen_labels>. This is the old-fashioned output format.
@@ -332,9 +374,10 @@ class RadLabel(object):
                 temp.at[diseaseterm,'SentenceValue'] = 1
         
         #Special lymphadenopathy and nodulegr1cm handling that uses measurements
-        if self.dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+        if 'lymphadenopathy' in self.mega_disease_dict.keys():
             if gr1cm.lymphadenopathy_handling(sentence) == 1:
                 temp.at['lymphadenopathy','SentenceValue'] = 1
+        if 'nodulegr1cm' in self.mega_disease_dict.keys():
             if gr1cm.nodulegr1cm_handling(sentence) == 1:
                 temp.at['nodulegr1cm','SentenceValue'] = 1
         
@@ -379,19 +422,25 @@ class RadLabel(object):
     def pick_out_sick_sentences(self):
         """Separate sick sentences and healthy sentences and return
         as separate dataframes"""
-        sickdf = copy.deepcopy(self.merged)
-        healthydf = copy.deepcopy(self.merged)
-        if self.dataset == 'duke_ct_2019_09_25':
+        sickdf = copy.deepcopy(self.data)
+        healthydf = copy.deepcopy(self.data)
+        if self.dataset_descriptor == 'duke_ct_2019_09_25':
             sets_use_sentence_level_grtruth = ['train']
             sets_use_pred_sentence_labels = ['test','predict']
-        if self.dataset == 'duke_ct_2020_03_17':
-            sets_use_sentence_level_grtruth = [] #no ground truth available 
-            sets_use_pred_sentence_labels = ['train','test','predict']
-        elif self.dataset == 'openi_cxr':
+        elif self.dataset_descriptor == 'openi_cxr':
             #you have the sentence-level ground truth for the training set
             #so you might as well use it
             sets_use_sentence_level_grtruth = ['train']
             sets_use_pred_sentence_labels = ['test','predict']
+        elif self.dataset_descriptor == 'duke_ct_2020_03_17':
+            sets_use_sentence_level_grtruth = [] #no ground truth available 
+            sets_use_pred_sentence_labels = ['train','test','predict']
+        else:
+            #assume a custom dataset in which there is no ground truth available
+            #(same setting as for duke_ct_2020_03_17)
+            sets_use_sentence_level_grtruth = [] #no ground truth available 
+            sets_use_pred_sentence_labels = ['train','test','predict']
+        
         if self.setname in sets_use_sentence_level_grtruth:
             print('Using ground truth sentence-level labels for',self.setname)
             #BinLabel is 1 or 0 based off of Label which is 's' or 'h'
@@ -403,7 +452,7 @@ class RadLabel(object):
             healthydf = healthydf[healthydf['PredLabel'] == 0]
         sickdf = sickdf.reset_index(drop=True)
         healthydf = healthydf.reset_index(drop=True)
-        assert (sickdf.shape[0]+healthydf.shape[0])==self.merged.shape[0]
+        assert (sickdf.shape[0]+healthydf.shape[0])==self.data.shape[0]
         print('Sickdf shape is',sickdf.shape)
         print('Healthydf shape is',healthydf.shape)
         return sickdf, healthydf
@@ -412,36 +461,44 @@ class RadLabel(object):
         """Save output files for location_and_disease
         out_bin is a dictionary of pandas dataframes and gets pickled"""
         if self.setname == 'train' or self.setname == 'test':
-            pickle.dump(self.out_bin, open(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_BinaryLabels.pkl'), 'wb'))
-            self.disease_out.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_DiseaseBinaryLabels.csv'))
-            self.merged.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Merged.csv'))
-            self.missing.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Missingness.csv'))
+            self.basic_save()
+        
         elif self.setname == 'predict':
-            def save_set(description, out_bin, disease_out, merged, missing):
-                all_ids, available_accs = load.load_all_ids_and_accs(self.dataset)
-                ids = all_ids[all_ids['Set_Assigned']==description]['Accession'].values.tolist()
-                ids = [x for x in ids if x in available_accs]
-                #Select out_bin filenames and save
-                out_bin = {}
-                for key in ids:
-                    out_bin[key] = self.out_bin[key]
-                pickle.dump(out_bin, open(os.path.join(self.results_dir, description+'_BinaryLabels.pkl'), 'wb'))
-                #Select disease_out filenames and save
-                disease_out = disease_out.loc[ids,:]
-                disease_out.to_csv(os.path.join(self.results_dir, description+'_DiseaseBinaryLabels.csv'))
-                #Select merged filenames and save
-                merged = merged[merged['Filename'].isin(ids)]
-                merged.to_csv(os.path.join(self.results_dir, description+'_Merged.csv'))
-                #Select missing filenames and save
-                missing = missing.loc[ids,:]
-                missing.to_csv(os.path.join(self.results_dir, description+'_Missingness.csv'))
-                return len(list(out_bin.keys())), merged.shape[0]
-            outshape = len(list(self.out_bin.keys())); mergedshape = self.merged.shape[0]
-            o1, m1 = save_set('imgtrain_extra', self.out_bin, self.disease_out, self.merged, self.missing)
-            o2, m2 = save_set('imgvalid', self.out_bin, self.disease_out, self.merged, self.missing)
-            o3, m3 = save_set('imgtest', self.out_bin, self.disease_out, self.merged, self.missing)
-            assert o1+o2+o3 == outshape
-            assert m1+m2+m3 == mergedshape
+            if self.dataset_descriptor not in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+                self.basic_save()
+            else:
+               #Custom predict set saving for Duke datasets
+                def save_set(description, out_bin, disease_out, data, missing):
+                    all_ids, available_accs = load.load_all_ids_and_accs(self.dataset_descriptor)
+                    ids = all_ids[all_ids['Set_Assigned']==description]['Accession'].values.tolist()
+                    ids = [x for x in ids if x in available_accs]
+                    #Select out_bin filenames and save
+                    out_bin = {}
+                    for key in ids:
+                        out_bin[key] = self.out_bin[key]
+                    pickle.dump(out_bin, open(os.path.join(self.results_dir, description+'_BinaryLabels.pkl'), 'wb'))
+                    #Select disease_out filenames and save
+                    disease_out = disease_out.loc[ids,:]
+                    disease_out.to_csv(os.path.join(self.results_dir, description+'_DiseaseBinaryLabels.csv'))
+                    #Select data filenames and save
+                    data = data[data['Filename'].isin(ids)]
+                    data.to_csv(os.path.join(self.results_dir, description+'_Merged.csv'))
+                    #Select missing filenames and save
+                    missing = missing.loc[ids,:]
+                    missing.to_csv(os.path.join(self.results_dir, description+'_Missingness.csv'))
+                    return len(list(out_bin.keys())), data.shape[0]
+                outshape = len(list(self.out_bin.keys())); datashape = self.data.shape[0]
+                o1, m1 = save_set('imgtrain_extra', self.out_bin, self.disease_out, self.data, self.missing)
+                o2, m2 = save_set('imgvalid', self.out_bin, self.disease_out, self.data, self.missing)
+                o3, m3 = save_set('imgtest', self.out_bin, self.disease_out, self.data, self.missing)
+                assert o1+o2+o3 == outshape
+                assert m1+m2+m3 == datashape
+        
+    def basic_save(self):
+        pickle.dump(self.out_bin, open(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_BinaryLabels.pkl'), 'wb'))
+        self.disease_out.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_DiseaseBinaryLabels.csv'))
+        self.data.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_merged.csv'))
+        self.missing.to_csv(os.path.join(self.results_dir, 'imgtrain_note'+self.setname+'_Missingness.csv'))
     
     ##################
     # Model Mistakes #----------------------------------------------------------
@@ -477,7 +534,7 @@ class RadLabel(object):
         All of the dfs that this function uses have labels as columns and
         filenames as the index."""
         true = self.true_set_labels
-        pred = self.disease_out_gt
+        pred = self.disease_out_ordered
         final_string = ''
         for label in true.columns.values:
             true_label = int(true.at[filename,label])
@@ -485,7 +542,7 @@ class RadLabel(object):
             if true_label!=pred_label:
                 final_string+=label+'(true'+str(true_label)+',pred'+str(pred_label)+'),'
         return final_string
-
+    
     ##################
     # Static Methods #----------------------------------------------------------
     ##################
@@ -527,12 +584,16 @@ class RadLabel(object):
                 break
         return right, left, lung
 
+
 ########################################
 # Create imgtrain Overall Output Files #----------------------------------------
 ########################################
 def combine_imgtrain_files(term_search_dir):
     """Combine imgtrain_notetrain, imgtrain_notetest, and imgtrain_extra output
-    files"""
+    files.
+    This function is not for initial data loading. This function is called
+    in certain circumstances after SARLE has totally finished running
+    in order to aggregate certain output files."""
     #Aggregate all training labels (location x disease) and save
     imgtrain_notetrain = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetrain_BinaryLabels.pkl'), 'rb'))
     imgtrain_notetest = pickle.load(open(os.path.join(term_search_dir, 'imgtrain_notetest_BinaryLabels.pkl'), 'rb'))
@@ -563,8 +624,7 @@ def combine_imgtrain_files(term_search_dir):
     
     #Sanity checks
     #columns ['MRN', 'Accession', 'Set_Assigned', 'Set_Should_Be','Subset_Assigned']
-    all_ids, available_accs = load.load_all_ids_and_accs()
+    all_ids, available_accs = load_all_ids_and_accs()
     train_ids = all_ids[all_ids['Set_Assigned'].isin(['imgtrain_extra','imgtrain_notetrain','imgtrain_notetest'])]['Accession'].values.tolist()
     train_ids = [x for x in train_ids if x in available_accs]
     assert set(train_ids)==set(list(out_bin.keys()))
-

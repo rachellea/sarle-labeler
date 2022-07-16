@@ -134,7 +134,8 @@ class Perf(object):
         final = final.sort_values(by = 'Freq_'+self.setname, ascending=False)
         #final = add_mean_and_stdev(final, self.setname) #TODO adapt this function
         final.to_csv(os.path.join(self.results_dir,self.setname+'_Final_Performance.csv'), header=True, index=True)
-    
+
+
 # Additional Functions #--------------------------------------------------------
 def add_mean_and_stdev(df, setname):
     """Return modified <df>:
@@ -177,3 +178,4 @@ def calculate_weighted_mean_and_stdev(df, freq_setname):
         mean[0,val], stdev[0,val] = column_mean_stdev(colsetname = df.columns.values.tolist()[val],
                                 df = df, weights = weights)
     return mean, stdev
+

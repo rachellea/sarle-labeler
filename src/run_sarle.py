@@ -22,19 +22,32 @@
 #SOFTWARE
 
 import os
+import copy
 import pickle
 import datetime
 import pandas as pd
-from types import SimpleNamespace
 
 from . import load, sentence_rules, sentence_classifier, term_search, visualizations
 
-def generate_labels(sarle_variant, dataset, run_predict, ambiguities,
+def generate_labels(train_data_raw, test_data_raw, predict_data_raw,
+                    dataset_descriptor, sarle_variant, ambiguities,
                     run_locdis_checks):
     """Generate a matrix of abnormality x location labels for each
     free-text radiology report in the dataset.
     
     Variables:
+    <dataset_descriptor> is a string describing the dataset. For the OpenI
+        dataset, it must be 'openi_cxr'. For the RAD-ChestCT dataset 
+        (internal to Duke) it must be one of ['duke_ct_2019_09_25',
+        'duke_ct_2020_03_17']. If <dataset_descriptor> is one of the
+        specific aforementioned strings then there are some additional steps
+        that automatically are applied, such as SARLE performance calculation.
+        You can choose a custom string for <dataset_descriptor> for your
+        own dataset. In this case, the SARLE method will be applied,
+        but no SARLE performance will be calculated unless you also provide
+        a report-level abnormality ground truth by modifying the relevant code.
+        The <dataset_descriptor> is used in output file names, so please choose
+        something without spaces in it.
     <sarle_variant> is either 'hybrid' or 'rules'.
         If 'hybrid' then a Fasttext sentence classifier will be used to filter
         out normal sentences and keep only abnormal sentences.
@@ -42,48 +55,54 @@ def generate_labels(sarle_variant, dataset, run_predict, ambiguities,
         phrases and keep only abnormal phrases. Different rules will be applied
         depending on whether the data set is Duke CT or OpenI.
         'rules' outperforms 'hybrid' on the Duke CT dataset.
-    <dataset> is any of ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr'].
-        Note that for demo purposes only 'openi_cxr' is publicly available.
-    <run_predict> is True in order to make predictions on the predict set of
-        the Duke CT data. Warning: this step takes a long time, so if you only
-        want to calculate the test set performance then set run_predict to 
-        False.
     <ambiguities> is either 'pos' or 'neg' which determines whether
         ambiguous findings are kept in the sentences (and thus marked positive) 
         or deleted from the sentences (and thus marked negative).
     <run_locdis_checks> is either True or False. If True then run sanity
         checks based on allowed abnormality x location combos."""
     #Run sanity checks and set up results dirs
-    setup = [sarle_variant, dataset, run_predict, ambiguities, run_locdis_checks]
+    setup = [sarle_variant, dataset_descriptor, ambiguities, run_locdis_checks]
     sanity_check_configuration(*setup)
     results_dir, sent_class_dir, term_search_dir = configure_results_dirs(*setup)
     
+    #Do not get rid of this deep copy operation!
+    #It is very helpful for preventing weird bugs that might otherwise be caused
+    #by a script like demo.py where the data is loaded once and then has
+    #different variants of SARLE applied to it. SARLE modifies the dataframes
+    #provided to it. If we allow the original dataframes to be modified 
+    #directly then we cannot run SARLE many times in a row on the same 
+    #input dataframes and we'd need to reload the data fresh each time.
+    train_data = copy.deepcopy(train_data_raw)
+    test_data = copy.deepcopy(test_data_raw)
+    predict_data = copy.deepcopy(predict_data_raw)
+
     #Step 1: Sentence/Phrase Classification
     if sarle_variant == 'hybrid': #Sentence Classifier, Fasttext approach
-        #First, just get results to report (but not to use downstream):
-        sentence_classifier.ClassifySentences(dataset,sent_class_dir,'trainfilt_testfilt',run_predict,ambiguities).run_all()
-        sentence_classifier.ClassifySentences(dataset,sent_class_dir,'trainall_testfilt',run_predict,ambiguities).run_all()
-        #Now get results to report AND use downstream:
-        m = sentence_classifier.ClassifySentences(dataset,sent_class_dir,'trainall_testall',run_predict,ambiguities)
+        m = sentence_classifier.ClassifySentences(train_data, test_data, predict_data, sent_class_dir, ambiguities)
         m.run_all()
+        train_data = m.train_data
+        test_data = m.test_data
+        predict_data = m.predict_data
+    
     elif sarle_variant == 'rules': #Rule-based approach
-        rules_to_use = decide_rules_to_use(dataset, ambiguities)
-        m = sentence_rules.ApplyRules(dataset, rules_to_use)
-        m.run_all()
-        
+        rules_to_use = decide_rules_to_use(dataset_descriptor, ambiguities)
+        train_data = sentence_rules.ApplyRules(train_data, 'train', rules_to_use).data_processed
+        test_data = sentence_rules.ApplyRules(test_data, 'test', rules_to_use).data_processed
+        predict_data = sentence_rules.ApplyRules(predict_data, 'predict', rules_to_use).data_processed
+    
     #Step 2: Term Search
-    term_search.RadLabel(dataset, term_search_dir, 'train', m.train_merged, run_locdis_checks)
-    term_search.RadLabel(dataset, term_search_dir, 'test', m.test_merged, run_locdis_checks)
-    if run_predict:
-        term_search.RadLabel(dataset, term_search_dir, 'predict', m.predict_merged, run_locdis_checks)
-    if ((dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']) and (run_predict is True)):
+    term_search.RadLabel(train_data, 'train', dataset_descriptor, term_search_dir, run_locdis_checks)
+    term_search.RadLabel(test_data, 'test', dataset_descriptor, term_search_dir, run_locdis_checks)
+    term_search.RadLabel(predict_data, 'predict', dataset_descriptor, term_search_dir, run_locdis_checks)
+    
+    if ((dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']) and (not predict_data.empty)):
         term_search.combine_imgtrain_files(term_search_dir)
     print('Done')
 
 
-def generate_visualizations(dataset, results_dir):
+def generate_visualizations(dataset_descriptor, results_dir):
     """Make visualizations that summarize the extracted labels"""
-    assert dataset == 'duke_ct', 'Visualizations only tested for dataset = duke_ct'
+    assert dataset_descriptor == 'duke_ct', 'Visualizations only tested for dataset_descriptor = duke_ct'
     
     #Set up results directories for visualizations
     viz_dir = os.path.join(results_dir, '2_visualizations')
@@ -95,7 +114,7 @@ def generate_visualizations(dataset, results_dir):
             os.mkdir(viz_dir_setname)
     
     #Sentence Histograms for the notetrain set only
-    visualizations.RepeatedSentenceHistograms(dataset, os.path.join(viz_dir,'imgtrain'))
+    visualizations.RepeatedSentenceHistograms(dataset_descriptor, os.path.join(viz_dir,'imgtrain'))
     
     #Other visualizations:
     for setname in ['imgtrain', 'imgvalid', 'imgtest']:
@@ -112,40 +131,46 @@ def generate_visualizations(dataset, results_dir):
         visualizations.AbnormalityLabelCorrelations(setname, term_search_dir, viz_dir_setname)
 
 
-def sanity_check_configuration(sarle_variant, dataset, run_predict, 
-                               ambiguities, run_locdis_checks):
+def sanity_check_configuration(sarle_variant, dataset_descriptor, ambiguities, 
+                               run_locdis_checks):
     """Sanity check the requested configuration"""
     assert sarle_variant in ['hybrid','rules']
-    assert dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr']
-    assert isinstance(run_predict,bool)
+    
+    if dataset_descriptor in ['duke_ct_2019_09_25','openi_cxr']:
+        print(dataset_descriptor,'report-level ground truth is available, '\
+                                  'so SARLE\'s performance will be calculated')
+    elif dataset_descriptor=='duke_ct_2020_03_17':
+        print(dataset_descriptor,'does not have report-level ground truth '\
+                         'available, so SARLE\'s performance will not be '\
+                         'calculated')
+    else:
+        print(dataset_descriptor,'Note that if you would like SARLE\'s test '\
+                        'set performance to be calculated on this data set '\
+                        'you must provide report-level abnormality ground '\
+                        'truth on the test set') 
+    
     assert ambiguities in ['pos','neg']
-    if ambiguities == 'neg':
-        #currently, setting ambiguous findings negative is only supported for
-        #the OpenI dataset. In practice the ambiguity filter is implemented
-        #using rules, which are applied either (a) after the base rules
-        #to remove normal phrases in the case of sarle_variant='rules' or 
-        #(b) after the Fasttext step to remove normal sentences in the case
-        #of sarle_variant='hybrid'
-        assert dataset=='openi_cxr'
-    assert isinstance(run_locdis_checks,bool)
-    if dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
-        assert ambiguities == 'pos', '''ambiguities=negative with Duke data is 
-                                        not allowed. Duke CT ground truth 
-                                        assumes all ambiguous findings 
-                                        are positive.'''
-    if dataset=='openi_cxr':
-        assert run_predict == False, '''run_predict must be False for openi_cxr 
-                                        data because there is no predict set'''
+    if ambiguities=='neg':
+        assert dataset_descriptor=='openi_cxr','Error: Currently ambiguities=neg '\
+                         'is only supported for the openi_cxr dataset: see '\
+                         'run_sarle.decide_rules_to_use() to change this.'
+
+    assert isinstance(run_locdis_checks, bool)
+    
+    if dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+        assert ambiguities == 'pos', 'ambiguities=negative with Duke data is '\
+                        'not allowed. Duke CT ground truth assumes all '\
+                        'ambiguous findings are positive.'
 
 
-def configure_results_dirs(sarle_variant, dataset, run_predict, ambiguities,
+def configure_results_dirs(sarle_variant, dataset_descriptor, ambiguities,
                            run_locdis_checks):
     """Create and return the paths to results directories"""
     if not os.path.isdir('results'):
         os.mkdir('results')
     
     results_dir = os.path.join('results',datetime.datetime.today().strftime('%Y-%m-%d')
-                               +'_'+dataset+'_'+sarle_variant+'_amb'+ambiguities
+                               +'_'+dataset_descriptor+'_'+sarle_variant+'_amb'+ambiguities
                                +'_locdis'+str(run_locdis_checks))
     if not os.path.isdir(results_dir):
         os.mkdir(results_dir)
@@ -165,11 +190,18 @@ def configure_results_dirs(sarle_variant, dataset, run_predict, ambiguities,
     return results_dir, sent_class_dir, term_search_dir
 
 
-def decide_rules_to_use(dataset, ambiguities):
-    if dataset=='openi_cxr':
+def decide_rules_to_use(dataset_descriptor, ambiguities):
+    if dataset_descriptor=='openi_cxr':
         if ambiguities=='pos':
             return 'cxr_amb_pos_rules'
-        elif ambiguities=='neg':
+        elif ambiguities=='neg': 
+            #then ambiguity filter will be applied to delete ambiguous
+            #findings so that they are not identified by the term search
+            #and thus marked negative
             return 'cxr_amb_neg_rules'
-    elif dataset in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
+    elif dataset_descriptor in ['duke_ct_2019_09_25','duke_ct_2020_03_17']:
         return 'duke_ct_rules'
+    else:
+        print('For',dataset_descriptor,'defaulting to duke_ct_rules')
+        return 'duke_ct_rules'
+
