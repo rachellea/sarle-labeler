@@ -36,8 +36,18 @@ def generate_labels(train_data_raw, test_data_raw, predict_data_raw,
     free-text radiology report in the dataset.
     
     Variables:
-    <dataset_descriptor> is any of ['duke_ct_2019_09_25','duke_ct_2020_03_17','openi_cxr'].
-        Note that for demo purposes only 'openi_cxr' is publicly available.
+    <dataset_descriptor> is a string describing the dataset. For the OpenI
+        dataset, it must be 'openi_cxr'. For the RAD-ChestCT dataset 
+        (internal to Duke) it must be one of ['duke_ct_2019_09_25',
+        'duke_ct_2020_03_17']. If <dataset_descriptor> is one of the
+        specific aforementioned strings then there are some additional steps
+        that automatically are applied, such as SARLE performance calculation.
+        You can choose a custom string for <dataset_descriptor> for your
+        own dataset. In this case, the SARLE method will be applied,
+        but no SARLE performance will be calculated unless you also provide
+        a report-level abnormality ground truth by modifying the relevant code.
+        The <dataset_descriptor> is used in output file names, so please choose
+        something without spaces in it.
     <sarle_variant> is either 'hybrid' or 'rules'.
         If 'hybrid' then a Fasttext sentence classifier will be used to filter
         out normal sentences and keep only abnormal sentences.
@@ -55,9 +65,13 @@ def generate_labels(train_data_raw, test_data_raw, predict_data_raw,
     sanity_check_configuration(*setup)
     results_dir, sent_class_dir, term_search_dir = configure_results_dirs(*setup)
     
-    #Deep copy of data to enable loading data once in demo.py and then using
-    #it repeatedly. The data gets modified by SARLE so this deep copy is
-    #necessary if running SARLE multiple times on the same data.
+    #Do not get rid of this deep copy operation!
+    #It is very helpful for preventing weird bugs that might otherwise be caused
+    #by a script like demo.py where the data is loaded once and then has
+    #different variants of SARLE applied to it. SARLE modifies the dataframes
+    #provided to it. If we allow the original dataframes to be modified 
+    #directly then we cannot run SARLE many times in a row on the same 
+    #input dataframes and we'd need to reload the data fresh each time.
     train_data = copy.deepcopy(train_data_raw)
     test_data = copy.deepcopy(test_data_raw)
     predict_data = copy.deepcopy(predict_data_raw)
